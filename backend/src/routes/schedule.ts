@@ -1,9 +1,9 @@
 import * as express from 'express';
 import { verifyJWT } from '../controllers/jwt';
-import { addTodo } from '../controllers/todo';
+import { loadSchedules } from '../controllers/schedule';
 
 const router = express.Router();
 
-router.post('/', verifyJWT, addTodo);
+router.get('/', verifyJWT, loadSchedules);
 
 export default router;
