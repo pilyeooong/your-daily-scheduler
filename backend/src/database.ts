@@ -22,7 +22,7 @@ export default class Database {
       entities,
       type: 'mysql',
       host: process.env.DB_HOST,
-      port: +process.env.DB_PORT,
+      port: +process.env.DB_PORT!,
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_DATABASE,
@@ -33,7 +33,7 @@ export default class Database {
     return createConnection(ConnectionOptions);
   }
 
-  async getConnection(): Promise<Connection> {
+  async getConnection(): Promise<Connection>  {
     const CONNECTION_NAME = `default`;
     if (this.connectionManager.has(CONNECTION_NAME)) {
       const connection = this.connectionManager.get(CONNECTION_NAME);
