@@ -2,11 +2,46 @@ import * as express from 'express';
 import 'reflect-metadata';
 import apiRouter from './routes';
 import Database from './database';
+import * as dotenv from 'dotenv';
+import * as session from 'express-session';
+import * as cookieParser from 'cookie-parser';
+import * as morgan from 'morgan';
+import * as cors from 'cors';
+import * as helmet from 'helmet';
+import * as hpp from 'hpp';
+
+dotenv.config();
 
 const app = express();
 
 const database = new Database();
 database.getConnection();
+
+const prod = process.env.NODE_ENV === 'production';
+if (prod) {
+  app.use(
+    cors({
+      origin: true,
+      credentials: true,
+    })
+  );
+  app.use(morgan('combined'));
+  app.use(helmet());
+  app.use(hpp());
+} else {
+  app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
+  app.use(morgan('dev'));
+}
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser(process.env.COOKIE_SECRET));
+app.use(
+  session({
+    saveUninitialized: false,
+    resave: false,
+    secret: process.env.COOKIE_SECRET!,
+  })
+);
 
 app.use('/api', apiRouter);
 
