@@ -3,12 +3,9 @@ import { Entity, Column } from 'typeorm';
 
 @Entity()
 export default class User extends CoreEntity {
-  @Column()
-  id: number;
-
   @Column({ unique: true })
-  email: string;
+  email!: string;
 
   @Column()
-  password: string;
+  password!: string;
 }
