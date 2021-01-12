@@ -19,7 +19,6 @@ export default class Database {
 
   async connect() {
     const ConnectionOptions: ConnectionOptions = {
-      entities,
       type: 'mysql',
       host: process.env.DB_HOST,
       port: +process.env.DB_PORT!,
@@ -27,13 +26,13 @@ export default class Database {
       password: process.env.DB_PASSWORD,
       database: process.env.DB_DATABASE,
       synchronize: true,
-      logging: true,
+      logging: process.env.NODE_ENV === 'test' ? false : true,
+      entities,
     };
-
     return createConnection(ConnectionOptions);
   }
 
-  async getConnection(): Promise<Connection>  {
+  async getConnection(): Promise<Connection> {
     const CONNECTION_NAME = `default`;
     if (this.connectionManager.has(CONNECTION_NAME)) {
       const connection = this.connectionManager.get(CONNECTION_NAME);

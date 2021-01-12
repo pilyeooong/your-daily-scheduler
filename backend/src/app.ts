@@ -45,6 +45,4 @@ app.use(
 
 app.use('/api', apiRouter);
 
-app.listen(4000, () => {
-  console.log('server is running on port 4000');
-});
+export default app;
