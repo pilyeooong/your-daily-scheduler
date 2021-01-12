@@ -36,6 +36,9 @@ export const signUp = async (
   next: NextFunction
 ) => {
   const { email, password } = req.body;
+  if (!email || !password) {
+    return res.status(400).send('이메일 혹은 비밀번호가 누락되었습니다.');
+  }
   const userRepository = getRepository(User);
   const scheduleRepository = getRepository(Schedule);
   try {
@@ -69,7 +72,6 @@ export const login = async (
       return res.status(400).send('존재하지 않는 사용자입니다.');
     }
 
-    console.log(user);
     const isPasswordMatched = await user.checkPassword(password);
 
     if (!isPasswordMatched) {
