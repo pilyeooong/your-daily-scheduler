@@ -7,6 +7,9 @@ export default class Todo extends CoreEntity {
   @Column()
   content!: string;
 
+  @Column({ default: false })
+  completed!: boolean;
+
   @ManyToOne(() => Schedule, (schedule) => schedule.todos, {
     onDelete: 'CASCADE',
   })
