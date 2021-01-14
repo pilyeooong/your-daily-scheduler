@@ -6,8 +6,6 @@ import Schedule from '../entity/Schedule';
 import { signJWT } from './jwt';
 import { IDecoded } from '../interfaces';
 
-
-
 export const getMe = async (
   req: Request,
   res: Response,
@@ -35,13 +33,17 @@ export const signUp = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { email, password } = req.body;
-  if (!email || !password) {
-    return res.status(400).send('이메일 혹은 비밀번호가 누락되었습니다.');
-  }
-  const userRepository = getRepository(User);
-  const scheduleRepository = getRepository(Schedule);
   try {
+    const { email, password } = req.body;
+    if (!email || !password) {
+      return res.status(400).send('이메일 혹은 비밀번호가 누락되었습니다.');
+    }
+    const userRepository = getRepository(User);
+    const exUser = await userRepository.findOne({ email });
+    if (exUser) {
+      return res.status(400).send('해당 이메일로 가입 된 계정이 존재합니다.');
+    }
+    const scheduleRepository = getRepository(Schedule);
     const hashedPassword = await bcrypt.hash(password, 12);
     const user = await userRepository.create({
       email,
@@ -79,7 +81,7 @@ export const login = async (
     }
 
     const token = signJWT(user.id);
-    return res.status(200).json({ token });
+    return res.status(200).json({ token, user });
   } catch (err) {
     console.error(err);
     next(err);

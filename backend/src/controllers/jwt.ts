@@ -15,9 +15,10 @@ export const signJWT = (userId: number): string => {
 export const verifyJWT = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const token = req.headers?.authorization;
-    if (token) {
-      req.decoded = jwt.verify(token, process.env.JWT_SIGNATURE!) as IDecoded;
+    if (!token) {
+      return res.status(400).send('인증되지 않은 요청입니다.');
     }
+    req.decoded = jwt.verify(token, process.env.JWT_SIGNATURE!) as IDecoded;
     next();
   } catch (err) {
     if (err.name === 'TokenExpiredError') {
