@@ -44,7 +44,7 @@ describe('POST /', () => {
 
   it('비밀번호 누락시 400 에러 코드를 반환', async (done) => {
     const res = await request(app).post('/api/user/').send({
-      email: TEST_EMAIL
+      email: TEST_EMAIL,
     });
     expect(res.status).toEqual(400);
     done();
@@ -76,8 +76,8 @@ describe('GET /', () => {
     const res = await request(app).get('/api/user').set('Authorization', token);
     expect(res.status).toEqual(200);
     expect(res.body.email).toEqual(TEST_EMAIL);
-  })
-})
+  });
+});
 
 afterAll(async () => {
   const connection: Connection = getConnection();
