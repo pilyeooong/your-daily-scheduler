@@ -81,7 +81,7 @@ export const login = async (
     }
 
     const token = signJWT(user.id);
-    return res.status(200).json({ token, user });
+    return res.status(200).json({ token, user: { ...user, password: null } });
   } catch (err) {
     console.error(err);
     next(err);

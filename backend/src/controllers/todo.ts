@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { getRepository } from 'typeorm';
 import Schedule from '../entity/Schedule';
-import Todo from '../entity/Todo';
+import Todo, { appendTodoIndex } from '../entity/Todo';
 import User from '../entity/User';
 import { IDecoded } from '../interfaces';
 
@@ -24,7 +24,9 @@ export const addTodo = async (
     const newTodo = await todoRepository.create({ content, schedule });
     await todoRepository.save(newTodo);
 
-    return res.status(201).send(newTodo);
+    const newTodoWithIndex = await appendTodoIndex(schedule.id, newTodo.id);
+
+    return res.status(201).send(newTodoWithIndex);
   } catch (err) {
     console.error(err);
     next(err);
@@ -114,10 +116,10 @@ export const deleteTodo = async (
     });
     if (!todo) {
       return res.status(400).send('존재하지 않는 todo 입니다.');
-    };
+    }
 
     await todoRepository.delete(todo.id);
-    
+
     return res.status(200).send('삭제 완료');
   } catch (err) {
     console.error(err);
