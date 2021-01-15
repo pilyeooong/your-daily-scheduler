@@ -51,7 +51,7 @@ export const signUp = async (
     });
     await userRepository.save(user);
     await scheduleRepository.save(scheduleRepository.create({ user }));
-    return res.status(200).send(user);
+    return res.status(201).send(user);
   } catch (err) {
     console.error(err);
     next(err);

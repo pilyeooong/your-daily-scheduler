@@ -14,6 +14,10 @@ export const addTodo = async (
     const { content } = req.body;
     const { id } = req.decoded as IDecoded;
 
+    if (!content) {
+      return res.status(400).send('빈 내용은 추가 할 수 없습니다.');
+    }
+
     const user = await getRepository(User).findOne({ id });
     const schedule = await getRepository(Schedule).findOne({ user });
     if (!schedule) {
