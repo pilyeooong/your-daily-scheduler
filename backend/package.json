@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon",
-    "test": "jest ./src/controllers --watch --runInBand --detectOpenHandles",
+    "test": "jest ./src/test/unit --watch --runInBand --detectOpenHandles",
     "test-server": "NODE_ENV=test nodemon",
-    "test:e2e": "NODE_ENV=test jest --config ./src/test/jest-e2e.json --watch --runInBand --detectOpenHandles"
+    "test:e2e": "NODE_ENV=test jest --config ./src/test/e2e/jest-e2e.json --watch --runInBand --detectOpenHandles"
   },
   "keywords": [],
   "author": "",
