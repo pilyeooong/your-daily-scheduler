@@ -7,6 +7,9 @@ import {
   LOG_IN_FAILURE,
   LOG_IN_REQUEST,
   LOG_IN_SUCCESS,
+  LOG_OUT_FAILURE,
+  LOG_OUT_REQUEST,
+  LOG_OUT_SUCCESS,
   SIGN_UP_FAILURE,
   SIGN_UP_REQUEST,
   SIGN_UP_SUCCESS,
@@ -20,6 +23,9 @@ export interface IUserReducerState {
   loginLoading: boolean;
   loginDone: boolean;
   loginError: string | null | Error;
+  logoutLoading: boolean;
+  logoutDone: boolean;
+  logoutError: string | null | Error;
   signUpLoading: boolean;
   signUpDone: boolean;
   signUpError: string | null | Error;
@@ -34,6 +40,10 @@ const initialState: IUserReducerState = {
   loginLoading: false,
   loginDone: false,
   loginError: null,
+
+  logoutLoading: false,
+  logoutDone: false,
+  logoutError: null,
 
   signUpLoading: false,
   signUpDone: false,
@@ -86,6 +96,21 @@ const reducer = (state = initialState, action: UserAction) => {
         draft.loginLoading = false;
         draft.loginDone = false;
         draft.loginError = action.error;
+        break;
+      case LOG_OUT_REQUEST:
+        draft.logoutLoading = true;
+        draft.logoutDone = false;
+        draft.logoutError = null;
+        break;
+      case LOG_OUT_SUCCESS:
+        draft.logoutLoading = false;
+        draft.logoutDone = true;
+        draft.me = null;
+        break;
+      case LOG_OUT_FAILURE:
+        draft.logoutLoading = false;
+        draft.logoutDone = false;
+        draft.logoutError = action.error;
         break;
     }
   });

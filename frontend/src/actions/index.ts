@@ -5,6 +5,9 @@ import {
   LOG_IN_FAILURE,
   LOG_IN_REQUEST,
   LOG_IN_SUCCESS,
+  LOG_OUT_FAILURE,
+  LOG_OUT_REQUEST,
+  LOG_OUT_SUCCESS,
   SIGN_UP_FAILURE,
   SIGN_UP_REQUEST,
   SIGN_UP_SUCCESS,
@@ -44,18 +47,31 @@ export interface LoginFailureAction {
   error: string | null | Error;
 }
 
+export interface LogoutRequestAction {
+  type: typeof LOG_OUT_REQUEST;
+}
+
+export interface LogoutSuccessAction {
+  type: typeof LOG_OUT_SUCCESS;
+}
+
+export interface LogoutFailureAction {
+  type: typeof LOG_OUT_FAILURE;
+  error: string | null | Error;
+}
+
 export interface SignUpRequestAction {
-  type: typeof SIGN_UP_REQUEST,
-  data: IAuthForm
+  type: typeof SIGN_UP_REQUEST;
+  data: IAuthForm;
 }
 
 export interface SignUpSuccessAction {
-  type: typeof SIGN_UP_SUCCESS
+  type: typeof SIGN_UP_SUCCESS;
 }
 
 export interface SignUpFailureAction {
-  type: typeof SIGN_UP_FAILURE,
-  error: string | null | Error
+  type: typeof SIGN_UP_FAILURE;
+  error: string | null | Error;
 }
 
 export type UserAction =
@@ -65,9 +81,12 @@ export type UserAction =
   | LoginRequestAction
   | LoginSuccessAction
   | LoginFailureAction
+  | LogoutRequestAction
+  | LogoutSuccessAction
+  | LogoutFailureAction
   | SignUpSuccessAction
   | SignUpRequestAction
-  | SignUpFailureAction
+  | SignUpFailureAction;
 
 export const loadMyInfoRequest = (): LoadMyInfoRequestAction => {
   return {
@@ -83,17 +102,26 @@ export const loginRequestAction = (
     type: LOG_IN_REQUEST,
     data: {
       email,
-      password
-    }
+      password,
+    },
   };
 };
 
-export const signUpRequestAction = (email: string, password: string): SignUpRequestAction => {
+export const logoutRequestAction = (): LogoutRequestAction => {
+  return {
+    type: LOG_OUT_REQUEST,
+  };
+};
+
+export const signUpRequestAction = (
+  email: string,
+  password: string
+): SignUpRequestAction => {
   return {
     type: SIGN_UP_REQUEST,
     data: {
       email,
-      password
-    }
-  }
-}
+      password,
+    },
+  };
+};

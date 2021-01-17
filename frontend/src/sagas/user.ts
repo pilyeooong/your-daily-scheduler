@@ -10,8 +10,11 @@ import {
   SIGN_UP_REQUEST,
   SIGN_UP_SUCCESS,
   SIGN_UP_FAILURE,
+  LOG_OUT_SUCCESS,
+  LOG_OUT_FAILURE,
+  LOG_OUT_REQUEST,
 } from '../actions/types';
-import { IAuthForm, LoginRequestAction, SignUpRequestAction } from '../actions';
+import { IAuthForm, LoginRequestAction, LogoutRequestAction, SignUpRequestAction } from '../actions';
 
 function loadMyInfoAPI() {
   return axios.get('/user');
@@ -44,11 +47,11 @@ function loginAPI(data: IAuthForm) {
 function* login(action: LoginRequestAction) {
   try {
     const result = yield call(loginAPI, action.data);
+    localStorage.setItem('jwtToken', result.data.token);
     yield put({
       type: LOG_IN_SUCCESS,
       data: result.data.user,
     });
-    localStorage.setItem('jwtToken', result.data.token);
   } catch (err) {
     console.error(err);
     yield put({
@@ -60,6 +63,25 @@ function* login(action: LoginRequestAction) {
 
 function* watchLogin() {
   yield takeLatest(LOG_IN_REQUEST, login);
+}
+
+function* logout() {
+  try {
+    localStorage.removeItem('jwtToken');
+    yield put({
+      type: LOG_OUT_SUCCESS,
+    });
+  } catch (err) {
+    console.error(err);
+    yield put({
+      type: LOG_OUT_FAILURE,
+      error: '로그아웃 실패'
+    });
+  }
+}
+
+function* watchLogout() {
+  yield takeLatest(LOG_OUT_REQUEST, logout);
 }
 
 function signUpAPI(data: IAuthForm) {
@@ -86,5 +108,5 @@ function* watchSignUp() {
 }
 
 export default function* userSaga() {
-  yield all([fork(watchLoadMyInfo), fork(watchLogin), fork(watchSignUp)]);
+  yield all([fork(watchLoadMyInfo), fork(watchLogin), fork(watchSignUp), fork(watchLogout)]);
 }
