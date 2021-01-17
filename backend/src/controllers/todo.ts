@@ -5,13 +5,30 @@ import Todo, { appendTodoIndex } from '../entity/Todo';
 import User from '../entity/User';
 import { IDecoded } from '../interfaces';
 
+export const loadTodos = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { id: scheduleId } = req.params;
+
+    const todos = await getRepository(Todo).find({ where: { schedule: scheduleId }});
+
+    return res.status(200).send(todos);
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
+};
+
 export const addTodo = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    const { content } = req.body;
+    const { content, scheduleId } = req.body;
     const { id } = req.decoded as IDecoded;
 
     if (!content) {
@@ -20,8 +37,8 @@ export const addTodo = async (
 
     const user = await getRepository(User).findOne({ id });
     const schedule = await getRepository(Schedule).findOne({ user });
-    if (!schedule) {
-      return res.status(400).send('존재하지 않는 스케줄입니다.');
+    if (!schedule || scheduleId !== schedule.id) {
+      return res.status(400).send('스케줄이 존재하지 않습니다.');
     }
     const todoRepository = await getRepository(Todo);
 
