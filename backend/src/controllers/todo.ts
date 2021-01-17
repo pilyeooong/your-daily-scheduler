@@ -12,8 +12,18 @@ export const loadTodos = async (
 ) => {
   try {
     const { id: scheduleId } = req.params;
+    const { id: userId } = req.decoded as IDecoded;
 
-    const todos = await getRepository(Todo).find({ where: { schedule: scheduleId }});
+    const user = await getRepository(User).findOne({ id: userId });
+    const schedule = await getRepository(Schedule).findOne({ user });
+    if (!schedule) {
+      return res.status(400).send('스케줄이 존재하지 않습니다.');
+    }
+    if (+scheduleId !== schedule.id) {
+      return res.status(403).send('본인 스케줄에만 접근 가능합니다.');
+    }
+
+    const todos = await getRepository(Todo).find({ where: { schedule } });
 
     return res.status(200).send(todos);
   } catch (err) {
@@ -37,8 +47,11 @@ export const addTodo = async (
 
     const user = await getRepository(User).findOne({ id });
     const schedule = await getRepository(Schedule).findOne({ user });
-    if (!schedule || scheduleId !== schedule.id) {
+    if (!schedule) {
       return res.status(400).send('스케줄이 존재하지 않습니다.');
+    }
+    if (scheduleId !== schedule.id) {
+      return res.status(403).send('본인 스케줄에만 등록 가능합니다.');
     }
     const todoRepository = await getRepository(Todo);
 

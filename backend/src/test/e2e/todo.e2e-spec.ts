@@ -10,6 +10,7 @@ const TEST_EMAIL = 'test@test.com';
 const TEST_ANOTHER_EMAIL = 'testAnother@test.com';
 const TEST_PASSWORD = 'testPassword';
 const TEST_CONTENT = 'testContent';
+const TEST_SCHEDULE = 1;
 
 let token: string;
 let secondToken: string;
@@ -61,6 +62,23 @@ describe('토큰 발급', () => {
   });
 });
 
+describe('GET /', () => {
+  it('유효한 요청 시 200 응답코드와 scheduleId에 속한 todos를 반환', async (done) => {
+    const res = await agent.get(`/api/todos/${TEST_SCHEDULE}`);
+
+    expect(res.status).toEqual(200);
+    done();
+  });
+
+  it('본인 schedule이 아닌 schedule을 접근하려 할 시 403 에러코드와 에러 메시지를 반환', async (done) => {
+    const res = await agent.get(`/api/todos/${TEST_SCHEDULE + 1}`);
+
+    expect(res.status).toEqual(403);
+    expect(res.text).toEqual('본인 스케줄에만 접근 가능합니다.');
+    done();
+  });
+});
+
 describe('POST /', () => {
   it('req.body에 content가 비어있을 시 400 에러코드를 반환', async (done) => {
     const res = await agent.post('/api/todo');
@@ -72,8 +90,23 @@ describe('POST /', () => {
   it('유효한 요청일 시 schedule에 todo 추가 및 200 응답코드를 반환', async (done) => {
     const res = await agent.post('/api/todo').send({
       content: TEST_CONTENT,
+      scheduleId: TEST_SCHEDULE,
     });
     expect(res.status).toEqual(201);
+    done();
+  });
+
+  it('본인 schedule이 아닌 다른 곳에 todo 추가 요청 시 400 에러코드를 반환', async (done) => {
+    const res = await request(app)
+      .post('/api/todo')
+      .send({
+        content: TEST_CONTENT,
+        scheduleId: TEST_SCHEDULE + 1,
+      })
+      .set('Authorization', token);
+
+    expect(res.status).toEqual(403);
+    expect(res.text).toEqual('본인 스케줄에만 등록 가능합니다.');
     done();
   });
 });
