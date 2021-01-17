@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import Header from '../components/Header';
 import Home from '../pages/Home';
 const commonRoutes = [
   {
@@ -10,6 +11,7 @@ const commonRoutes = [
 const LoggedInRouter = () => {
   return (
     <Router>
+      <Header />
       <Switch>
         {commonRoutes.map((route) => (
           <Route key={route.path} exact path={route.path}>

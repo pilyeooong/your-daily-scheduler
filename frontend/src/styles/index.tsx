@@ -9,6 +9,11 @@ const GlobalStyle = createGlobalStyle`
   a {
     text-decoration: none;
   }
+
+  body {
+    background-color: #0177bb;
+    font-family: 'Roboto', sans-serif;
+  }
 `;
 
 export default GlobalStyle;

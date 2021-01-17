@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { loginRequestAction } from '../../actions';
+import Header from '../../components/Header';
 
 interface ILoginForm {
   email: string;

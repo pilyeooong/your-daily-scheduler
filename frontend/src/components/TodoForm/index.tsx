@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import axios from 'axios';
 import { useForm } from 'react-hook-form';
 
@@ -12,6 +12,7 @@ interface IProps {
 }
 
 const Form: React.FC<IProps> = ({ revalidate, scheduleId }) => {
+  const [formVisible, setFormVisible] = useState<boolean>(false);
   const { register, getValues, errors, handleSubmit, reset } = useForm<IForm>({
     mode: 'onChange',
   });
@@ -37,21 +38,30 @@ const Form: React.FC<IProps> = ({ revalidate, scheduleId }) => {
       });
   }, [getValues, revalidate, reset, scheduleId]);
 
+  const onClickAddForm = useCallback(() => {
+    setFormVisible(prev => !prev);
+  }, []);
+
   return (
     <div>
-      <form action="" onSubmit={handleSubmit(onSubmit)}>
-        <input
-          ref={register({
-            required: '내용을 입력해주세요',
-          })}
-          type="text"
-          name="content"
-          placeholder="내용을 입력해주세요"
-          required
-        />
-        {errors.content?.message && <span>{errors.content.message}</span>}
-        <button type="submit">입력</button>
-      </form>
+      {formVisible ? (
+        <form action="" onSubmit={handleSubmit(onSubmit)}>
+          <input
+            ref={register({
+              required: '내용을 입력해주세요',
+            })}
+            type="text"
+            name="content"
+            placeholder="내용을 입력해주세요"
+            required
+          />
+          {errors.content?.message && <span>{errors.content.message}</span>}
+          <button type="submit">입력</button>
+          <button onClick={onClickAddForm}>X</button>
+        </form>
+      ) : (
+        <span onClick={onClickAddForm}>+ 할 일을 추가하세요</span>
+      )}
     </div>
   );
 };

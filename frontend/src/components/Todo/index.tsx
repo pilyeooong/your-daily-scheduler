@@ -1,4 +1,5 @@
-import React from 'react'
+import React from 'react';
+import { TodoItem } from './styles';
 
 interface IProps {
   id: number;
@@ -7,9 +8,9 @@ interface IProps {
 
 const Todo: React.FC<IProps> = ({ id, content }) => {
   return (
-    <div>
+    <TodoItem>
       {content}
-    </div>
+    </TodoItem>
   )
 }
 
