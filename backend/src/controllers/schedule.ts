@@ -16,7 +16,12 @@ export const loadSchedules = async (
       if (!user) {
         return res.status(400).send('존재하지 않는 유저입니다.');
       }
-      const schedule = await getRepository(Schedule).findOne({ user });
+      const schedule = await getRepository(Schedule)
+        .createQueryBuilder('schedule')
+        .innerJoinAndSelect('schedule.todos', 'todo')
+        .where('schedule.userId = :userId', { userId: user.id })
+        .orderBy('todo.index', 'ASC')
+        .getOne();
       if (!schedule) {
         return res.status(400).send('존재하지 않는 스케줄 입니다.');
       }
