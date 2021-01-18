@@ -129,6 +129,10 @@ export const editTodo = async (
     const { todoId } = req.params;
     const { content } = req.body;
 
+    if (!content) {
+      return res.status(400).send('빈 내용으로 수정할 수 없습니다.'); 
+    }
+
     const user = await getRepository(User).findOne({ id: userId });
     const schedule = await getRepository(Schedule).findOne({ user });
     if (!schedule) {
