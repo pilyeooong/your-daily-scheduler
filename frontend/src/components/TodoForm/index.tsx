@@ -11,7 +11,7 @@ interface IProps {
   revalidate: () => Promise<boolean>;
 }
 
-const Form: React.FC<IProps> = ({ revalidate, scheduleId }) => {
+const Form: React.FC<IProps> = ({ scheduleId, revalidate }) => {
   const [formVisible, setFormVisible] = useState<boolean>(false);
   const { register, getValues, errors, handleSubmit, reset } = useForm<IForm>({
     mode: 'onChange',

@@ -1,27 +1,130 @@
-import React from 'react';
-import useSWR from 'swr';
+import React, { useState, useEffect, useCallback } from 'react';
+import axios from 'axios';
+import {
+  DragDropContext,
+  Droppable,
+  Draggable,
+  DroppableProvided,
+  DraggableProvided,
+  DropResult,
+} from 'react-beautiful-dnd';
 import { ITodo } from '../../typings/db';
-import fetcher from '../../utils/fetcher';
 import TodoForm from '../TodoForm';
 import Todo from '../Todo';
 import { ListContainer } from './styles';
 
 interface IProps {
   scheduleId: number;
+  revalidate: () => Promise<boolean>;
+  todos: ITodo[];
 }
 
-const TodoList: React.FC<IProps> = ({ scheduleId }) => {
+const TodoList: React.FC<IProps> = ({
+  todos: originalTodos,
+  scheduleId,
+  revalidate,
+}) => {
+  const [isSwitched, setIsSwitched] = useState<boolean>(false);
+  const [isSwitching, setIsSwitching] = useState<boolean>(false);
+  const [mutableTodos, setMutableTodos] = useState<ITodo[]>([]);
 
-  const { data: todoData, revalidate } = useSWR<ITodo[]>(`/todos/${scheduleId}`, fetcher);
-  
+  useEffect(() => {
+    if (originalTodos) {
+      setMutableTodos(originalTodos);
+    }
+  }, [originalTodos]);
+
+  const reorder = useCallback(
+    (list: ITodo[], startIndex: number, endIndex: number): ITodo[] => {
+      const result = [...list];
+      const [removed] = result.splice(startIndex, 1);
+      result.splice(endIndex, 0, removed);
+
+      return result;
+    },
+    []
+  );
+
+  const onDragEnd = useCallback(
+    (result: DropResult) => {
+      if (!result.destination) {
+        setIsSwitching(false);
+        return;
+      }
+
+      const items = reorder(
+        mutableTodos,
+        result.source.index,
+        result.destination.index
+      );
+
+      setIsSwitched(true);
+      setIsSwitching(false);
+      setMutableTodos(items);
+    },
+    [mutableTodos, reorder]
+  );
+
+  const onDragStart = useCallback(() => {
+    setIsSwitching(true);
+  }, []);
+
+  const onSwtichOrders = useCallback(async () => {
+    const switchedResult = mutableTodos.map((todo) => todo.index);
+    await axios.post(`/todos/orders`, { switchedResult });
+    setIsSwitched(false);
+  }, [mutableTodos]);
+
+  const onCloseSwitchButton = useCallback(() => {
+    revalidate();
+    setMutableTodos(originalTodos);
+    setIsSwitched(false);
+  }, [originalTodos, revalidate]);
+
   return (
-    <ListContainer>
-      <h2 className="title">TODO</h2>
-      {todoData?.map((todo) => (
-        <Todo key={todo.id} id={todo.id} content={todo.content} />
-      ))}
-      <TodoForm scheduleId={scheduleId} revalidate={revalidate} />
-    </ListContainer>
+    <DragDropContext onDragEnd={onDragEnd} onDragStart={onDragStart}>
+      <Droppable droppableId="todos">
+        {(provided: DroppableProvided) => (
+          <ListContainer
+            className="todos"
+            ref={provided.innerRef}
+            {...provided.droppableProps}
+          >
+            <h2 className="title">TODO</h2>
+            {mutableTodos ? (
+              mutableTodos.map((todo, index) => (
+                <Draggable
+                  key={todo.index}
+                  draggableId={`${todo.index}`}
+                  index={index}
+                >
+                  {(provided: DraggableProvided) => (
+                    <Todo
+                      key={todo.id}
+                      id={todo.id}
+                      content={todo.content}
+                      provided={provided}
+                    />
+                  )}
+                </Draggable>
+              ))
+            ) : (
+              <span>Loading</span>
+            )}
+            {isSwitched && (
+              <>
+                <span onClick={onSwtichOrders}>적용</span>
+                <span onClick={onCloseSwitchButton}>X</span>
+              </>
+            )}
+            {!isSwitched && !isSwitching && (
+              <TodoForm scheduleId={scheduleId} revalidate={revalidate} />
+            )}
+            {provided.placeholder}
+          </ListContainer>
+        )}
+      </Droppable>
+    </DragDropContext>
   );
 };
 
