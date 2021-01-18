@@ -63,18 +63,10 @@ describe('토큰 발급', () => {
 });
 
 describe('GET /', () => {
-  it('유효한 요청 시 200 응답코드와 scheduleId에 속한 todos를 반환', async (done) => {
-    const res = await agent.get(`/api/todos/${TEST_SCHEDULE}`);
+  it('유효한 요청 시 200 응답코드와 본인 schedule에 속한 todos를 반환', async (done) => {
+    const res = await agent.get(`/api/todos`);
 
     expect(res.status).toEqual(200);
-    done();
-  });
-
-  it('본인 schedule이 아닌 schedule을 접근하려 할 시 403 에러코드와 에러 메시지를 반환', async (done) => {
-    const res = await agent.get(`/api/todos/${TEST_SCHEDULE + 1}`);
-
-    expect(res.status).toEqual(403);
-    expect(res.text).toEqual('본인 스케줄에만 접근 가능합니다.');
     done();
   });
 });
