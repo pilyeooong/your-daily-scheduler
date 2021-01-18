@@ -11,7 +11,6 @@ export const loadTodos = async (
   next: NextFunction
 ) => {
   try {
-    const { id: scheduleId } = req.params;
     const { id: userId } = req.decoded as IDecoded;
 
     const user = await getRepository(User).findOne({ id: userId });
@@ -19,17 +18,40 @@ export const loadTodos = async (
     if (!schedule) {
       return res.status(400).send('스케줄이 존재하지 않습니다.');
     }
-    if (+scheduleId !== schedule.id) {
-      return res.status(403).send('본인 스케줄에만 접근 가능합니다.');
-    }
 
-    const todos = await getRepository(Todo).find({ where: { schedule } });
+    const todos = await getRepository(Todo).find({
+      where: { schedule },
+      order: { index: 'ASC' },
+    });
 
     return res.status(200).send(todos);
   } catch (err) {
     console.error(err);
     next(err);
   }
+};
+
+export const switchTodoOrders = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { switchedResult } = req.body;
+  const { id: userId } = req.decoded as IDecoded;
+
+  const schedule = await getRepository(Schedule).findOne({
+    where: { user: userId },
+  });
+  const todoRepository = await getRepository(Todo);
+  const todos = await todoRepository.find({
+    where: { schedule },
+    order: { index: 'ASC' },
+  });
+  todos.forEach((todo) => {
+    todo.index = switchedResult.findIndex((v: number) => v === todo.index) + 1;
+  });
+  await todoRepository.save(todos);
+  return res.status(200).send('수정 완료');
 };
 
 export const addTodo = async (
