@@ -1,10 +1,12 @@
 import React from 'react';
 import useSWR from 'swr';
 import Calendar from '../../components/Calendar';
+import Corona from '../../components/Corona';
 import TodoList from '../../components/TodoList';
+import Weather from '../../components/Weather';
 import { IEvent, ISchedule, ITodo } from '../../typings/db';
 import fetcher from '../../utils/fetcher';
-import { Container } from './styles';
+import { BottomContainer, BottomLeft, TopContainer } from './styles';
 
 const Home = () => {
   const { data: scheduleData } = useSWR<ISchedule>('/schedule', fetcher);
@@ -12,16 +14,24 @@ const Home = () => {
   const { data: eventsData } = useSWR<IEvent[]>('/events', fetcher);
 
   return (
-    <Container>
-      {scheduleData && todoData && (
-        <TodoList
-          scheduleId={scheduleData.id}
-          todos={todoData}
-          revalidate={revalidate}
-        />
-      )}
-      {eventsData && <Calendar events={eventsData}/>}
-    </Container>
+    <div>
+      <TopContainer>
+        {eventsData && <Calendar events={eventsData} />}
+        {scheduleData && todoData && (
+          <TodoList
+            scheduleId={scheduleData.id}
+            todos={todoData}
+            revalidate={revalidate}
+          />
+        )}
+      </TopContainer>
+      <BottomContainer>
+        <BottomLeft>
+          <Weather />
+          <Corona />
+        </BottomLeft>
+      </BottomContainer>
+    </div>
   );
 };
 

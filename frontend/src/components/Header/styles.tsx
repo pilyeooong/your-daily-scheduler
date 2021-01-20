@@ -6,7 +6,6 @@ export const Container = styled.header`
   align-items: center;
   background-color: #026aa7;
   margin: 0 auto;
-  margin-bottom: 1rem;
   padding: 0.5rem 1rem;
 
   & .logo {
@@ -27,5 +26,9 @@ export const Container = styled.header`
     padding: 0.5rem;
     border-radius: 3px;
     white-space: nowrap;
+  }
+
+  @media ${props => props.theme.tablet} {
+    margin-bottom: 1rem;
   }
 `;

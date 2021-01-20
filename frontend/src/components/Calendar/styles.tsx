@@ -8,11 +8,12 @@ export const Container = styled.div`
   @media ${props => props.theme.tablet} {
     width: 55%;
     margin-top: 0;
-    margin-right: 1rem;
   }
+  
   @media ${props => props.theme.desktop} {
     width: 85%;
     height: 60%;
+    /* margin-right: 1rem; */
     display: flex;
   }
 `;
@@ -28,10 +29,9 @@ export const Scheduler = styled.div`
   padding: 0 10px;
 
   @media ${props => props.theme.desktop} {
-    width: 50%;
+    width: 60%;
     margin: 0;
   }
-
 
   & .head {
     display: flex;
@@ -124,7 +124,7 @@ export const Scheduler = styled.div`
           content: '';
           display: block;
           width: 60%;
-          height: 3px;
+          height: 5px;
           bottom: 14%;
           background: #03fc7f;
           position: absolute;

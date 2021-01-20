@@ -19,7 +19,7 @@ const EventList: React.FC<IProps> = ({ date }) => {
   );
 
   const onToggleEventModal = useCallback(() => {
-    setIsEventFormVisible(prev => !prev);
+    setIsEventFormVisible((prev) => !prev);
   }, []);
 
   return (
@@ -33,11 +33,13 @@ const EventList: React.FC<IProps> = ({ date }) => {
         )}
       </div>
       <button onClick={onToggleEventModal}>+</button>
-      <EventForm
-        date={date}
-        isEventFormVisible={isEventFormVisible}
-        setIsEventFormVisible={setIsEventFormVisible}
-      />
+      {isEventFormVisible ? (
+        <EventForm
+          date={date}
+          isEventFormVisible={isEventFormVisible}
+          setIsEventFormVisible={setIsEventFormVisible}
+        />
+      ) : null}
     </EventListContainer>
   );
 };

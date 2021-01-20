@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import { MdChevronLeft, MdChevronRight } from 'react-icons/md';
 import { Container, Scheduler } from './styles';
 import moment, { Moment } from 'moment';
@@ -13,7 +13,7 @@ const Calendar: React.FC<IProps> = ({ events }) => {
   const [date, setDate] = useState<Moment>(moment());
 
   const onClickDay = useCallback(
-    (date) => () => {
+    (date: Moment) => () => {
       setDate(date);
     },
     []
@@ -79,10 +79,6 @@ const Calendar: React.FC<IProps> = ({ events }) => {
   const onClickNextMonth = useCallback(() => {
     const nextMonth = date.clone().add(1, 'month');
     setDate(nextMonth);
-  }, [date]);
-
-  useEffect(() => {
-    console.log(date.format('YYYY-MM-DD'));
   }, [date]);
 
   return (

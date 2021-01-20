@@ -3,7 +3,7 @@ const size = {
   mobileEnd: '757px',
   tablet: '758px',
   desktop: '1200px',
-  desktopLarge: '1900px',
+  desktopLarge: '1850px',
 }
 
 const theme = {

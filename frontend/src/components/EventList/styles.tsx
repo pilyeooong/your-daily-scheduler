@@ -2,9 +2,10 @@ import styled from 'styled-components';
 
 export const EventListContainer = styled.div`
 
-  background: #ebecf0;
+  /* background: #ebecf0; */
+  background: #fff;
   border-radius: 3%;
-  margin-top: 1rem;
+  margin-top: .5rem;
   padding: 1rem 1rem;
 
   & .header {
@@ -23,12 +24,11 @@ export const EventListContainer = styled.div`
   @media ${props => props.theme.desktop} {
     margin-top: 0;
     margin-left: 1rem;
-    width: 45%;
+    width: 40%;
   }
 
   @media ${props => props.theme.desktopLarge} {
     margin-top: 0;
     margin-left: 1rem;
-    width: 50%;
   }
 `;

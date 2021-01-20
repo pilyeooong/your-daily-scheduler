@@ -1,16 +1,11 @@
 import styled from 'styled-components';
 
-export const ListContainer = styled.div`
+export const Container = styled.div`
   min-width: 350px;
-  margin-top: 1rem;
-  padding: 1rem 1rem;
-  background-color: #ebecf0;
+  height: 30vh;
+  /* background: #ebecf0; */
+  background: #fff;
   border-radius: 3%;
-
-  & h2 {
-    font-weight: bold;
-    margin-bottom: .5rem;
-  }
 
   @media ${props => props.theme.tablet} {
     margin-left: 1.6rem; 
@@ -18,6 +13,7 @@ export const ListContainer = styled.div`
   }
 
   @media ${props => props.theme.desktop} {
-    width: 15%;
+    width: 40%;
+    margin-left: 1rem;
   }
 `;

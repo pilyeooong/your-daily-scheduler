@@ -8,6 +8,6 @@ export const TodoItem = styled.div`
   max-width: 325px;
   min-height: 20px;
   text-decoration: none;
-  padding: .5rem;
+  padding: .7rem;
   cursor: pointer;
 `;
