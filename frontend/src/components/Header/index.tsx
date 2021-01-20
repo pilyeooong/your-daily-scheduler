@@ -16,7 +16,7 @@ const Header = () => {
   return (
     <Container>
       <div className="logo">
-        <span className="header__link">TODOOOOOO</span>
+        <span className="header__link">DAILY SCHEDULER</span>
       </div>
       {me && (
         <div className="logout" onClick={onClickLogout}>

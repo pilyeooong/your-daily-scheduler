@@ -1,15 +1,18 @@
 import React from 'react';
 import useSWR from 'swr';
+import Calendar from '../../components/Calendar';
 import TodoList from '../../components/TodoList';
-import { ISchedule, ITodo } from '../../typings/db';
+import { IEvent, ISchedule, ITodo } from '../../typings/db';
 import fetcher from '../../utils/fetcher';
+import { Container } from './styles';
 
 const Home = () => {
   const { data: scheduleData } = useSWR<ISchedule>('/schedule', fetcher);
   const { data: todoData, revalidate } = useSWR<ITodo[]>(`/todos`, fetcher);
+  const { data: eventsData } = useSWR<IEvent[]>('/events', fetcher);
 
   return (
-    <div>
+    <Container>
       {scheduleData && todoData && (
         <TodoList
           scheduleId={scheduleData.id}
@@ -17,7 +20,8 @@ const Home = () => {
           revalidate={revalidate}
         />
       )}
-    </div>
+      {eventsData && <Calendar events={eventsData}/>}
+    </Container>
   );
 };
 

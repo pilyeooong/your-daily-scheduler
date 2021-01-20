@@ -1,7 +1,8 @@
 import styled from 'styled-components';
+
 export const ListContainer = styled.div`
-  max-width: 350px;
-  margin: 0 auto;
+  min-width: 350px;
+  /* margin: 0 auto; */
   padding: 1rem 1rem;
   background-color: #ebecf0;
   border-radius: 3px;
@@ -12,10 +13,12 @@ export const ListContainer = styled.div`
   }
 
   @media ${props => props.theme.tablet} {
-    width: 500px;
-    margin: 0;
-    margin-left: 2rem;
+    margin-left: 1.6rem; 
+    margin-right: 1.8rem;
   }
   @media ${props => props.theme.desktop} {
+    width: 15%;
+    margin-left: 5rem; 
+    margin-right: 3rem;
   }
 `;
