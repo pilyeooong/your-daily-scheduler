@@ -18,7 +18,7 @@ export const loadSchedules = async (
       }
       const schedule = await getRepository(Schedule)
         .createQueryBuilder('schedule')
-        .innerJoinAndSelect('schedule.todos', 'todo')
+        .leftJoinAndSelect('schedule.todos', 'todo')
         .where('schedule.userId = :userId', { userId: user.id })
         .orderBy('todo.index', 'ASC')
         .getOne();
