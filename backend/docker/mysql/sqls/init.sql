@@ -1,0 +1,4 @@
+DROP DATABASE IF EXISTS todo;
+
+CREATE DATABASE todo;
+USE todo;
