@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { getRepository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
-import User from '../entity/User';
+import User, { City } from '../entity/User';
 import Schedule from '../entity/Schedule';
 import { signJWT } from './jwt';
 import { IDecoded } from '../interfaces';
@@ -82,6 +82,47 @@ export const login = async (
 
     const token = signJWT(user.id);
     return res.status(200).json({ token, user: { ...user, password: null } });
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
+};
+
+export const editProfile = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { id: userId } = req.decoded as IDecoded;
+    const { password, city } = req.body;
+    let hashedPassword;
+    const user = await getRepository(User).findOne(
+      { id: userId },
+      { select: ['id', 'email', 'password', 'city'] }
+    );
+
+    if (!user) {
+      return res.status(400).send('존재하지 않는 사용자입니다.');
+    }
+
+    if (password) {
+      hashedPassword = await bcrypt.hash(password, 12);
+    }
+
+    if (!(city in City)) {
+      return res.status(400).send('등록 가능한 지역이 아닙니다.');
+    }
+
+    await getRepository(User).save([
+      {
+        id: userId,
+        ...(password && { password: hashedPassword }),
+        ...(city && { city }),
+      },
+    ]);
+
+    return res.status(200).send('수정 완료');
   } catch (err) {
     console.error(err);
     next(err);

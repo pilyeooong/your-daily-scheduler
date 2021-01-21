@@ -1,7 +1,12 @@
-import { Entity, Column, OneToOne, JoinColumn, RelationId } from 'typeorm';
+import { Entity, Column, OneToOne } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import CoreEntity from './Core';
 import Schedule from './Schedule';
+
+export enum City {
+  서울 = '서울',
+  제주 = '제주',
+}
 
 @Entity()
 export default class User extends CoreEntity {
@@ -13,6 +18,9 @@ export default class User extends CoreEntity {
 
   @OneToOne(() => Schedule)
   schedule!: Schedule;
+
+  @Column({ type: 'enum', enum: City, nullable: true })
+  city!: City;
 
   async checkPassword(passwordInput: string): Promise<boolean> {
     try {
