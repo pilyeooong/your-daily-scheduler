@@ -14,7 +14,7 @@ import {
   LOG_OUT_FAILURE,
   LOG_OUT_REQUEST,
 } from '../actions/types';
-import { IAuthForm, LoginRequestAction, LogoutRequestAction, SignUpRequestAction } from '../actions';
+import { IAuthForm, LoginRequestAction, SignUpRequestAction } from '../actions';
 
 function loadMyInfoAPI() {
   return axios.get('/user');
@@ -75,7 +75,7 @@ function* logout() {
     console.error(err);
     yield put({
       type: LOG_OUT_FAILURE,
-      error: '로그아웃 실패'
+      error: '로그아웃 실패',
     });
   }
 }
@@ -108,5 +108,10 @@ function* watchSignUp() {
 }
 
 export default function* userSaga() {
-  yield all([fork(watchLoadMyInfo), fork(watchLogin), fork(watchSignUp), fork(watchLogout)]);
+  yield all([
+    fork(watchLoadMyInfo),
+    fork(watchLogin),
+    fork(watchSignUp),
+    fork(watchLogout),
+  ]);
 }

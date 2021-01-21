@@ -1,3 +1,5 @@
+import { IEvent } from '../typings/db';
+import { IEventForm } from '../components/EventForm';
 import {
   LOAD_MY_INFO_FAILURE,
   LOAD_MY_INFO_REQUEST,
@@ -11,6 +13,12 @@ import {
   SIGN_UP_FAILURE,
   SIGN_UP_REQUEST,
   SIGN_UP_SUCCESS,
+  LOAD_EVENTS_FAILURE,
+  LOAD_EVENTS_SUCCESS,
+  LOAD_EVENTS_REQUEST,
+  ADD_EVENT_REQUEST,
+  ADD_EVENT_SUCCESS,
+  ADD_EVENT_FAILURE,
 } from './types';
 
 export interface LoadMyInfoRequestAction {
@@ -125,3 +133,58 @@ export const signUpRequestAction = (
     },
   };
 };
+
+export interface LoadEventsRequestAction {
+  type: typeof LOAD_EVENTS_REQUEST;
+}
+
+export interface LoadEventsSuccessAction {
+  type: typeof LOAD_EVENTS_SUCCESS;
+  data: IEvent[]
+}
+
+export interface LoadEventsFailureAction {
+  type: typeof LOAD_EVENTS_FAILURE;
+  error: string | null | Error;
+}
+
+export interface IAddEvent {
+  content: string;
+  date: string;
+}
+
+export interface AddEventRequestAction {
+  type: typeof ADD_EVENT_REQUEST;
+  data: IAddEvent
+}
+
+export interface AddEventSuccessAction {
+  type: typeof ADD_EVENT_SUCCESS;
+  data: IEvent
+}
+
+export interface AddEventFailureAction {
+  type: typeof ADD_EVENT_FAILURE;
+  error: string | null | Error;
+}
+
+export type EventAction =
+  | LoadEventsRequestAction
+  | LoadEventsSuccessAction
+  | LoadEventsFailureAction
+  | AddEventRequestAction
+  | AddEventSuccessAction
+  | AddEventFailureAction;
+
+export const loadEventsAction = (): LoadEventsRequestAction => {
+  return {
+    type: LOAD_EVENTS_REQUEST,
+  };
+}
+
+export const addEventAction = (data: IAddEvent): AddEventRequestAction => {
+  return {
+    type: ADD_EVENT_REQUEST,
+    data
+  }
+}

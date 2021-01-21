@@ -1,5 +1,7 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import useSWR from 'swr';
+import { RootState } from '../../reducers';
 import { IEvent } from '../../typings/db';
 import fetcher from '../../utils/fetcher';
 import Event from '../Event';
@@ -12,11 +14,16 @@ interface IProps {
 
 const EventList: React.FC<IProps> = ({ date }) => {
   const [isEventFormVisible, setIsEventFormVisible] = useState<boolean>(false);
+  const everyEvents = useSelector((state: RootState) => state.event.events);
 
   const { data: events, revalidate } = useSWR<IEvent[]>(
     `/event/?date=${date}`,
     fetcher
   );
+
+  useEffect(() => {
+    revalidate();
+  }, [everyEvents, revalidate]);
 
   const onToggleEventModal = useCallback(() => {
     setIsEventFormVisible((prev) => !prev);
@@ -38,6 +45,7 @@ const EventList: React.FC<IProps> = ({ date }) => {
           date={date}
           isEventFormVisible={isEventFormVisible}
           setIsEventFormVisible={setIsEventFormVisible}
+          onToggleEventModal={onToggleEventModal}
         />
       ) : null}
     </EventListContainer>

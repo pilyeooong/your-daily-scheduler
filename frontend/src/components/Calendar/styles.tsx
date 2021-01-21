@@ -124,7 +124,7 @@ export const Scheduler = styled.div`
           content: '';
           display: block;
           width: 60%;
-          height: 5px;
+          height: 3px;
           bottom: 14%;
           background: #03fc7f;
           position: absolute;
