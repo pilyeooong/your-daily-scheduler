@@ -6,6 +6,7 @@ import { IEvent } from '../../typings/db';
 import fetcher from '../../utils/fetcher';
 import Event from '../Event';
 import EventForm from '../EventForm';
+import Loading from '../Loading';
 import { EventListContainer } from './styles';
 
 interface IProps {
@@ -33,13 +34,14 @@ const EventList: React.FC<IProps> = ({ date }) => {
     <EventListContainer>
       <div className="header">{date}</div>
       <div className="content">
+        {!events && <Loading />}
         {events?.length === 0 ? (
           <span>기록 된 일정이 없습니다.</span>
         ) : (
           events?.map((event) => <Event event={event} />)
         )}
       </div>
-      <button onClick={onToggleEventModal}>+</button>
+      <div className="add-event" onClick={onToggleEventModal}>+</div>
       {isEventFormVisible ? (
         <EventForm
           date={date}

@@ -1,5 +1,13 @@
 import styled from 'styled-components';
 
+export const LoadingContainer = styled.div`
+  width: 100%;
+  height: 90vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
 export const TopContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -63,5 +71,21 @@ export const BottomLeft = styled.div`
 
   @media ${(props) => props.theme.desktop} {
     width: 75%;
+  }
+
+  @media(min-width: 1200px) and (max-width: 1299px) {
+    padding-right: 8%;
+  }
+
+  @media(min-width: 1300px) and (max-width: 1399px) {
+    padding-right: 6%;
+  }
+
+  @media(min-width: 1400px) and (max-width: 1499px) {
+    padding-right: 2%;
+  }
+
+  @media(min-width: 1500px) and (max-width: 1599px) {
+    padding-right: 1%;
   }
 `;

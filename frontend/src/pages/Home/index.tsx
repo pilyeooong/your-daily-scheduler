@@ -9,7 +9,8 @@ import TodoList from '../../components/TodoList';
 import Weather from '../../components/Weather';
 import { ISchedule, ITodo } from '../../typings/db';
 import fetcher from '../../utils/fetcher';
-import { BottomContainer, BottomLeft, TopContainer } from './styles';
+import { BottomContainer, BottomLeft, LoadingContainer, TopContainer } from './styles';
+import Loading from '../../components/Loading';
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -24,17 +25,23 @@ const Home = () => {
     }
   }, [dispatch, me]);
 
+  if (!scheduleData || !todoData) {
+    return (
+      <LoadingContainer>
+        <Loading />
+      </LoadingContainer>
+    );
+  }
+
   return (
     <div>
       <TopContainer>
         <Calendar events={eventsData} />
-        {scheduleData && todoData && (
-          <TodoList
-            scheduleId={scheduleData.id}
-            todos={todoData}
-            revalidate={revalidate}
-          />
-        )}
+        <TodoList
+          scheduleId={scheduleData.id}
+          todos={todoData}
+          revalidate={revalidate}
+        />
       </TopContainer>
       <BottomContainer>
         <BottomLeft>

@@ -1,3 +1,5 @@
 import styled from 'styled-components';
 
-export const EventItem = styled.div``;
+export const EventItem = styled.div`
+  margin-bottom: .5rem;
+`;
