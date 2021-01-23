@@ -10,6 +10,9 @@ import * as cors from 'cors';
 import * as helmet from 'helmet';
 import * as hpp from 'hpp';
 
+import cron = require('node-cron');
+import { getCoronaData } from './crawling/covid';
+
 dotenv.config();
 
 const app = express();
@@ -44,5 +47,14 @@ app.use(
 );
 
 app.use('/api', apiRouter);
+
+cron.schedule(
+  '*/1 * * * *',
+  async () => {
+    console.log('코로나 확진자 수 정보를 업데이트 합니다.');
+    await getCoronaData();
+  },
+  { timezone: 'Asia/Seoul' }
+);
 
 export default app;
