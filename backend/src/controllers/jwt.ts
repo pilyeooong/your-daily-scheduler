@@ -7,7 +7,7 @@ dotenv.config();
 
 export const signJWT = (userId: number): string => {
   return jwt.sign({ id: userId }, process.env.JWT_SIGNATURE!, {
-    expiresIn: '30m',
+    expiresIn: '3h',
     issuer: 'todo',
   });
 };

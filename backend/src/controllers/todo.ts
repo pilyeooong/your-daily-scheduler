@@ -36,22 +36,28 @@ export const switchTodoOrders = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { switchedResult } = req.body;
-  const { id: userId } = req.decoded as IDecoded;
+  try {
+    const { switchedResult } = req.body;
+    const { id: userId } = req.decoded as IDecoded;
 
-  const schedule = await getRepository(Schedule).findOne({
-    where: { user: userId },
-  });
-  const todoRepository = await getRepository(Todo);
-  const todos = await todoRepository.find({
-    where: { schedule },
-    order: { index: 'ASC' },
-  });
-  todos.forEach((todo) => {
-    todo.index = switchedResult.findIndex((v: number) => v === todo.index) + 1;
-  });
-  await todoRepository.save(todos);
-  return res.status(200).send('수정 완료');
+    const schedule = await getRepository(Schedule).findOne({
+      where: { user: userId },
+    });
+    const todoRepository = await getRepository(Todo);
+    const todos = await todoRepository.find({
+      where: { schedule },
+      order: { index: 'ASC' },
+    });
+    todos.forEach((todo) => {
+      todo.index =
+        switchedResult.findIndex((v: number) => v === todo.index) + 1;
+    });
+    await todoRepository.save(todos);
+    return res.status(200).send('수정 완료');
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
 };
 
 export const addTodo = async (
@@ -130,7 +136,7 @@ export const editTodo = async (
     const { content } = req.body;
 
     if (!content) {
-      return res.status(400).send('빈 내용으로 수정할 수 없습니다.'); 
+      return res.status(400).send('빈 내용으로 수정할 수 없습니다.');
     }
 
     const user = await getRepository(User).findOne({ id: userId });

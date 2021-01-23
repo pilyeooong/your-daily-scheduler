@@ -4,7 +4,6 @@ import Schedule from './Schedule';
 
 @Entity()
 export default class Event extends CoreEntity {
-
   @Column()
   date!: string;
 
