@@ -13,7 +13,7 @@ export const Container = styled.header`
     height: 100%;
   }
 
-  & .logout {
+  & .profile {
     margin-left: auto;
   }
 

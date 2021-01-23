@@ -19,11 +19,14 @@ const Header = () => {
         <span className="header__link">DAILY SCHEDULER</span>
       </div>
       {me && (
-        <div className="logout" onClick={onClickLogout}>
-          <span className="header__link">
-            로그아웃
-          </span>
-        </div>
+        <>
+          <div className="profile" onClick={onClickLogout}>
+            <span className="header__link">프로필</span>
+          </div>
+          <div className="logout" onClick={onClickLogout}>
+            <span className="header__link">로그아웃</span>
+          </div>
+        </>
       )}
     </Container>
   );
