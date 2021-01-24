@@ -6,6 +6,7 @@ import scheduleRouter from './schedule';
 import eventRouter from './event';
 import eventsRouter from './events';
 import weatherRouter from './weather';
+import covidRouter from './covid';
 
 const router = express.Router();
 
@@ -16,5 +17,6 @@ router.use('/todos', todosRouter);
 router.use('/event', eventRouter);
 router.use('/events', eventsRouter);
 router.use('/weather', weatherRouter);
+router.use('/covid', covidRouter);
 
 export default router;

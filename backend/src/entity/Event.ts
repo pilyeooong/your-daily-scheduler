@@ -4,12 +4,15 @@ import Schedule from './Schedule';
 
 @Entity()
 export default class Event extends CoreEntity {
-  @Column()
+  @Column({ type: 'varchar', length: 64 })
   date!: string;
 
-  @Column()
+  @Column({ type: 'varchar', length: 255 })
   content!: string;
 
-  @ManyToOne(() => Schedule, (schedule) => schedule.events, { nullable: false })
+  @ManyToOne(() => Schedule, (schedule) => schedule.events, {
+    nullable: false,
+    onDelete: 'CASCADE',
+  })
   schedule!: Schedule;
 }

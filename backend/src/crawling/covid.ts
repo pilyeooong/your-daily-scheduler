@@ -13,6 +13,7 @@ export const getCoronaData = async () => {
     const result = await axios.get(url);
     if (!result) {
       console.log('조회 실패');
+      return;
     }
 
     const $ = cheerio.load(result.data);
@@ -49,8 +50,6 @@ export const getCoronaData = async () => {
 
     const covidRepository = getRepository(Covid);
 
-    console.log(covidStatus);
-
     covidStatus.forEach(async (status) => {
       const exist = await covidRepository.findOne({
         where: { city: status.city },
@@ -76,5 +75,6 @@ export const getCoronaData = async () => {
     });
   } catch (err) {
     console.error(err);
+    return;
   }
 };

@@ -6,15 +6,13 @@ import Event from './Event';
 
 @Entity()
 export default class Schedule extends CoreEntity {
-
-  @OneToMany(() => Todo, todo => todo.schedule, { eager: true })
+  @OneToMany(() => Todo, (todo) => todo.schedule, { eager: true })
   todos?: Todo[];
 
   @OneToMany(() => Event, (event) => event.schedule)
   events?: Event[];
 
-  @OneToOne(() => User, user => user.schedule, { onDelete: 'CASCADE' })
+  @OneToOne(() => User, (user) => user.schedule, { onDelete: 'CASCADE' })
   @JoinColumn()
   user!: User;
-
 }
