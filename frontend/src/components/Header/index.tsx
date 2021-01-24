@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { logoutRequestAction } from '../../actions';
 import { RootState } from '../../reducers';
 
@@ -20,8 +21,8 @@ const Header = () => {
       </div>
       {me && (
         <>
-          <div className="profile" onClick={onClickLogout}>
-            <span className="header__link">프로필</span>
+          <div className="profile">
+            <Link to='/proifle' className="header__link">프로필</Link>
           </div>
           <div className="logout" onClick={onClickLogout}>
             <span className="header__link">로그아웃</span>

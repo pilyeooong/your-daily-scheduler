@@ -11,14 +11,16 @@ export const Container = styled.div`
     height: 10%;
     font-size: 1.5rem;
     font-weight: bold;
+    letter-spacing: 4px;
     color: #174069;
     text-align: center;
-    padding-top: 1.8rem;
+    padding-top: 1.5rem;
   }
 
   & .country-status {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    justify-content: space-around;
     align-items: center;
     height: 45%;
     padding-top: 3rem;
@@ -26,6 +28,7 @@ export const Container = styled.div`
     & .country {
       font-size: 1.5rem;
       font-weight: bold;
+      letter-spacing: 1px;
       margin-right: 0.5rem;
     }
 
@@ -35,7 +38,7 @@ export const Container = styled.div`
       font-weight: bold;
 
       & .increased-cases {
-        margin-left: 3px;
+        margin-left: 8px;
         font-weight: 500;
       }
     }
@@ -72,7 +75,9 @@ export const Container = styled.div`
 
     & .city-container {
       width: 100%;
+      height: 100%;
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
       padding-bottom: 2rem;
@@ -80,16 +85,18 @@ export const Container = styled.div`
       & .city {
         font-size: 1.5rem;
         font-weight: bold;
-        margin-right: 1.6rem;
+        letter-spacing: 1px;
+        margin-right: 1rem;
       }
 
       & .total-cases {
         color: #e52c0c;
         font-size: 1.2rem;
         font-weight: bold;
+        margin-top: 1rem;
 
         & .increased-cases {
-          margin-left: 3px;
+          margin-left: 8px;
           font-weight: 500;
         }
       }

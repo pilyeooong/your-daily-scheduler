@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import useSWR from 'swr';
 import { RootState } from '../../reducers';
 import { IEvent } from '../../typings/db';
+import { holidays } from '../../utils/constants';
 import fetcher from '../../utils/fetcher';
 import Event from '../Event';
 import EventForm from '../EventForm';
@@ -32,7 +33,9 @@ const EventList: React.FC<IProps> = ({ date }) => {
 
   return (
     <EventListContainer>
-      <div className="header">{date}</div>
+      <div className="header">
+        {date}
+      </div>
       <div className="content">
         {!events && <Loading />}
         {events?.length === 0 ? (
@@ -41,7 +44,9 @@ const EventList: React.FC<IProps> = ({ date }) => {
           events?.map((event) => <Event event={event} />)
         )}
       </div>
-      <div className="add-event" onClick={onToggleEventModal}>+</div>
+      <div className="add-event" onClick={onToggleEventModal}>
+        +
+      </div>
       {isEventFormVisible ? (
         <EventForm
           date={date}

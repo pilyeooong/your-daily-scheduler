@@ -14,7 +14,6 @@ export interface ICovidStatus {
 const Corona = () => {
   const { data: covidData } = useSWR<ICovidStatus>('/covid', fetcher);
 
-  console.log(covidData);
   return (
     <Container>
       {!covidData ? (
@@ -25,7 +24,7 @@ const Corona = () => {
           <div className="country-status">
             <div className="country">전국 확진자 수</div>
             <div className="total-cases">
-              {covidData.wholeCountryStatus.totalCases}
+              {covidData.wholeCountryStatus.totalCases}명
               <span className="increased-cases">
                 {covidData.wholeCountryStatus.increasedCases}
               </span>
@@ -43,7 +42,7 @@ const Corona = () => {
               <div className="city-container">
                 <div className="city">{covidData.cityStatus.city}</div>
                 <div className="total-cases">
-                  {covidData.cityStatus.totalCases}
+                  {covidData.cityStatus.totalCases}명
                   <span className="increased-cases">
                     {covidData.cityStatus.increasedCases}
                   </span>

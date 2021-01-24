@@ -4,6 +4,7 @@ import { Container, Scheduler } from './styles';
 import moment, { Moment } from 'moment';
 import EventList from '../EventList';
 import { IEvent } from '../../typings/db';
+import { holidays } from '../../utils/constants';
 
 interface IProps {
   events: IEvent[];
@@ -34,9 +35,11 @@ const Calendar: React.FC<IProps> = ({ events }) => {
             .map((n, i) => {
               let current = date
                 .clone()
+                .startOf('year')
                 .week(week)
                 .startOf('week')
                 .add(n + i, 'day');
+
               let isSelected =
                 date.format('YYYYMMDD') === current.format('YYYYMMDD')
                   ? 'selected'
@@ -46,14 +49,21 @@ const Calendar: React.FC<IProps> = ({ events }) => {
               let isEventExists = events?.find(
                 (v) => v.date === current.format('YYYY-MM-DD')
               );
+              let isHoliday = holidays.find(
+                (v) => v.date === current.format('YYYY-MM-DD')
+              );
               return (
                 <div
-                  className={`box  ${isSelected} ${isGrayed}`}
+                  className={`box  ${isSelected} ${isGrayed} 
+                    ${!isGrayed && isHoliday ? 'red' : ''}
+                  `}
                   key={i}
                   onClick={onClickDay(current)}
                 >
                   {isEventExists ? (
-                    <span className="text underline">{current.format('D')}</span>
+                    <span className="text underline">
+                      {current.format('D')}
+                    </span>
                   ) : (
                     <span className="text">{current.format('D')}</span>
                   )}

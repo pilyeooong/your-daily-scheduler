@@ -96,6 +96,9 @@ export const Scheduler = styled.div`
         &.grayed {
           color: gray;
         }
+        &.red {
+          color: red;
+        }
         &:hover {
           span.text {
             background-color: rgba(#588dff, 0.1);
