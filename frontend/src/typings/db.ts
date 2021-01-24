@@ -21,3 +21,13 @@ export interface IEvent {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface ICovid {
+  id: number;
+  date: string;
+  city: string;
+  increasedCases: string;
+  totalCases: string;
+  createdAt: string;
+  updatedAt: string;
+}
