@@ -4,7 +4,7 @@ import useSWR from 'swr';
 import { loadEventsAction } from '../../actions';
 import { RootState } from '../../reducers';
 import Calendar from '../../components/Calendar';
-import Corona from '../../components/Corona';
+import Covid from '../../components/Covid';
 import TodoList from '../../components/TodoList';
 import Weather from '../../components/Weather';
 import { ISchedule, ITodo } from '../../typings/db';
@@ -46,7 +46,7 @@ const Home = () => {
       <BottomContainer>
         <BottomLeft>
           <Weather />
-          <Corona />
+          <Covid />
         </BottomLeft>
       </BottomContainer>
     </div>

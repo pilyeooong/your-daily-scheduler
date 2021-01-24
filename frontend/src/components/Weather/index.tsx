@@ -22,7 +22,6 @@ interface IWeather {
 
 const Weather = () => {
   const { data: weatherData } = useSWR<IWeather>('/weather', fetcher);
-  console.log(weatherData);
 
   return (
     <WeatherContainer>

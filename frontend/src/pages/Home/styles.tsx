@@ -38,7 +38,8 @@ export const BottomContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-top: 2rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
   padding-left: 3rem;
   padding-right: 3rem;
 
@@ -47,6 +48,7 @@ export const BottomContainer = styled.div`
     align-items: flex-start;
     justify-content: flex-start;
     margin-top: 1rem;
+    margin-bottom: 0;
   }
 
   @media ${(props) => props.theme.desktopLarge} {
