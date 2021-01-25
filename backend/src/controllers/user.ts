@@ -4,7 +4,8 @@ import * as bcrypt from 'bcrypt';
 import User, { City } from '../entity/User';
 import Schedule from '../entity/Schedule';
 import { signJWT } from './jwt';
-import { IDecoded } from '../interfaces';
+import { IDecoded, IKakaoInfo, IKakaoLoginResult } from '../interfaces';
+import axios, { AxiosResponse } from 'axios';
 
 export const getMe = async (
   req: Request,
@@ -122,7 +123,60 @@ export const editProfile = async (
       },
     ]);
 
-    return res.status(200).send('수정 완료');
+    const updatedUser = await getRepository(User).findOne({ id: userId });
+
+    return res.status(200).send(updatedUser);
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
+};
+
+export const kakaoLogin = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { response, profile }: IKakaoLoginResult = req.body;
+
+    const kakao: AxiosResponse<IKakaoInfo> = await axios.post(
+      'https://kapi.kakao.com/v2/user/me',
+      {},
+      { headers: { Authorization: `Bearer ${response.access_token}` } }
+    );
+
+    if (kakao.data.kakao_account.email === profile.kakao_account.email) {
+      const userRepository = getRepository(User);
+
+      const exUser = await userRepository.findOne({
+        where: { email: profile.kakao_account.email },
+      });
+
+      if (!exUser) {
+        const newUser = await userRepository.create({
+          email: profile.kakao_account.email,
+          password: 'password',
+        });
+        await userRepository.save(newUser);
+        const scheduleRepository = getRepository(Schedule);
+        await scheduleRepository.save(
+          scheduleRepository.create({ user: newUser })
+        );
+
+        const token = signJWT(newUser.id);
+        return res
+          .status(200)
+          .json({ token, user: { ...newUser, password: null } });
+      }
+
+      const token = signJWT(exUser.id);
+
+      return res
+        .status(200)
+        .json({ token, user: { ...exUser, password: null } });
+    }
+    return res.status(400).send('올바른 토큰이 아닙니다.');
   } catch (err) {
     console.error(err);
     next(err);
