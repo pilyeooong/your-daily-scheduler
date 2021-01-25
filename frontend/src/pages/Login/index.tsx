@@ -2,7 +2,8 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { loginRequestAction } from '../../actions';
+import KakaoLogin from 'react-kakao-login';
+import { kakaoLoginRequestAction, loginRequestAction } from '../../actions';
 import { RootState } from '../../reducers';
 import Loading from '../../components/Loading';
 import { LoginContainer } from './styles';
@@ -25,6 +26,10 @@ const Login: React.FC = () => {
   const onSubmit = () => {
     const { email, password } = getValues();
     dispatch(loginRequestAction(email, password));
+  };
+
+  const onSuccessKakaoLogin = async (result: Object) => {
+    dispatch(kakaoLoginRequestAction(result));
   };
 
   return (
@@ -67,6 +72,13 @@ const Login: React.FC = () => {
           <span>
             계정이 없으신가요 ? <Link to="/signup">회원가입</Link>
           </span>
+          <KakaoLogin
+            token={process.env.REACT_APP_KAKAO_ID!}
+            onSuccess={(res) => onSuccessKakaoLogin(res)}
+            onFail={console.log}
+          >
+            카카오톡 로그인
+          </KakaoLogin>
         </>
       )}
     </LoginContainer>

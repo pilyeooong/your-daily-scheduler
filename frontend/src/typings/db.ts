@@ -1,3 +1,10 @@
+export interface IUser {
+  email: string;
+  city: string;
+  password: null;
+  createdAt: string;
+  updatedAt: string;
+}
 export interface ISchedule {
   id: number;
   createdAt: string;

@@ -1,5 +1,4 @@
-import { IEvent } from '../typings/db';
-import { IEventForm } from '../components/EventForm';
+import { IEvent, IUser } from '../typings/db';
 import {
   LOAD_MY_INFO_FAILURE,
   LOAD_MY_INFO_REQUEST,
@@ -7,6 +6,9 @@ import {
   LOG_IN_FAILURE,
   LOG_IN_REQUEST,
   LOG_IN_SUCCESS,
+  KAKAO_LOGIN_FAILURE,
+  KAKAO_LOGIN_REQUEST,
+  KAKAO_LOGIN_SUCCESS,
   LOG_OUT_FAILURE,
   LOG_OUT_REQUEST,
   LOG_OUT_SUCCESS,
@@ -16,6 +18,9 @@ import {
   LOAD_EVENTS_FAILURE,
   LOAD_EVENTS_SUCCESS,
   LOAD_EVENTS_REQUEST,
+  UPDATE_PROFILE_FAILURE,
+  UPDATE_PROFILE_SUCCESS,
+  UPDATE_PROFILE_REQUEST,
   ADD_EVENT_REQUEST,
   ADD_EVENT_SUCCESS,
   ADD_EVENT_FAILURE,
@@ -27,7 +32,7 @@ export interface LoadMyInfoRequestAction {
 
 export interface LoadMyInfoSuccessAction {
   type: typeof LOAD_MY_INFO_SUCCESS;
-  data: Object;
+  data: IUser;
 }
 
 export interface LoadMyInfoFailureAction {
@@ -47,7 +52,7 @@ export interface LoginRequestAction {
 
 export interface LoginSuccessAction {
   type: typeof LOG_IN_SUCCESS;
-  data: Object;
+  data: IUser;
 }
 
 export interface LoginFailureAction {
@@ -82,6 +87,42 @@ export interface SignUpFailureAction {
   error: string | null | Error;
 }
 
+export interface KakaoLoginRequestAction {
+  type: typeof KAKAO_LOGIN_REQUEST;
+  data: Object;
+}
+
+export interface KakaoLoginSuccessAction {
+  type: typeof KAKAO_LOGIN_SUCCESS;
+  data: IUser;
+}
+
+export interface KakaoLoginFailureAction {
+  type: typeof KAKAO_LOGIN_FAILURE;
+  error: string | null | Error;
+}
+
+export interface IUpdateProfile {
+  email: string;
+  password?: string;
+  city: string;
+}
+
+export interface UpdateProfileRequestAction {
+  type: typeof UPDATE_PROFILE_REQUEST;
+  data: IUpdateProfile;
+}
+
+export interface UpdateProfileSuccessAction {
+  type: typeof UPDATE_PROFILE_SUCCESS;
+  data: IUser;
+}
+
+export interface UpdateProfileFailureAction {
+  type: typeof UPDATE_PROFILE_FAILURE;
+  error: string | null | Error;
+}
+
 export type UserAction =
   | LoadMyInfoRequestAction
   | LoadMyInfoSuccessAction
@@ -94,7 +135,13 @@ export type UserAction =
   | LogoutFailureAction
   | SignUpSuccessAction
   | SignUpRequestAction
-  | SignUpFailureAction;
+  | SignUpFailureAction
+  | UpdateProfileRequestAction
+  | UpdateProfileSuccessAction
+  | UpdateProfileFailureAction
+  | KakaoLoginRequestAction
+  | KakaoLoginSuccessAction
+  | KakaoLoginFailureAction;
 
 export const loadMyInfoRequest = (): LoadMyInfoRequestAction => {
   return {
@@ -115,6 +162,13 @@ export const loginRequestAction = (
   };
 };
 
+export const kakaoLoginRequestAction = (data: Object): KakaoLoginRequestAction => {
+  return {
+    type: KAKAO_LOGIN_REQUEST,
+    data
+  }
+}
+
 export const logoutRequestAction = (): LogoutRequestAction => {
   return {
     type: LOG_OUT_REQUEST,
@@ -134,13 +188,24 @@ export const signUpRequestAction = (
   };
 };
 
+export const updateProfileRequestAction = (data: {
+  email: string;
+  password?: string;
+  city: string;
+}): UpdateProfileRequestAction => {
+  return {
+    type: UPDATE_PROFILE_REQUEST,
+    data,
+  };
+};
+
 export interface LoadEventsRequestAction {
   type: typeof LOAD_EVENTS_REQUEST;
 }
 
 export interface LoadEventsSuccessAction {
   type: typeof LOAD_EVENTS_SUCCESS;
-  data: IEvent[]
+  data: IEvent[];
 }
 
 export interface LoadEventsFailureAction {
@@ -155,12 +220,12 @@ export interface IAddEvent {
 
 export interface AddEventRequestAction {
   type: typeof ADD_EVENT_REQUEST;
-  data: IAddEvent
+  data: IAddEvent;
 }
 
 export interface AddEventSuccessAction {
   type: typeof ADD_EVENT_SUCCESS;
-  data: IEvent
+  data: IEvent;
 }
 
 export interface AddEventFailureAction {
@@ -180,11 +245,11 @@ export const loadEventsAction = (): LoadEventsRequestAction => {
   return {
     type: LOAD_EVENTS_REQUEST,
   };
-}
+};
 
 export const addEventAction = (data: IAddEvent): AddEventRequestAction => {
   return {
     type: ADD_EVENT_REQUEST,
-    data
-  }
-}
+    data,
+  };
+};

@@ -13,22 +13,29 @@ interface ISignUpForm {
 const SignUp: React.FC = () => {
   const dispatch = useDispatch();
   const history = useHistory();
+  const me = useSelector((state: RootState) => state.user.me);
   const signUpDone = useSelector((state: RootState) => state.user.signUpDone);
   const signUpError = useSelector((state: RootState) => state.user.signUpError);
   const { register, getValues, errors, handleSubmit } = useForm<ISignUpForm>({
     mode: 'onChange',
   });
 
-  const onSubmit = () => {
-    const { email, password } = getValues();
-    dispatch(signUpRequestAction(email, password));
-  };
+  useEffect(() => {
+    if (me) {
+      history.replace('/');
+    }
+  }, [history, me]);
 
   useEffect(() => {
     if (signUpDone) {
       history.push('/');
     }
   }, [history, signUpDone]);
+
+  const onSubmit = () => {
+    const { email, password } = getValues();
+    dispatch(signUpRequestAction(email, password));
+  };
 
   return (
     <div>

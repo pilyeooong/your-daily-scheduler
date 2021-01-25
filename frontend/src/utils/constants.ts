@@ -1,4 +1,4 @@
-export const API_HOST = 'http://localhost:4000'
+export const API_HOST = 'http://localhost:4000';
 
 export const holidays = [
   { name: '신정', date: '2021-01-01' },
@@ -16,4 +16,24 @@ export const holidays = [
   { name: '개천절', date: '2021-10-03' },
   { name: '한글날', date: '2021-10-09' },
   { name: '크리스마스', date: '2021-12-25' },
-]
+];
+
+export const cities = [
+  '서울',
+  '제주',
+  '부산',
+  '대전',
+  '인천',
+  '세종',
+  '대구',
+  '울산',
+  '광주',
+  '경기',
+  '강원',
+  '충북',
+  '충남',
+  '경북',
+  '경남',
+  '전북',
+  '전남',
+];

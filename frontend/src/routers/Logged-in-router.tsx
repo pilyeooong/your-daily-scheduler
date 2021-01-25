@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Header from '../components/Header';
+import NotFound from '../pages/404';
 import Home from '../pages/Home';
 import Profile from '../pages/Profile';
 
@@ -25,6 +26,9 @@ const LoggedInRouter = () => {
             {route.component}
           </Route>
         ))}
+        <Route>
+          <NotFound />
+        </Route>
       </Switch>
     </Router>
   );
