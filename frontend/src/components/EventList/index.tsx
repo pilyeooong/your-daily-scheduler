@@ -35,13 +35,14 @@ const EventList: React.FC<IProps> = ({ date }) => {
     <EventListContainer>
       <div className="header">
         {date}
+        <div>{holidays.find(v => v.date === date)?.name}</div>
       </div>
       <div className="content">
         {!events && <Loading />}
         {events?.length === 0 ? (
           <span>기록 된 일정이 없습니다.</span>
         ) : (
-          events?.map((event) => <Event event={event} />)
+          events?.map((event) => <Event key={event.id} event={event} />)
         )}
       </div>
       <div className="add-event" onClick={onToggleEventModal}>

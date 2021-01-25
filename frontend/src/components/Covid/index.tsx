@@ -11,8 +11,8 @@ export interface ICovidStatus {
   cityStatus?: ICovid;
 }
 
-const Corona = () => {
-  const { data: covidData } = useSWR<ICovidStatus>('/covid', fetcher);
+const Covid = () => {
+  const { data: covidData, error } = useSWR<ICovidStatus>('/covid', fetcher);
 
   return (
     <Container>
@@ -58,4 +58,4 @@ const Corona = () => {
   );
 };
 
-export default Corona;
+export default Covid;

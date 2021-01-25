@@ -10,8 +10,14 @@ interface IProps {
   events: IEvent[];
 }
 
+interface IHoliday {
+  name: string;
+  date: string;
+}
+
 const Calendar: React.FC<IProps> = ({ events }) => {
   const [date, setDate] = useState<Moment>(moment());
+  const [holiday, setHoliDay] = useState<IHoliday>();
 
   const onClickDay = useCallback(
     (date: Moment) => () => {
@@ -39,7 +45,6 @@ const Calendar: React.FC<IProps> = ({ events }) => {
                 .week(week)
                 .startOf('week')
                 .add(n + i, 'day');
-
               let isSelected =
                 date.format('YYYYMMDD') === current.format('YYYYMMDD')
                   ? 'selected'
