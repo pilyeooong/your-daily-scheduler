@@ -43,7 +43,7 @@ export const getCoronaData = async () => {
     $areas.each(function (i, elem) {
       covidStatus[i + 1] = {
         city: $(this).find('span.name').text(),
-        totalCases: $(this).find('.num').text(),
+        totalCases: $(this).find('span.num').text(),
         increasedCases: $(this).find('span:nth-of-type(3)').text(),
       };
     });
