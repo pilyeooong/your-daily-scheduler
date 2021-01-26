@@ -25,7 +25,7 @@ const EventList: React.FC<IProps> = ({ date }) => {
 
   useEffect(() => {
     revalidate();
-  }, [everyEvents, revalidate]);
+  }, [everyEvents]);
 
   const onToggleEventModal = useCallback(() => {
     setIsEventFormVisible((prev) => !prev);
@@ -35,7 +35,7 @@ const EventList: React.FC<IProps> = ({ date }) => {
     <EventListContainer>
       <div className="header">
         {date}
-        <div>{holidays.find(v => v.date === date)?.name}</div>
+        <div>{holidays.find((v) => v.date === date)?.name}</div>
       </div>
       <div className="content">
         {!events && <Loading />}

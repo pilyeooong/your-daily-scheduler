@@ -10,14 +10,8 @@ interface IProps {
   events: IEvent[];
 }
 
-interface IHoliday {
-  name: string;
-  date: string;
-}
-
 const Calendar: React.FC<IProps> = ({ events }) => {
   const [date, setDate] = useState<Moment>(moment());
-  const [holiday, setHoliDay] = useState<IHoliday>();
 
   const onClickDay = useCallback(
     (date: Moment) => () => {
@@ -66,7 +60,9 @@ const Calendar: React.FC<IProps> = ({ events }) => {
                   onClick={onClickDay(current)}
                 >
                   {isEventExists ? (
-                    <span className="text underline">
+                    <span
+                      className="text underline"
+                    >
                       {current.format('D')}
                     </span>
                   ) : (
