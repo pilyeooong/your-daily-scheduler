@@ -69,7 +69,7 @@ export const login = async (
 
     const user = await getRepository(User).findOne(
       { email },
-      { select: ['id', 'email', 'password'] }
+      { select: ['id', 'email', 'password', 'city'] }
     );
     if (!user) {
       return res.status(400).send('존재하지 않는 사용자입니다.');
@@ -165,16 +165,12 @@ export const kakaoLogin = async (
         );
 
         const token = signJWT(newUser.id);
-        return res
-          .status(200)
-          .json({ token, user: { ...newUser, password: null } });
+        return res.status(200).json({ token, user: newUser });
       }
 
       const token = signJWT(exUser.id);
 
-      return res
-        .status(200)
-        .json({ token, user: { ...exUser, password: null } });
+      return res.status(200).json({ token, user: exUser });
     }
     return res.status(400).send('올바른 토큰이 아닙니다.');
   } catch (err) {
