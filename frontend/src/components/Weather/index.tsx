@@ -52,8 +52,10 @@ const Weather = () => {
                     {weatherData.dust.ultra.split('㎍/㎥')[1]}
                   </div>
                 </div>
+                <div className="sources">
+                  <span>출처: 네이버 날씨</span>
+                </div>
               </WeatherDescription>
-              <div className="sources">출처: 네이버 날씨</div>
             </>
           )}
         </>

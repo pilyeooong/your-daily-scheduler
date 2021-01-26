@@ -5,7 +5,6 @@ export const Container = styled.div`
   height: 30vh;
   background: #fff;
   border-radius: 3%;
-  position: relative;
 
   & .title {
     height: 10%;
@@ -101,26 +100,30 @@ export const Container = styled.div`
         }
       }
     }
-  }
+    & .data-from {
+      width: 100%;
+      position: relative;
+      
+      & .sources {
+        font-size: 0.8rem;
+        color: #949494;
+        position: absolute;
+        bottom: 5px;
+        right: 0.5rem;
 
-  & .sources {
-    font-size: 0.8rem;
-    color: #949494;
-    position: absolute;
-    bottom: 5px;
-    right: 0.5rem;
+        @media ${(props) => props.theme.tablet} {
+          bottom: 8px;
+        }
+      }
 
-    @media ${(props) => props.theme.tablet} {
-      bottom: 8px;
+      & .update-time {
+        font-size: 0.8rem;
+        color: #949494;
+        position: absolute;
+        left: 10px;
+        bottom: 6px;
+      }
     }
-  }
-
-  & .update-time {
-    font-size: 0.8rem;
-    color: #949494;
-    position: absolute;
-    left: 10px;
-    bottom: 6px;
   }
 
   @media ${(props) => props.theme.tablet} {

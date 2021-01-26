@@ -40,6 +40,7 @@ const Profile = () => {
           <input ref={register()} name="password" type="text" placeholder="새 비밀번호" />
           <input ref={register()} name="passwordCheck" type="text" placeholder="새 비밀번호 확인" />
           <select ref={register} name="city" defaultValue={me.city}>
+            <option>-------</option>
             {cities.map((v) => (
               <option key={v} value={v}>
                 {v}

@@ -9,7 +9,6 @@ export const WeatherContainer = styled.div`
   background: #fff;
   border-radius: 3%;
   margin-bottom: 1rem;
-  position: relative;
 
   & .info {
     display: flex;
@@ -33,18 +32,6 @@ export const WeatherContainer = styled.div`
     
     @media ${(props) => props.theme.tablet} {
       width: 100%;
-    }
-  }
-
-  & .sources {
-    font-size: 0.8rem;
-    color: #949494;
-    position: absolute;
-    bottom: 5px;
-    right: 0.5rem;
-
-    @media ${(props) => props.theme.tablet} {
-      bottom: 8px;
     }
   }
 
@@ -305,6 +292,7 @@ export const WeatherDescription = styled.div`
   justify-content: center;
   align-items: center;
   height: 50%;
+  position: relative;
 
   & .temperature {
     font-size: 1.3rem;
@@ -350,6 +338,21 @@ export const WeatherDescription = styled.div`
 
     & .lv4 {
       color: #ff5959;
+    }
+  }
+
+  & .sources {
+    width: 100%;
+    & span {
+      position: absolute;
+      right: 8px;
+      bottom: 5px;
+      font-size: 0.8rem;
+      color: #949494;
+    }
+
+    @media ${(props) => props.theme.tablet} {
+      bottom: -4.5rem;
     }
   }
 

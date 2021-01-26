@@ -12,7 +12,7 @@ export interface ICovidStatus {
 }
 
 const Covid = () => {
-  const { data: covidData, error } = useSWR<ICovidStatus>('/covid', fetcher);
+  const { data: covidData } = useSWR<ICovidStatus>('/covid', fetcher);
 
   return (
     <Container>
@@ -49,9 +49,13 @@ const Covid = () => {
                 </div>
               </div>
             )}
+            <div className="data-from">
+              <div className="update-time">
+                {covidData.wholeCountryStatus.date} 기준
+              </div>
+              <div className="sources">출처: http://ncov.mohw.go.kr/</div>
+            </div>
           </div>
-          <div className="update-time">{covidData.wholeCountryStatus.date} 기준</div>
-          <div className="sources">출처: http://ncov.mohw.go.kr/</div>
         </>
       )}
     </Container>
