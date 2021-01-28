@@ -309,7 +309,9 @@ describe('deleteTodo', () => {
     await deleteTodo(req, res, next);
 
     expect(typeorm.getRepository(Todo).delete).toHaveBeenCalledTimes(1);
-    expect(typeorm.getRepository(Todo).delete).toHaveBeenCalledWith(MOCK_TODO.id);
+    expect(typeorm.getRepository(Todo).delete).toHaveBeenCalledWith(
+      MOCK_TODO.id
+    );
     expect(res.status).toHaveBeenCalledWith(200);
     expect(res.send).toHaveBeenCalledWith('삭제 완료');
   });

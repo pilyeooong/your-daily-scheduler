@@ -2,11 +2,10 @@ import axios from 'axios';
 import cheerio = require('cheerio');
 import { getRepository } from 'typeorm';
 import Covid from '../entity/Covid';
-import Corona from '../entity/Covid';
 
 export const getCoronaData = async () => {
   try {
-    const covidStatus: Partial<Corona>[] = [];
+    const covidStatus: Partial<Covid>[] = [];
 
     const url =
       'http://ncov.mohw.go.kr/bdBoardList_Real.do?brdId=1&brdGubun=13&ncvContSeq=&contSeq=&board_id=&gubun=';
@@ -45,34 +44,38 @@ export const getCoronaData = async () => {
         city: $(this).find('span.name').text(),
         totalCases: $(this).find('span.num').text(),
         increasedCases: $(this).find('span:nth-of-type(3)').text(),
+        date: $standardTime,
       };
     });
 
     const covidRepository = getRepository(Covid);
 
-    covidStatus.forEach(async (status) => {
-      const exist = await covidRepository.findOne({
-        where: { city: status.city },
-      });
-      if (!exist) {
-        return await covidRepository.save(
-          covidRepository.create({
+    // https://stackoverflow.com/questions/54751181/using-foreach-and-async-await-behaves-different-for-node-and-jest
+    await Promise.all(
+      covidStatus.map(async (status) => {
+        const exist = await covidRepository.findOne({
+          where: { city: status.city },
+        });
+        if (!exist) {
+          const newData = covidRepository.create({
             city: status.city,
             totalCases: status.totalCases,
             increasedCases: status.increasedCases,
             date: $standardTime,
-          })
-        );
-      } else {
-        return await covidRepository.save([
-          {
-            id: exist.id,
-            totalCases: status.totalCases,
-            increasedCases: status.increasedCases,
-          },
-        ]);
-      }
-    });
+          });
+          return covidRepository.save(newData);
+        } else {
+          return covidRepository.save([
+            {
+              id: exist.id,
+              totalCases: status.totalCases,
+              increasedCases: status.increasedCases,
+              date: $standardTime,
+            },
+          ]);
+        }
+      })
+    );
   } catch (err) {
     console.error(err);
     return;
