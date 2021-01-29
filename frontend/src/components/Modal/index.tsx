@@ -4,13 +4,13 @@ import { ModalContainer, Background, ModalBox } from './styles';
 interface IProps {
   isModalVisible: boolean;
   setIsModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
-  children: React.ReactNode
+  children: React.ReactNode;
 }
 
 const Modal: React.FC<IProps> = ({
   isModalVisible,
   setIsModalVisible,
-  children
+  children,
 }) => {
   const modalRef = useRef<HTMLDivElement>(null);
 
@@ -31,9 +31,7 @@ const Modal: React.FC<IProps> = ({
   return (
     <ModalContainer ref={modalRef}>
       <Background onClick={onBackgroundClicked}></Background>
-      <ModalBox>
-        {children}
-      </ModalBox>
+      <ModalBox>{children}</ModalBox>
     </ModalContainer>
   );
 };

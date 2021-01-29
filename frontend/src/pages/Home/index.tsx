@@ -9,7 +9,12 @@ import TodoList from '../../components/TodoList';
 import Weather from '../../components/Weather';
 import { ISchedule, ITodo } from '../../typings/db';
 import fetcher from '../../utils/fetcher';
-import { BottomContainer, BottomLeft, LoadingContainer, TopContainer } from './styles';
+import {
+  BottomContainer,
+  BottomLeft,
+  LoadingContainer,
+  TopContainer,
+} from './styles';
 import Loading from '../../components/Loading';
 
 const Home = () => {

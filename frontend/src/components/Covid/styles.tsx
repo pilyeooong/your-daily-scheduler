@@ -57,7 +57,7 @@ export const Container = styled.div`
       align-items: center;
       justify-content: center;
       height: 100%;
-      padding-bottom: 3rem;
+      padding-bottom: 1.5rem;
 
       & a {
         color: #03c75a;
@@ -103,7 +103,7 @@ export const Container = styled.div`
     & .data-from {
       width: 100%;
       position: relative;
-      
+
       & .sources {
         font-size: 0.8rem;
         color: #949494;

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import { RootState } from '../../reducers';
@@ -12,16 +12,14 @@ interface IProfileForm {
   city: string;
 }
 
-const Profile = () => {
+const Profile: React.FC = () => {
   const dispatch = useDispatch();
   const me = useSelector((state: RootState) => state.user.me);
-  const { register, getValues, errors, handleSubmit } = useForm<IProfileForm>({
+  const { register, getValues, handleSubmit } = useForm<IProfileForm>({
     mode: 'onChange',
   });
 
   const onSubmit = useCallback(() => {
-    const { email, password, passwordCheck, city } = getValues();
-
     dispatch(updateProfileRequestAction(getValues()));
   }, [getValues, dispatch]);
 
