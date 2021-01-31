@@ -1,4 +1,5 @@
 import React, { useCallback } from 'react';
+import { Helmet } from 'react-helmet';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import { RootState } from '../../reducers';
@@ -25,6 +26,9 @@ const Profile: React.FC = () => {
 
   return (
     <div>
+      <Helmet>
+        <title>PROFILE | YDS</title>
+      </Helmet>
       {!me ? null : (
         <form action="" onSubmit={handleSubmit(onSubmit)}>
           <input
@@ -35,8 +39,18 @@ const Profile: React.FC = () => {
             defaultValue={me.email}
             placeholder="이메일"
           />
-          <input ref={register()} name="password" type="text" placeholder="새 비밀번호" />
-          <input ref={register()} name="passwordCheck" type="text" placeholder="새 비밀번호 확인" />
+          <input
+            ref={register()}
+            name="password"
+            type="text"
+            placeholder="새 비밀번호"
+          />
+          <input
+            ref={register()}
+            name="passwordCheck"
+            type="text"
+            placeholder="새 비밀번호 확인"
+          />
           <select ref={register} name="city" defaultValue={me.city}>
             <option>-------</option>
             {cities.map((v) => (

@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import useSWR from 'swr';
+import { Helmet } from 'react-helmet';
 import { loadEventsAction } from '../../actions';
 import { RootState } from '../../reducers';
 import Calendar from '../../components/Calendar';
@@ -32,14 +33,22 @@ const Home = () => {
 
   if (!scheduleData || !todoData) {
     return (
-      <LoadingContainer>
-        <Loading />
-      </LoadingContainer>
+      <>
+        <Helmet>
+          <title>HOME | YDS</title>
+        </Helmet>
+        <LoadingContainer>
+          <Loading />
+        </LoadingContainer>
+      </>
     );
   }
 
   return (
     <div>
+      <Helmet>
+        <title>HOME | YDS</title>
+      </Helmet>
       <TopContainer>
         <Calendar events={eventsData} />
         <TodoList
