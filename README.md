@@ -28,6 +28,9 @@
 - Redux-Saga
 - Sass
 
+## Project Management
+- [Your Daily Scheduler Notion](https://www.notion.so/YDS-2bd813fb60754fcab2f6b70380561de5)
+
 ## Contact
 
 pilyeooong@gmail.com
