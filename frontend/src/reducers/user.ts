@@ -19,6 +19,7 @@ import {
   UPDATE_PROFILE_FAILURE,
   UPDATE_PROFILE_REQUEST,
   UPDATE_PROFILE_SUCCESS,
+  RESET_DONE_STATE,
 } from '../actions/types';
 import { IUser } from '../typings/db';
 
@@ -71,6 +72,7 @@ const reducer = (state = initialState, action: UserAction) => {
         draft.loadMyInfoLoading = true;
         draft.loadMyInfoDone = false;
         draft.loadMyInfoError = null;
+        draft.updateProfileDone = false;
         draft.me = null;
         break;
       case LOAD_MY_INFO_SUCCESS:
@@ -156,6 +158,9 @@ const reducer = (state = initialState, action: UserAction) => {
         draft.updateProfileLoading = false;
         draft.updateProfileDone = false;
         draft.updateProfileError = action.error;
+        break;
+      case RESET_DONE_STATE:
+        draft.updateProfileDone = false;
         break;
     }
   });
