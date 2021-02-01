@@ -19,6 +19,10 @@ export const Form = styled.form`
     justify-content: center;
     padding-top: 0.5rem;
   }
+
+  @media ${(props) => props.theme.tablet} {
+    width: 550px;
+  }
 `;
 
 export const InputBox = styled.div``;
@@ -28,8 +32,14 @@ export const Input = styled.input`
   height: 2.5rem;
   border: none;
   border-radius: 3px;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.55rem;
   padding: 0.5rem;
+
+  @media ${(props) => props.theme.tablet} {
+    padding: 1rem;
+    height: 3rem;
+    margin-bottom: 0.75rem;
+  }
 `;
 
 export const Submit = styled.div`
@@ -42,8 +52,17 @@ export const Submit = styled.div`
     color: #fff;
     font-size: 1rem;
     background: lightgray;
-    border: 1px solid lightgray;
+    border: none;
     border-radius: 3px;
+    cursor: pointer;
+  }
+
+  & button:hover {
+    background: black;
+  }
+
+  @media ${(props) => props.theme.tablet} {
+    height: 44px;
   }
 `;
 

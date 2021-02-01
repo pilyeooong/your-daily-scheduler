@@ -13,7 +13,7 @@ import {
   Input,
   Submit,
   ErrorMessage,
-} from '../../styles/AuthForm';
+} from '../../styles/AuthForm/styles';
 import KakaoLoginBtn from '../../components/SocialLogin/Kakao';
 
 interface ILoginForm {

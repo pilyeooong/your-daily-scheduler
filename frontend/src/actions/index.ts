@@ -24,6 +24,7 @@ import {
   ADD_EVENT_REQUEST,
   ADD_EVENT_SUCCESS,
   ADD_EVENT_FAILURE,
+  RESET_DONE_STATE,
 } from './types';
 
 export interface LoadMyInfoRequestAction {
@@ -123,6 +124,10 @@ export interface UpdateProfileFailureAction {
   error: string | null | Error;
 }
 
+export interface ResetDoneStateAction {
+  type: typeof RESET_DONE_STATE;
+}
+
 export type UserAction =
   | LoadMyInfoRequestAction
   | LoadMyInfoSuccessAction
@@ -141,7 +146,8 @@ export type UserAction =
   | UpdateProfileFailureAction
   | KakaoLoginRequestAction
   | KakaoLoginSuccessAction
-  | KakaoLoginFailureAction;
+  | KakaoLoginFailureAction
+  | ResetDoneStateAction;
 
 export const loadMyInfoRequest = (): LoadMyInfoRequestAction => {
   return {
@@ -162,12 +168,14 @@ export const loginRequestAction = (
   };
 };
 
-export const kakaoLoginRequestAction = (data: Object): KakaoLoginRequestAction => {
+export const kakaoLoginRequestAction = (
+  data: Object
+): KakaoLoginRequestAction => {
   return {
     type: KAKAO_LOGIN_REQUEST,
-    data
-  }
-}
+    data,
+  };
+};
 
 export const logoutRequestAction = (): LogoutRequestAction => {
   return {
@@ -196,6 +204,12 @@ export const updateProfileRequestAction = (data: {
   return {
     type: UPDATE_PROFILE_REQUEST,
     data,
+  };
+};
+
+export const resetDoneStateAction = (): ResetDoneStateAction => {
+  return {
+    type: RESET_DONE_STATE,
   };
 };
 
