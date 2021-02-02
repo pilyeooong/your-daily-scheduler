@@ -23,9 +23,7 @@ const Calendar: React.FC<IProps> = ({ events }) => {
   const generateCalendar = useCallback(() => {
     const startWeek = date.clone().startOf('month').week();
     const endWeek =
-      date.clone().endOf('month').week() === 1
-        ? 53
-        : date.clone().endOf('month').week();
+      date.clone().endOf('month').week() === 1 ? 53 : date.clone().endOf('month').week();
     let calendar = [];
     for (let week = startWeek; week <= endWeek; week++) {
       calendar.push(
@@ -40,17 +38,10 @@ const Calendar: React.FC<IProps> = ({ events }) => {
                 .startOf('week')
                 .add(n + i, 'day');
               let isSelected =
-                date.format('YYYYMMDD') === current.format('YYYYMMDD')
-                  ? 'selected'
-                  : '';
-              let isGrayed =
-                current.format('MM') === date.format('MM') ? '' : 'grayed';
-              let isEventExists = events?.find(
-                (v) => v.date === current.format('YYYY-MM-DD')
-              );
-              let isHoliday = holidays.find(
-                (v) => v.date === current.format('YYYY-MM-DD')
-              );
+                date.format('YYYYMMDD') === current.format('YYYYMMDD') ? 'selected' : '';
+              let isGrayed = current.format('MM') === date.format('MM') ? '' : 'grayed';
+              let isEventExists = events?.find((v) => v.date === current.format('YYYY-MM-DD'));
+              let isHoliday = holidays.find((v) => v.date === current.format('YYYY-MM-DD'));
               return (
                 <div
                   className={`box  ${isSelected} ${isGrayed} 
@@ -60,11 +51,7 @@ const Calendar: React.FC<IProps> = ({ events }) => {
                   onClick={onClickDay(current)}
                 >
                   {isEventExists ? (
-                    <span
-                      className="text underline"
-                    >
-                      {current.format('D')}
-                    </span>
+                    <span className="text underline">{current.format('D')}</span>
                   ) : (
                     <span className="text">{current.format('D')}</span>
                   )}
@@ -133,7 +120,7 @@ const Calendar: React.FC<IProps> = ({ events }) => {
           {generateCalendar()}
         </div>
       </Scheduler>
-      <EventList date={date.format('YYYY-MM-DD')} />
+      <EventList date={date} />
     </Container>
   );
 };

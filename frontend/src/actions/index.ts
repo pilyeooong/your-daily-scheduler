@@ -155,10 +155,7 @@ export const loadMyInfoRequest = (): LoadMyInfoRequestAction => {
   };
 };
 
-export const loginRequestAction = (
-  email: string,
-  password: string
-): LoginRequestAction => {
+export const loginRequestAction = (email: string, password: string): LoginRequestAction => {
   return {
     type: LOG_IN_REQUEST,
     data: {
@@ -168,9 +165,7 @@ export const loginRequestAction = (
   };
 };
 
-export const kakaoLoginRequestAction = (
-  data: Object
-): KakaoLoginRequestAction => {
+export const kakaoLoginRequestAction = (data: Object): KakaoLoginRequestAction => {
   return {
     type: KAKAO_LOGIN_REQUEST,
     data,
@@ -183,10 +178,7 @@ export const logoutRequestAction = (): LogoutRequestAction => {
   };
 };
 
-export const signUpRequestAction = (
-  email: string,
-  password: string
-): SignUpRequestAction => {
+export const signUpRequestAction = (email: string, password: string): SignUpRequestAction => {
   return {
     type: SIGN_UP_REQUEST,
     data: {
@@ -230,6 +222,8 @@ export interface LoadEventsFailureAction {
 export interface IAddEvent {
   content: string;
   date: string;
+  startTime?: Date;
+  endTime?: Date;
 }
 
 export interface AddEventRequestAction {

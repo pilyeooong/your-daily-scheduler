@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import useSWR from 'swr';
+import { Moment } from 'moment';
 import { RootState } from '../../reducers';
 import { IEvent } from '../../typings/db';
 import { holidays } from '../../utils/constants';
@@ -11,7 +12,7 @@ import Loading from '../Loading';
 import { EventListContainer } from './styles';
 
 interface IProps {
-  date: string;
+  date: Moment;
 }
 
 const EventList: React.FC<IProps> = ({ date }) => {
@@ -19,7 +20,7 @@ const EventList: React.FC<IProps> = ({ date }) => {
   const everyEvents = useSelector((state: RootState) => state.event.events);
 
   const { data: events, revalidate } = useSWR<IEvent[]>(
-    `/event/?date=${date}`,
+    `/event/?date=${date.format('YYYY-MM-DD')}`,
     fetcher
   );
 
@@ -34,8 +35,8 @@ const EventList: React.FC<IProps> = ({ date }) => {
   return (
     <EventListContainer>
       <div className="header">
-        {date}
-        <div>{holidays.find((v) => v.date === date)?.name}</div>
+        {date.format('YYYY-MM-DD')}
+        <div>{holidays.find((v) => v.date === date.format('YYYY-MM-DD'))?.name}</div>
       </div>
       <div className="content">
         {!events && <Loading />}
