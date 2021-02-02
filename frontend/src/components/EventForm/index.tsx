@@ -1,12 +1,13 @@
-import React, { useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
+import moment, { Moment } from 'moment';
 import Modal from '../Modal';
 import { Container, Form, Buttons } from './styles';
 import { addEventAction } from '../../actions';
 
 interface IProps {
-  date: string;
+  date: Moment;
   isEventFormVisible: boolean;
   setIsEventFormVisible: React.Dispatch<React.SetStateAction<boolean>>;
   onToggleEventModal: () => void;
@@ -19,6 +20,31 @@ export interface IEventForm {
   minute: string;
 }
 
+const START_TIME = 'START_TIME';
+const END_TIME = 'END_TIME';
+const HOUR = 'HOUR';
+const MINUTE = 'MINUTE';
+const TIME_RESET = 'TIME_RESET';
+
+const HourSelects = () => {
+  const [arrayOfHours, setArrayOfHours] = useState<number[]>();
+
+  useEffect(() => {
+    setArrayOfHours(Array.from(Array(24), (v, i) => i));
+  }, []);
+
+  return (
+    <>
+      {/* <option value={TIME_RESET}>----</option> */}
+      {arrayOfHours?.map((hour, index) => (
+        <option key={index} value={hour}>
+          {hour}
+        </option>
+      ))}
+    </>
+  );
+};
+
 const EventForm: React.FC<IProps> = ({
   date,
   isEventFormVisible,
@@ -26,53 +52,125 @@ const EventForm: React.FC<IProps> = ({
   onToggleEventModal,
 }) => {
   const dispatch = useDispatch();
-  const {
-    register,
-    getValues,
-    errors,
-    handleSubmit,
-    reset,
-  } = useForm<IEventForm>({
+  const [startTime, setStartTime] = useState<Moment | null>(null);
+  const [endTime, setEndTime] = useState<Moment | null>(null);
+  const [timeError, setTimeError] = useState<string | null>(null);
+
+  const { register, getValues, errors, handleSubmit, reset } = useForm<IEventForm>({
     mode: 'onChange',
   });
 
+  useEffect(() => {
+    console.log(startTime?.toDate());
+    console.log(endTime?.toDate());
+  }, [startTime?.toDate(), endTime?.toDate()]);
+
   const onSubmit = useCallback(async () => {
+    if (timeError) {
+      return;
+    }
+    if (startTime && !endTime) {
+      setTimeError('끝나는 시간을 설정해주세요');
+      return;
+    }
+    if (endTime && !startTime) {
+      setTimeError('시작 시간을 설정해주세요');
+      return;
+    }
     const { content } = getValues();
-    dispatch(addEventAction({ content, date }));
+    console.log(startTime?.toDate(), endTime?.toDate());
+    dispatch(
+      addEventAction({
+        content,
+        date: date.format('YYYY-MM-DD'),
+        startTime: startTime?.toDate().toString(),
+        endTime: endTime?.toDate().toString(),
+      })
+    );
     setIsEventFormVisible(false);
     reset();
-  }, [date, getValues, setIsEventFormVisible, reset, dispatch]);
+  }, [date, timeError, startTime, endTime, getValues, setIsEventFormVisible, reset, dispatch]);
+
+  const onChangeTime = useCallback(
+    (type: string, timeType: string) => (e: React.FormEvent<HTMLSelectElement>) => {
+      let timeToSet = moment(date).hour(0).minute(0).second(0);
+      if (type === START_TIME) {
+        if (startTime) {
+          timeToSet = startTime;
+        }
+        if (timeType === HOUR) {
+          if (endTime && timeToSet.clone().hour(+e.currentTarget.value) > endTime) {
+            setTimeError('시작 시간이 끝나는 시간보다 늦을 수 없습니다.');
+          } else {
+            setTimeError(null);
+          }
+          setStartTime(timeToSet.hour(+e.currentTarget.value));
+        } else {
+          if (endTime && timeToSet.clone().minute(+e.currentTarget.value) > endTime) {
+            setTimeError('시작 시간이 끝나는 시간보다 늦을 수 없습니다.');
+          } else {
+            setTimeError(null);
+          }
+          setStartTime(timeToSet.minute(+e.currentTarget.value));
+        }
+      } else {
+        if (endTime) {
+          timeToSet = endTime;
+        }
+        if (timeType === HOUR) {
+          if (startTime && timeToSet.clone().hour(+e.currentTarget.value) < startTime) {
+            setTimeError('끝나는 시간이 시작 시간보다 빠를 수 없습니다.');
+          } else {
+            setTimeError(null);
+          }
+          setEndTime(timeToSet.hour(+e.currentTarget.value));
+        } else {
+          if (startTime && timeToSet.clone().minute(+e.currentTarget.value) < startTime) {
+            setTimeError('끝나는 시간이 시작 시간보다 빠를 수 없습니다.');
+          } else {
+            setTimeError(null);
+          }
+          setEndTime(timeToSet.minute(+e.currentTarget.value));
+        }
+      }
+    },
+    [startTime, endTime, date]
+  );
 
   return (
-    <Modal
-      isModalVisible={isEventFormVisible}
-      setIsModalVisible={setIsEventFormVisible}
-    >
+    <Modal isModalVisible={isEventFormVisible} setIsModalVisible={setIsEventFormVisible}>
       <Container>
         <h2>일정 추가하기</h2>
         <Form onSubmit={handleSubmit(onSubmit)}>
-          <select ref={register} name="AmPm">
-            <option value="am">오전</option>
-            <option value="pm">오후</option>
-          </select>
-          <input
-            ref={register({ pattern: /^(0?[0-9]|1[0-2])$/ })}
-            type="text"
-            name="hour"
-            placeholder="시"
-          />
-          {errors.hour?.type === 'pattern' && (
-            <span>올바른 시간을 입력해 주세요</span>
-          )}
-          <input
-            ref={register({ pattern: /^([0-5]?\d)$/ })}
-            type="text"
-            name="minute"
-            placeholder="분"
-          />
-          {errors.minute?.type === 'pattern' && (
-            <span>올바른 시간을 입력해 주세요</span>
-          )}
+          <div>
+            <h3>시작 시간</h3>
+            <select name="" id="" onChange={onChangeTime(START_TIME, HOUR)}>
+              <HourSelects />
+            </select>
+            <span>시</span>
+            <select name="" id="" onChange={onChangeTime(START_TIME, MINUTE)}>
+              {/* <option value={TIME_RESET}>----</option> */}
+              <option value="0">0</option>
+              <option value="30">30</option>
+            </select>
+            <span>분</span>
+            <button>초기화</button>
+          </div>
+          <div>
+            <h3>끝나는 시간</h3>
+            <select name="" id="" onChange={onChangeTime(END_TIME, HOUR)}>
+              <HourSelects />
+            </select>
+            <span>시</span>
+            <select name="" id="" onChange={onChangeTime(END_TIME, MINUTE)}>
+              {/* <option value={TIME_RESET}>----</option> */}
+              <option value="0">0</option>
+              <option value="30">30</option>
+            </select>
+            <span>분</span>
+            <button>초기화</button>
+          </div>
+          {timeError && <span>{timeError}</span>}
           <input
             ref={register({ required: '내용을 입력 해주세요.' })}
             name="content"
