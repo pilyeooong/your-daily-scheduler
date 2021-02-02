@@ -27,6 +27,8 @@ export interface IEvent {
   content: string;
   createdAt: string;
   updatedAt: string;
+  startTime: Date;
+  endTime: Date;
 }
 
 export interface ICovid {
