@@ -38,3 +38,12 @@ export interface IKakaoInfo {
   connected_at: string;
   kakao_account: IKakaoAccount;
 }
+
+// Event
+
+export interface IEvent {
+  content: string;
+  date: string;
+  startTime: Date;
+  endTime: Date;
+}

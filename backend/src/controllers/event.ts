@@ -3,7 +3,7 @@ import { getRepository } from 'typeorm';
 import Event from '../entity/Event';
 import Schedule from '../entity/Schedule';
 import User from '../entity/User';
-import { IDecoded } from '../interfaces';
+import { IDecoded, IEvent } from '../interfaces';
 
 export const loadEvents = async (
   req: Request,
@@ -36,8 +36,15 @@ export const addEvent = async (
 ) => {
   try {
     const { id } = req.decoded as IDecoded;
-    const { content, date } = req.body;
+    const { content, date, startTime, endTime }: IEvent = req.body;
 
+    let parsedStartTime;
+    let parsedEndTime;
+
+    if (startTime && endTime) {
+      parsedStartTime = new Date(startTime);
+      parsedEndTime = new Date(endTime);
+    }
     const user = await getRepository(User).findOne({ where: { id } });
     const schedule = await getRepository(Schedule).findOne({ where: { user } });
 
@@ -49,6 +56,8 @@ export const addEvent = async (
       content,
       date,
       schedule,
+      startTime: parsedStartTime,
+      endTime: parsedEndTime,
     });
     await getRepository(Event).save(newEvent);
 
@@ -73,11 +82,22 @@ export const loadEvent = async (
     if (!schedule) {
       return res.status(400).send('존재하지 않는 스케줄입니다.');
     }
-    const event = await getRepository(Event).find({
+    const events = await getRepository(Event).find({
       where: { schedule, date },
+      order: { startTime: 'ASC', endTime: 'ASC' },
     });
 
-    return res.status(200).send(event);
+    const parsedEvents = events.map((event) => {
+      let parsedStartTime;
+      let parsedEndTime;
+      if (event.startTime && event.endTime) {
+        parsedStartTime = event.startTime.toString();
+        parsedEndTime = event.endTime.toString();
+      }
+      return { ...event, startTime: parsedStartTime, endTime: parsedEndTime };
+    });
+
+    return res.status(200).send(parsedEvents);
   } catch (err) {
     console.error(err);
     next(err);

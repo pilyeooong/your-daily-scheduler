@@ -10,6 +10,12 @@ export default class Event extends CoreEntity {
   @Column({ type: 'varchar', length: 255 })
   content!: string;
 
+  @Column({ type: 'timestamp', nullable: true })
+  startTime!: Date;
+
+  @Column({ type: 'timestamp', nullable: true })
+  endTime!: Date;
+
   @ManyToOne(() => Schedule, (schedule) => schedule.events, {
     nullable: false,
     onDelete: 'CASCADE',
