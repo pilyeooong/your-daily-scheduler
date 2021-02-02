@@ -222,8 +222,8 @@ export interface LoadEventsFailureAction {
 export interface IAddEvent {
   content: string;
   date: string;
-  startTime?: Date;
-  endTime?: Date;
+  startTime: string | null | undefined;
+  endTime: string | null | undefined;
 }
 
 export interface AddEventRequestAction {
