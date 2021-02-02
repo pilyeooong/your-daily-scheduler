@@ -5,10 +5,7 @@ export const SelectCity = styled.select`
   height: 36px;
   border-radius: 3px;
   margin-bottom: 0.55rem;
-
-  & option {
-    font-weight: bold;
-  }
+  padding-left: 0.5rem;
 
   @media ${(props) => props.theme.tablet} {
     margin-bottom: 0.75rem;
