@@ -41,5 +41,6 @@ export default Kakao;
 export const LoginButton = styled.div`
   display: flex;
   justify-content: center;
+  margin-left: 8px;
   cursor: pointer;
 `;

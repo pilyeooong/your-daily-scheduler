@@ -15,6 +15,7 @@ import {
   ErrorMessage,
 } from '../../styles/AuthForm/styles';
 import KakaoLoginBtn from '../../components/SocialLogin/Kakao';
+import { SignUpLink } from './styles';
 
 interface ILoginForm {
   email: string;
@@ -23,9 +24,7 @@ interface ILoginForm {
 
 const Login: React.FC = () => {
   const dispatch = useDispatch();
-  const loadMyInfoLoading = useSelector(
-    (state: RootState) => state.user.loadMyInfoLoading
-  );
+  const loadMyInfoLoading = useSelector((state: RootState) => state.user.loadMyInfoLoading);
 
   const { register, getValues, errors, handleSubmit } = useForm<ILoginForm>({
     mode: 'onChange',
@@ -57,9 +56,7 @@ const Login: React.FC = () => {
                 placeholder="Email"
                 required
               />
-              {errors.email?.message && (
-                <ErrorMessage>{errors.email.message}</ErrorMessage>
-              )}
+              {errors.email?.message && <ErrorMessage>{errors.email.message}</ErrorMessage>}
               {errors.email?.type === 'pattern' && (
                 <ErrorMessage>유효한 이메일을 입력 해주세요</ErrorMessage>
               )}
@@ -75,9 +72,7 @@ const Login: React.FC = () => {
                 placeholder="Password"
                 required
               />
-              {errors.password?.message && (
-                <ErrorMessage>{errors.password.message}</ErrorMessage>
-              )}
+              {errors.password?.message && <ErrorMessage>{errors.password.message}</ErrorMessage>}
               {errors.password?.type === 'minLength' && (
                 <ErrorMessage>패스워드는 3자 이상 입력해주세요</ErrorMessage>
               )}
@@ -87,7 +82,7 @@ const Login: React.FC = () => {
             </Submit>
             <KakaoLoginBtn />
             <div className="link">
-              계정이 없으신가요 ? <Link to="/signup">회원가입</Link>
+              계정이 없으신가요 ?<Link to="/signup">회원가입</Link>
             </div>
           </Form>
         </>

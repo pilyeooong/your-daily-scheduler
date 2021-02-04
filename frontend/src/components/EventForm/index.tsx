@@ -163,7 +163,6 @@ const EventForm: React.FC<IProps> = ({
               <option value="30">30</option>
             </select>
             <span>분</span>
-            <button>초기화</button>
           </div>
           <div>
             <h3>끝나는 시간</h3>
@@ -176,7 +175,6 @@ const EventForm: React.FC<IProps> = ({
               <option value="30">30</option>
             </select>
             <span>분</span>
-            <button>초기화</button>
           </div>
           {timeError && <span>{timeError}</span>}
           <input

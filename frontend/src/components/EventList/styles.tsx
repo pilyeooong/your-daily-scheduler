@@ -1,8 +1,7 @@
 import styled from 'styled-components';
 
 export const EventListContainer = styled.div`
-  /* background: #ebecf0; */
-  background: #fff;
+  background: #ebecf0;
   border-radius: 3%;
   margin-top: 0.5rem;
   padding: 1rem 1rem;
@@ -10,8 +9,18 @@ export const EventListContainer = styled.div`
   & .header {
     text-align: center;
     letter-spacing: 1px;
+    font-size: 1.2rem;
     font-weight: 700;
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    @media ${(props) => props.theme.tablet} {
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+    }
   }
 
   & .content {
@@ -43,13 +52,6 @@ export const EventListContainer = styled.div`
     }
   }
 
-  & span {
-    font-size: 1.1rem;
-    font-weight: bold;
-    color: gray;
-    letter-spacing: 1px;
-  }
-
   @media ${(props) => props.theme.desktop} {
     margin-top: 0;
     margin-left: 1rem;
@@ -60,4 +62,24 @@ export const EventListContainer = styled.div`
     margin-top: 0;
     margin-left: 1rem;
   }
+`;
+
+export const Holiday = styled.span`
+  margin-top: 0.5rem;
+  padding: 0.2rem;
+  border-radius: 5px;
+  background: red;
+  color: #fff;
+
+  @media ${(props) => props.theme.tablet} {
+    margin-top: 0;
+    margin-left: 0.5rem;
+  }
+`;
+
+export const NoEvents = styled.span`
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: gray;
+  letter-spacing: 1px;
 `;

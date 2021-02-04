@@ -17,7 +17,14 @@ export const Form = styled.form`
   & .link {
     display: flex;
     justify-content: center;
+    margin-top: 0.5rem;
     padding-top: 0.5rem;
+    font-size: 1rem;
+
+    & a {
+      margin-left: 10px;
+      font-weight: 700;
+    }
   }
 
   @media ${(props) => props.theme.tablet} {

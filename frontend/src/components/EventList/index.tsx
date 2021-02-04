@@ -9,13 +9,14 @@ import fetcher from '../../utils/fetcher';
 import Event from '../Event';
 import EventForm from '../EventForm';
 import Loading from '../Loading';
-import { EventListContainer } from './styles';
+import { EventListContainer, Holiday, NoEvents } from './styles';
 
 interface IProps {
   date: Moment;
 }
 
 const EventList: React.FC<IProps> = ({ date }) => {
+  const [holidayName, setHolidayName] = useState<string | undefined>('');
   const [isEventFormVisible, setIsEventFormVisible] = useState<boolean>(false);
   const everyEvents = useSelector((state: RootState) => state.event.events);
 
@@ -23,6 +24,10 @@ const EventList: React.FC<IProps> = ({ date }) => {
     `/event/?date=${date.format('YYYY-MM-DD')}`,
     fetcher
   );
+
+  useEffect(() => {
+    setHolidayName(holidays.find((v) => v.date === date.format('YYYY-MM-DD'))?.name);
+  }, [holidayName, date]);
 
   useEffect(() => {
     revalidate();
@@ -36,12 +41,12 @@ const EventList: React.FC<IProps> = ({ date }) => {
     <EventListContainer>
       <div className="header">
         {date.format('YYYY-MM-DD')}
-        <div>{holidays.find((v) => v.date === date.format('YYYY-MM-DD'))?.name}</div>
+        {holidayName && <Holiday>{holidayName}</Holiday>}
       </div>
       <div className="content">
         {!events && <Loading />}
         {events?.length === 0 ? (
-          <span>기록 된 일정이 없습니다.</span>
+          <NoEvents>기록 된 일정이 없습니다.</NoEvents>
         ) : (
           events?.map((event) => <Event key={event.id} event={event} />)
         )}
