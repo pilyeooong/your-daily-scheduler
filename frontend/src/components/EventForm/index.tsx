@@ -1,10 +1,11 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import moment, { Moment } from 'moment';
 import Modal from '../Modal';
 import { Container, Form, Buttons } from './styles';
 import { addEventAction } from '../../actions';
+import HourSelects from './HourSelects';
 
 interface IProps {
   date: Moment;
@@ -20,30 +21,11 @@ export interface IEventForm {
   minute: string;
 }
 
+export const TIME_RESET = 'TIME_RESET';
 const START_TIME = 'START_TIME';
 const END_TIME = 'END_TIME';
 const HOUR = 'HOUR';
 const MINUTE = 'MINUTE';
-const TIME_RESET = 'TIME_RESET';
-
-const HourSelects = () => {
-  const [arrayOfHours, setArrayOfHours] = useState<number[]>();
-
-  useEffect(() => {
-    setArrayOfHours(Array.from(Array(24), (v, i) => i));
-  }, []);
-
-  return (
-    <>
-      {/* <option value={TIME_RESET}>----</option> */}
-      {arrayOfHours?.map((hour, index) => (
-        <option key={index} value={hour}>
-          {hour}
-        </option>
-      ))}
-    </>
-  );
-};
 
 const EventForm: React.FC<IProps> = ({
   date,
@@ -55,6 +37,11 @@ const EventForm: React.FC<IProps> = ({
   const [startTime, setStartTime] = useState<Moment | null>(null);
   const [endTime, setEndTime] = useState<Moment | null>(null);
   const [timeError, setTimeError] = useState<string | null>(null);
+
+  const startTimeHourRef = useRef<HTMLSelectElement>(null);
+  const startTimeMinuteRef = useRef<HTMLSelectElement>(null);
+  const endTimeHourRef = useRef<HTMLSelectElement>(null);
+  const endTimeMinuteRef = useRef<HTMLSelectElement>(null);
 
   const { register, getValues, errors, handleSubmit, reset } = useForm<IEventForm>({
     mode: 'onChange',
@@ -78,7 +65,6 @@ const EventForm: React.FC<IProps> = ({
       return;
     }
     const { content } = getValues();
-    console.log(startTime?.toDate(), endTime?.toDate());
     dispatch(
       addEventAction({
         content,
@@ -99,12 +85,24 @@ const EventForm: React.FC<IProps> = ({
           timeToSet = startTime;
         }
         if (timeType === HOUR) {
+          if (e.currentTarget.value === TIME_RESET) {
+            if (startTimeHourRef.current && startTimeMinuteRef.current) {
+              startTimeHourRef.current.value = TIME_RESET;
+              startTimeMinuteRef.current.disabled = true;
+              startTimeMinuteRef.current.value = '0';
+            }
+            setStartTime(null);
+            return;
+          }
           if (endTime && timeToSet.clone().hour(+e.currentTarget.value) > endTime) {
             setTimeError('시작 시간이 끝나는 시간보다 늦을 수 없습니다.');
           } else {
             setTimeError(null);
           }
           setStartTime(timeToSet.hour(+e.currentTarget.value));
+          if (startTimeMinuteRef.current) {
+            startTimeMinuteRef.current.disabled = false;
+          }
         } else {
           if (endTime && timeToSet.clone().minute(+e.currentTarget.value) > endTime) {
             setTimeError('시작 시간이 끝나는 시간보다 늦을 수 없습니다.');
@@ -118,12 +116,24 @@ const EventForm: React.FC<IProps> = ({
           timeToSet = endTime;
         }
         if (timeType === HOUR) {
+          if (e.currentTarget.value === TIME_RESET) {
+            if (endTimeHourRef.current && endTimeMinuteRef.current) {
+              endTimeHourRef.current.value = TIME_RESET;
+              endTimeMinuteRef.current.disabled = true;
+              endTimeMinuteRef.current.value = '0';
+            }
+            setEndTime(null);
+            return;
+          }
           if (startTime && timeToSet.clone().hour(+e.currentTarget.value) < startTime) {
             setTimeError('끝나는 시간이 시작 시간보다 빠를 수 없습니다.');
           } else {
             setTimeError(null);
           }
           setEndTime(timeToSet.hour(+e.currentTarget.value));
+          if (endTimeMinuteRef.current) {
+            endTimeMinuteRef.current.disabled = false;
+          }
         } else {
           if (startTime && timeToSet.clone().minute(+e.currentTarget.value) < startTime) {
             setTimeError('끝나는 시간이 시작 시간보다 빠를 수 없습니다.');
@@ -144,12 +154,11 @@ const EventForm: React.FC<IProps> = ({
         <Form onSubmit={handleSubmit(onSubmit)}>
           <div>
             <h3>시작 시간</h3>
-            <select name="" id="" onChange={onChangeTime(START_TIME, HOUR)}>
+            <select ref={startTimeHourRef} onChange={onChangeTime(START_TIME, HOUR)}>
               <HourSelects />
             </select>
             <span>시</span>
-            <select name="" id="" onChange={onChangeTime(START_TIME, MINUTE)}>
-              {/* <option value={TIME_RESET}>----</option> */}
+            <select ref={startTimeMinuteRef} disabled onChange={onChangeTime(START_TIME, MINUTE)}>
               <option value="0">0</option>
               <option value="30">30</option>
             </select>
@@ -158,12 +167,11 @@ const EventForm: React.FC<IProps> = ({
           </div>
           <div>
             <h3>끝나는 시간</h3>
-            <select name="" id="" onChange={onChangeTime(END_TIME, HOUR)}>
+            <select ref={endTimeHourRef} onChange={onChangeTime(END_TIME, HOUR)}>
               <HourSelects />
             </select>
             <span>시</span>
-            <select name="" id="" onChange={onChangeTime(END_TIME, MINUTE)}>
-              {/* <option value={TIME_RESET}>----</option> */}
+            <select ref={endTimeMinuteRef} disabled onChange={onChangeTime(END_TIME, MINUTE)}>
               <option value="0">0</option>
               <option value="30">30</option>
             </select>
