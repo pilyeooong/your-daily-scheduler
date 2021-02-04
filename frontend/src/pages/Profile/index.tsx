@@ -5,17 +5,8 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { RootState } from '../../reducers';
 import { cities } from '../../utils/constants';
-import {
-  resetDoneStateAction,
-  updateProfileRequestAction,
-} from '../../actions';
-import {
-  Container,
-  Form,
-  Input,
-  InputBox,
-  Submit,
-} from '../../styles/AuthForm/styles';
+import { resetDoneStateAction, updateProfileRequestAction } from '../../actions';
+import { Container, Form, Input, InputBox, Submit } from '../../styles/AuthForm/styles';
 import { SelectCity } from './styles';
 import Loading from '../../components/Loading';
 
@@ -30,17 +21,9 @@ const Profile: React.FC = () => {
   const dispatch = useDispatch();
   const me = useSelector((state: RootState) => state.user.me);
 
-  const updateProfileLoading = useSelector(
-    (state: RootState) => state.user.updateProfileLoading
-  );
-
-  const updateProfileDone = useSelector(
-    (state: RootState) => state.user.updateProfileDone
-  );
-
-  const updateProfileError = useSelector(
-    (state: RootState) => state.user.updateProfileError
-  );
+  const updateProfileLoading = useSelector((state: RootState) => state.user.updateProfileLoading);
+  const updateProfileDone = useSelector((state: RootState) => state.user.updateProfileDone);
+  const updateProfileError = useSelector((state: RootState) => state.user.updateProfileError);
 
   const { register, getValues, handleSubmit } = useForm<IProfileForm>({
     mode: 'onChange',
@@ -61,7 +44,16 @@ const Profile: React.FC = () => {
   }, [updateProfileDone, dispatch]);
 
   const onSubmit = useCallback(() => {
-    dispatch(updateProfileRequestAction(getValues()));
+    const { email, password, passwordCheck, city } = getValues();
+    if (password) {
+      if (password !== passwordCheck) {
+        toast.error('입력하신 비밀번호가 서로 일치하지 않습니다.', {
+          position: toast.POSITION.TOP_CENTER,
+        });
+        return;
+      }
+    }
+    dispatch(updateProfileRequestAction({ email, password, passwordCheck, city }));
   }, [getValues, dispatch]);
 
   return (
@@ -70,7 +62,7 @@ const Profile: React.FC = () => {
         <title>PROFILE | YDS</title>
       </Helmet>
       {!me ? null : (
-        <Form action="" onSubmit={handleSubmit(onSubmit)}>
+        <Form onSubmit={handleSubmit(onSubmit)}>
           <InputBox>
             <Input
               ref={register()}
@@ -82,18 +74,13 @@ const Profile: React.FC = () => {
             />
           </InputBox>
           <InputBox>
-            <Input
-              ref={register()}
-              name="password"
-              type="text"
-              placeholder="새 비밀번호"
-            />
+            <Input ref={register()} name="password" type="password" placeholder="새 비밀번호" />
           </InputBox>
           <InputBox>
             <Input
               ref={register()}
               name="passwordCheck"
-              type="text"
+              type="password"
               placeholder="새 비밀번호 확인"
             />
           </InputBox>
@@ -108,11 +95,7 @@ const Profile: React.FC = () => {
             </SelectCity>
           </InputBox>
           <Submit>
-            {updateProfileLoading ? (
-              <Loading />
-            ) : (
-              <button type="submit">수정</button>
-            )}
+            {updateProfileLoading ? <Loading /> : <button type="submit">수정</button>}
           </Submit>
         </Form>
       )}
