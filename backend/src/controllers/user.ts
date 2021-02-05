@@ -153,10 +153,15 @@ export const kakaoLogin = async (
         where: { email: profile.kakao_account.email },
       });
 
+      const hashedPassword = await bcrypt.hash(
+        Math.random().toString(36).substring(2, 15),
+        12
+      );
+
       if (!exUser) {
         const newUser = await userRepository.create({
           email: profile.kakao_account.email,
-          password: 'password',
+          password: hashedPassword,
         });
         await userRepository.save(newUser);
         const scheduleRepository = getRepository(Schedule);
