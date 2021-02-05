@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect, useRef } from 'react';
+import React, { useState, useCallback, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import moment, { Moment } from 'moment';
@@ -46,11 +46,6 @@ const EventForm: React.FC<IProps> = ({
   const { register, getValues, errors, handleSubmit, reset } = useForm<IEventForm>({
     mode: 'onChange',
   });
-
-  useEffect(() => {
-    console.log(startTime?.toDate());
-    console.log(endTime?.toDate());
-  }, [startTime?.toDate(), endTime?.toDate()]);
 
   const onSubmit = useCallback(async () => {
     if (timeError) {

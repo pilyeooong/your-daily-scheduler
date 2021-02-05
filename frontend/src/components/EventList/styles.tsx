@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 export const EventListContainer = styled.div`
+  /* max-height: 600px; */
   background: #ebecf0;
   border-radius: 3%;
   margin-top: 0.5rem;
@@ -27,7 +28,15 @@ export const EventListContainer = styled.div`
     display: flex;
     flex-direction: column;
     height: 80%;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
+
+    @media ${(props) => props.theme.tablet} {
+      margin-bottom: 2.5rem;
+    }
+
+    @media ${(props) => props.theme.desktop} {
+      margin-bottom: 2rem;
+    }
   }
 
   & .add-event {
@@ -41,14 +50,9 @@ export const EventListContainer = styled.div`
     background: lightgray;
     cursor: pointer;
 
-    @media ${(props) => props.theme.desktop} {
+    @media (min-width: 1600px) {
       width: 45px;
       height: 45px;
-    }
-
-    @media (min-width: 1600px) {
-      width: 65px;
-      height: 65px;
     }
   }
 
@@ -82,4 +86,78 @@ export const NoEvents = styled.span`
   font-weight: bold;
   color: gray;
   letter-spacing: 1px;
+`;
+
+export const EventsWithTimeContainer = styled.div`
+  padding-top: 1rem;
+  position: relative;
+  height: 300px;
+
+  /* &:hover {
+    & button {
+      display: block;
+    }
+  }
+
+  & button {
+    display: block;
+
+    @media ${(props) => props.theme.desktop} {
+      display: none;
+    }
+  } */
+
+  @media ${(props) => props.theme.tablet} {
+    height: 280px;
+  }
+`;
+
+export const Buttons = styled.div`
+  display: flex;
+
+  & button {
+    position: absolute;
+    bottom: -1.3rem;
+    cursor: pointer;
+    background: none;
+    border: none;
+    font-size: 2rem;
+
+    @media ${(props) => props.theme.tablet} {
+      bottom: -2.8rem;
+      font-size: 2.5rem;
+    }
+  }
+
+  & .prev-btn {
+    left: 0;
+  }
+
+  & .next-btn {
+    right: 0;
+  }
+
+  & .without-time-prev-btn {
+    left: 0;
+    bottom: -1.7rem;
+
+    @media ${(props) => props.theme.tablet} {
+      bottom: -2rem;
+    }
+  }
+
+  & .without-time-next-btn {
+    bottom: -2.3rem;
+    right: 0;
+  }
+`;
+
+export const EventsWithoutTimeContainer = styled.div`
+  position: relative;
+  margin-bottom: 1rem;
+  height: 140px;
+
+  @media ${(props) => props.theme.tablet} {
+    height: 150px;
+  }
 `;
