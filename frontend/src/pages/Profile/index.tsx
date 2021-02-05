@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { RootState } from '../../reducers';
 import { cities } from '../../utils/constants';
-import { resetDoneStateAction, updateProfileRequestAction } from '../../actions';
+import { resetDoneStateOnUserAction, updateProfileRequestAction } from '../../actions';
 import { Container, Form, Input, InputBox, Submit } from '../../styles/AuthForm/styles';
 import { SelectCity } from './styles';
 import Loading from '../../components/Loading';
@@ -34,7 +34,7 @@ const Profile: React.FC = () => {
       toast.success('프로필을 수정하였습니다.', {
         position: toast.POSITION.TOP_CENTER,
       });
-      dispatch(resetDoneStateAction());
+      dispatch(resetDoneStateOnUserAction());
     }
     if (updateProfileError) {
       toast.error('프로필 수정에 실패하였습니다.', {

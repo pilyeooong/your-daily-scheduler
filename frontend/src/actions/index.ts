@@ -200,7 +200,7 @@ export const updateProfileRequestAction = (data: {
   };
 };
 
-export const resetDoneStateAction = (): ResetDoneStateAction => {
+export const resetDoneStateOnUserAction = (): ResetDoneStateAction => {
   return {
     type: RESET_DONE_STATE,
   };
@@ -242,13 +242,18 @@ export interface AddEventFailureAction {
   error: string | null | Error;
 }
 
+export interface ResetDoneStateOnEventAction {
+  type: typeof RESET_DONE_STATE;
+}
+
 export type EventAction =
   | LoadEventsRequestAction
   | LoadEventsSuccessAction
   | LoadEventsFailureAction
   | AddEventRequestAction
   | AddEventSuccessAction
-  | AddEventFailureAction;
+  | AddEventFailureAction
+  | ResetDoneStateOnEventAction;
 
 export const loadEventsAction = (): LoadEventsRequestAction => {
   return {
@@ -260,5 +265,11 @@ export const addEventAction = (data: IAddEvent): AddEventRequestAction => {
   return {
     type: ADD_EVENT_REQUEST,
     data,
+  };
+};
+
+export const resetDoneStateOnEventAction = (): ResetDoneStateOnEventAction => {
+  return {
+    type: RESET_DONE_STATE,
   };
 };
