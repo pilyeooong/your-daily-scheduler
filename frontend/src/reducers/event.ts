@@ -7,6 +7,7 @@ import {
   ADD_EVENT_REQUEST,
   ADD_EVENT_SUCCESS,
   ADD_EVENT_FAILURE,
+  RESET_DONE_STATE,
 } from '../actions/types';
 import { IEvent } from '../typings/db';
 
@@ -64,6 +65,9 @@ const reducer = (state = initialState, action: EventAction) => {
         draft.addEventLoading = false;
         draft.addEventDone = false;
         draft.addEventError = action.error;
+        break;
+      case RESET_DONE_STATE:
+        draft.addEventDone = false;
         break;
     }
   });
