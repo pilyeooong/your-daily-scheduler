@@ -9,15 +9,25 @@ export const ListContainer = styled.div`
 
   & h2 {
     font-weight: bold;
-    margin-bottom: .5rem;
+    margin-bottom: 0.5rem;
   }
 
-  @media ${props => props.theme.tablet} {
-    margin-left: 1.6rem; 
+  & .switch-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    & button:nth-of-type(2) {
+      margin-left: 3px;
+    }
+  }
+
+  @media ${(props) => props.theme.tablet} {
+    margin-left: 1.6rem;
     margin-top: 0;
   }
 
-  @media ${props => props.theme.desktop} {
+  @media ${(props) => props.theme.desktop} {
     width: 15%;
   }
 `;

@@ -4,13 +4,13 @@ export const Container = styled.div`
   margin-top: 2rem;
   min-width: 350px;
   max-width: 1200px;
-  
-  @media ${props => props.theme.tablet} {
+
+  @media ${(props) => props.theme.tablet} {
     width: 55%;
     margin-top: 0;
   }
-  
-  @media ${props => props.theme.desktop} {
+
+  @media ${(props) => props.theme.desktop} {
     width: 85%;
     height: 60%;
     /* margin-right: 1rem; */
@@ -25,10 +25,10 @@ export const Scheduler = styled.div`
   height: 100%;
   user-select: none;
   border-radius: 3%;
-  background-color: white;
+  background-color: #fff;
   padding: 0 10px;
 
-  @media ${props => props.theme.desktop} {
+  @media ${(props) => props.theme.desktop} {
     width: 60%;
     margin: 0;
   }
@@ -56,6 +56,8 @@ export const Scheduler = styled.div`
     }
     span.title {
       cursor: pointer;
+      font-size: 1.2rem;
+      font-weight: bold;
       border-radius: 5px;
       padding: 4px 12px;
       &:hover {

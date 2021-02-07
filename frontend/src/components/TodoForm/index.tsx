@@ -1,6 +1,8 @@
 import React, { useState, useCallback } from 'react';
 import axios from 'axios';
 import { useForm } from 'react-hook-form';
+import Button from '../Button';
+import { FormContainer } from './styles';
 
 interface IForm {
   content: string;
@@ -39,30 +41,35 @@ const Form: React.FC<IProps> = ({ scheduleId, revalidate }) => {
   }, [getValues, revalidate, reset, scheduleId]);
 
   const onClickAddForm = useCallback(() => {
-    setFormVisible(prev => !prev);
+    setFormVisible((prev) => !prev);
   }, []);
 
   return (
-    <div>
+    <FormContainer>
       {formVisible ? (
         <form action="" onSubmit={handleSubmit(onSubmit)}>
-          <input
-            ref={register({
-              required: '내용을 입력해주세요',
-            })}
-            type="text"
-            name="content"
-            placeholder="내용을 입력해주세요"
-            required
-          />
+          <div className="submit-input">
+            <input
+              ref={register({
+                required: '내용을 입력해주세요',
+              })}
+              type="text"
+              name="content"
+              required
+            />
+          </div>
           {errors.content?.message && <span>{errors.content.message}</span>}
-          <button type="submit">입력</button>
-          <button onClick={onClickAddForm}>X</button>
+          <div className="submit-button">
+            <Button type="submit" text={'입 력'} />
+            <Button text={'취 소'} onClickAction={onClickAddForm} color={'red'} />
+          </div>
         </form>
       ) : (
-        <span onClick={onClickAddForm}>+ 할 일을 추가하세요</span>
+        <div className="add-button">
+          <Button text={'할 일 추가'} onClickAction={onClickAddForm} />
+        </div>
       )}
-    </div>
+    </FormContainer>
   );
 };
 

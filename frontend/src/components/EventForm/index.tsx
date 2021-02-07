@@ -3,9 +3,10 @@ import { useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import moment, { Moment } from 'moment';
 import Modal from '../Modal';
-import { Container, Form, Buttons } from './styles';
+import { Container, Form, Buttons, StartTime, EndTime, TimeError, TimeMessage } from './styles';
 import { addEventAction } from '../../actions';
 import HourSelects from './HourSelects';
+import Button from '../Button';
 
 interface IProps {
   date: Moment;
@@ -52,11 +53,11 @@ const EventForm: React.FC<IProps> = ({
       return;
     }
     if (startTime && !endTime) {
-      setTimeError('끝나는 시간을 설정해주세요');
+      setTimeError('끝나는 시간을 설정해주세요 !');
       return;
     }
     if (endTime && !startTime) {
-      setTimeError('시작 시간을 설정해주세요');
+      setTimeError('시작 시간을 설정해주세요 !');
       return;
     }
     const { content } = getValues();
@@ -85,6 +86,7 @@ const EventForm: React.FC<IProps> = ({
               startTimeHourRef.current.value = TIME_RESET;
               startTimeMinuteRef.current.disabled = true;
               startTimeMinuteRef.current.value = '0';
+              setTimeError(null);
             }
             setStartTime(null);
             return;
@@ -116,6 +118,7 @@ const EventForm: React.FC<IProps> = ({
               endTimeHourRef.current.value = TIME_RESET;
               endTimeMinuteRef.current.disabled = true;
               endTimeMinuteRef.current.value = '0';
+              setTimeError(null);
             }
             setEndTime(null);
             return;
@@ -145,9 +148,8 @@ const EventForm: React.FC<IProps> = ({
   return (
     <Modal isModalVisible={isEventFormVisible} setIsModalVisible={setIsEventFormVisible}>
       <Container>
-        <h2>일정 추가하기</h2>
         <Form onSubmit={handleSubmit(onSubmit)}>
-          <div>
+          <StartTime>
             <h3>시작 시간</h3>
             <select ref={startTimeHourRef} onChange={onChangeTime(START_TIME, HOUR)}>
               <HourSelects />
@@ -158,8 +160,8 @@ const EventForm: React.FC<IProps> = ({
               <option value="30">30</option>
             </select>
             <span>분</span>
-          </div>
-          <div>
+          </StartTime>
+          <EndTime>
             <h3>끝나는 시간</h3>
             <select ref={endTimeHourRef} onChange={onChangeTime(END_TIME, HOUR)}>
               <HourSelects />
@@ -170,8 +172,12 @@ const EventForm: React.FC<IProps> = ({
               <option value="30">30</option>
             </select>
             <span>분</span>
-          </div>
-          {timeError && <span>{timeError}</span>}
+          </EndTime>
+          {timeError ? (
+            <TimeError>{timeError}</TimeError>
+          ) : (
+            <TimeMessage>시간 설정을 하지 않아도 되요 !</TimeMessage>
+          )}
           <input
             ref={register({ required: '내용을 입력 해주세요.' })}
             name="content"
@@ -181,8 +187,8 @@ const EventForm: React.FC<IProps> = ({
           />
           {errors.content?.message && <span>{errors.content.message}</span>}
           <Buttons>
-            <button type="submit">추가</button>
-            <button onClick={onToggleEventModal}>X</button>
+            <Button type="submit" text={'추 가'} />
+            <Button text={'취 소'} onClickAction={onToggleEventModal} color={'red'} />
           </Buttons>
         </Form>
       </Container>

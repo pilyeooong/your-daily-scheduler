@@ -17,9 +17,9 @@ export const EventTime = styled.div`
 `;
 
 export const EventContent = styled.div`
-  background-color: #fff;
+  background-color: #fafafa;
   border-radius: 3px;
-  box-shadow: 0 1px 0 rgba(9, 30, 66, 0.25);
+  box-shadow: 0px 1px 5px 1.5px rgba(9, 30, 66, 0.25);
   min-height: 20px;
   text-decoration: none;
   padding: 0.7rem;

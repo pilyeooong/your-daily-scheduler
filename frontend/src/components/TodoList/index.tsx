@@ -12,6 +12,7 @@ import { ITodo } from '../../typings/db';
 import TodoForm from '../TodoForm';
 import Todo from '../Todo';
 import { ListContainer } from './styles';
+import Button from '../Button';
 
 interface IProps {
   scheduleId: number;
@@ -19,11 +20,7 @@ interface IProps {
   todos: ITodo[];
 }
 
-const TodoList: React.FC<IProps> = ({
-  todos: originalTodos,
-  scheduleId,
-  revalidate,
-}) => {
+const TodoList: React.FC<IProps> = ({ todos: originalTodos, scheduleId, revalidate }) => {
   const [isSwitched, setIsSwitched] = useState<boolean>(false);
   const [isSwitching, setIsSwitching] = useState<boolean>(false);
   const [mutableTodos, setMutableTodos] = useState<ITodo[]>([]);
@@ -34,16 +31,13 @@ const TodoList: React.FC<IProps> = ({
     }
   }, [originalTodos]);
 
-  const reorder = useCallback(
-    (list: ITodo[], startIndex: number, endIndex: number): ITodo[] => {
-      const result = [...list];
-      const [removed] = result.splice(startIndex, 1);
-      result.splice(endIndex, 0, removed);
+  const reorder = useCallback((list: ITodo[], startIndex: number, endIndex: number): ITodo[] => {
+    const result = [...list];
+    const [removed] = result.splice(startIndex, 1);
+    result.splice(endIndex, 0, removed);
 
-      return result;
-    },
-    []
-  );
+    return result;
+  }, []);
 
   const onDragEnd = useCallback(
     (result: DropResult) => {
@@ -52,11 +46,7 @@ const TodoList: React.FC<IProps> = ({
         return;
       }
 
-      const items = reorder(
-        mutableTodos,
-        result.source.index,
-        result.destination.index
-      );
+      const items = reorder(mutableTodos, result.source.index, result.destination.index);
 
       setIsSwitched(true);
       setIsSwitching(false);
@@ -85,26 +75,13 @@ const TodoList: React.FC<IProps> = ({
     <DragDropContext onDragEnd={onDragEnd} onDragStart={onDragStart}>
       <Droppable droppableId="todos">
         {(provided: DroppableProvided) => (
-          <ListContainer
-            className="todos"
-            ref={provided.innerRef}
-            {...provided.droppableProps}
-          >
+          <ListContainer className="todos" ref={provided.innerRef} {...provided.droppableProps}>
             <h2 className="title">TODO</h2>
             {mutableTodos ? (
               mutableTodos.map((todo, index) => (
-                <Draggable
-                  key={todo.index}
-                  draggableId={`${todo.index}`}
-                  index={index}
-                >
+                <Draggable key={todo.index} draggableId={`${todo.index}`} index={index}>
                   {(provided: DraggableProvided) => (
-                    <Todo
-                      key={todo.id}
-                      id={todo.id}
-                      content={todo.content}
-                      provided={provided}
-                    />
+                    <Todo key={todo.id} id={todo.id} content={todo.content} provided={provided} />
                   )}
                 </Draggable>
               ))
@@ -112,10 +89,10 @@ const TodoList: React.FC<IProps> = ({
               <span>Loading</span>
             )}
             {isSwitched && (
-              <>
-                <span onClick={onSwtichOrders}>적용</span>
-                <span onClick={onCloseSwitchButton}>X</span>
-              </>
+              <div className="switch-buttons">
+                <Button text={'적 용'} onClickAction={onSwtichOrders} />
+                <Button text={'취 소'} onClickAction={onCloseSwitchButton} color={'red'} />
+              </div>
             )}
             {!isSwitched && !isSwitching && (
               <TodoForm scheduleId={scheduleId} revalidate={revalidate} />

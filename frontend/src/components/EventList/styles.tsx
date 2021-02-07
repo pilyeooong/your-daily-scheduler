@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const EventListContainer = styled.div`
   /* max-height: 600px; */
-  background: #ebecf0;
+  background: #fff;
   border-radius: 3%;
   margin-top: 0.5rem;
   padding: 1rem 1rem;
@@ -92,20 +92,6 @@ export const EventsWithTimeContainer = styled.div`
   padding-top: 1rem;
   position: relative;
   height: 300px;
-
-  /* &:hover {
-    & button {
-      display: block;
-    }
-  }
-
-  & button {
-    display: block;
-
-    @media ${(props) => props.theme.desktop} {
-      display: none;
-    }
-  } */
 
   @media ${(props) => props.theme.tablet} {
     height: 280px;
