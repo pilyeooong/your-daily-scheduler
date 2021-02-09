@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useForm } from 'react-hook-form';
 import Button from '../Button';
 import { FormContainer } from './styles';
+import { toast } from 'react-toastify';
 
 interface IForm {
   content: string;
@@ -33,10 +34,16 @@ const Form: React.FC<IProps> = ({ scheduleId, revalidate }) => {
       )
       .then(() => {
         reset();
+        toast.success('할 일을 등록하였습니다!', {
+          position: toast.POSITION.TOP_CENTER,
+        });
         revalidate();
       })
       .catch((err) => {
         console.error(err);
+        toast.error('할 일 등록에 실패하였습니다!', {
+          position: toast.POSITION.TOP_CENTER,
+        });
       });
   }, [getValues, revalidate, reset, scheduleId]);
 

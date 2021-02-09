@@ -53,7 +53,7 @@ const Profile: React.FC = () => {
         return;
       }
     }
-    dispatch(updateProfileRequestAction({ email, password, passwordCheck, city }));
+    dispatch(updateProfileRequestAction({ email, password, city }));
   }, [getValues, dispatch]);
 
   return (

@@ -13,6 +13,7 @@ import TodoForm from '../TodoForm';
 import Todo from '../Todo';
 import { ListContainer } from './styles';
 import Button from '../Button';
+import { toast } from 'react-toastify';
 
 interface IProps {
   scheduleId: number;
@@ -63,6 +64,9 @@ const TodoList: React.FC<IProps> = ({ todos: originalTodos, scheduleId, revalida
     const switchedResult = mutableTodos.map((todo) => todo.index);
     await axios.post(`/todos/orders`, { switchedResult });
     setIsSwitched(false);
+    toast.success('할 일 목록을 업데이트 하였습니다.', {
+      position: toast.POSITION.TOP_CENTER,
+    });
   }, [mutableTodos]);
 
   const onCloseSwitchButton = useCallback(() => {

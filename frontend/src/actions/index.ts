@@ -191,7 +191,6 @@ export const signUpRequestAction = (email: string, password: string): SignUpRequ
 export const updateProfileRequestAction = (data: {
   email: string;
   password?: string;
-  passwordCheck?: string;
   city: string;
 }): UpdateProfileRequestAction => {
   return {

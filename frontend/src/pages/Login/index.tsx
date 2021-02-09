@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
 import { loginRequestAction } from '../../actions';
 import { RootState } from '../../reducers';
 import Loading from '../../components/Loading';
@@ -15,7 +16,6 @@ import {
   ErrorMessage,
 } from '../../styles/AuthForm/styles';
 import KakaoLoginBtn from '../../components/SocialLogin/Kakao';
-import { SignUpLink } from './styles';
 
 interface ILoginForm {
   email: string;
@@ -25,15 +25,22 @@ interface ILoginForm {
 const Login: React.FC = () => {
   const dispatch = useDispatch();
   const loadMyInfoLoading = useSelector((state: RootState) => state.user.loadMyInfoLoading);
+  const loginError = useSelector((state: RootState) => state.user.loginError);
+
+  useEffect(() => {
+    if (loginError) {
+      toast.error(`${loginError}`, { position: toast.POSITION.TOP_CENTER });
+    }
+  }, [loginError]);
 
   const { register, getValues, errors, handleSubmit } = useForm<ILoginForm>({
     mode: 'onChange',
   });
 
-  const onSubmit = () => {
+  const onSubmit = useCallback(() => {
     const { email, password } = getValues();
     dispatch(loginRequestAction(email, password));
-  };
+  }, [getValues, dispatch]);
 
   return (
     <Container>
