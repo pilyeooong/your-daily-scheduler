@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import { createQueryBuilder, getRepository } from 'typeorm';
+import { getRepository } from 'typeorm';
 import Event from '../entity/Event';
 import Schedule from '../entity/Schedule';
 import User from '../entity/User';
