@@ -1,5 +1,4 @@
 import { Request, Response } from 'express';
-import { type } from 'os';
 import typeorm = require('typeorm');
 import {
   addEvent,
