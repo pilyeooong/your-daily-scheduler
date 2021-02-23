@@ -12,7 +12,7 @@ import { AddEventRequestAction, IAddEvent } from '../actions';
 
 function loadEventsAPI() {
   const token = localStorage.getItem('jwtToken');
-  return axios.get('/events', { headers: { Authorization: token }});
+  return axios.get('/events', { headers: { Authorization: token } });
 }
 
 function* loadEvents() {
@@ -36,7 +36,8 @@ function* watchLoadEvents() {
 }
 
 function addEventAPI(data: IAddEvent) {
-  return axios.post('/event', data);
+  const token = localStorage.getItem('jwtToken');
+  return axios.post('/event', data, { headers: { Authorization: token } });
 }
 
 function* addEvent(action: AddEventRequestAction) {

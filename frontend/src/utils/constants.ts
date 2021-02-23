@@ -1,4 +1,7 @@
-export const API_HOST = 'http://localhost:4000';
+const prod = process.env.NODE_ENV === 'production';
+export const API_HOST = prod
+  ? 'http://ec2-54-180-8-13.ap-northeast-2.compute.amazonaws.com'
+  : 'http://localhost:4000';
 
 export const holidays = [
   { name: '신정', date: '2021-01-01' },
