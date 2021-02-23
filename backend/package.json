@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon",
-    "start": "cross-env NODE_ENV=production --transpile-only nodemon",
+    "start": "npx tsc && cross-env NODE_ENV=production node ./dist/server",
     "test": "jest ./src/test/unit --watch --runInBand --detectOpenHandles",
     "test-server": "NODE_ENV=test nodemon",
     "test:e2e": "NODE_ENV=test jest --config ./src/test/e2e/jest-e2e.json --watch --runInBand --detectOpenHandles"
