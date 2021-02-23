@@ -33,4 +33,11 @@ export const FormContainer = styled.div`
       margin-left: 3px;
     }
   }
+
+  & .todo-error {
+    margin-top: 0.5rem;
+    padding: 0 0.8rem;
+    color: red;
+    font-weight: bold;
+  }
 `;
