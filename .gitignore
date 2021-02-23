@@ -11,6 +11,7 @@ note.*
 
 # production
 /build
+build
 dist
 
 # misc

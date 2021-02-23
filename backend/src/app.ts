@@ -32,7 +32,14 @@ if (prod) {
   app.use(helmet());
   app.use(hpp());
 } else {
-  app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
+  app.use(
+    cors({
+      origin: prod
+        ? 'http://yds-frontend-hosting.s3-website.ap-northeast-2.amazonaws.com/'
+        : 'http://localhost:3000',
+      credentials: true,
+    })
+  );
   app.use(morgan('dev'));
 }
 app.use(express.json());
