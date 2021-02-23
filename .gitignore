@@ -1,6 +1,7 @@
 node_modules/
 .env
 note.*
+*.pem
 
 /.pnp
 .pnp.js
