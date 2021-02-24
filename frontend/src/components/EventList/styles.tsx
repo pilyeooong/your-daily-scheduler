@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 
 export const EventListContainer = styled.div`
-  /* max-height: 600px; */
   background: #fff;
   border-radius: 3%;
   margin-top: 0.5rem;
@@ -27,32 +26,30 @@ export const EventListContainer = styled.div`
   & .content {
     display: flex;
     flex-direction: column;
-    height: 80%;
-    margin-bottom: 1.5rem;
 
     @media ${(props) => props.theme.tablet} {
-      margin-bottom: 2.5rem;
     }
 
     @media ${(props) => props.theme.desktop} {
-      margin-bottom: 2rem;
     }
   }
 
   & .add-event {
-    width: 35px;
-    height: 35px;
-    margin-left: auto;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: lightgray;
-    cursor: pointer;
-
-    @media (min-width: 1600px) {
-      width: 45px;
-      height: 45px;
+    padding-top: 3rem;
+    & span {
+      width: 35px;
+      height: 35px;
+      margin-left: auto;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: lightgray;
+      cursor: pointer;
+      @media (min-width: 1600px) {
+        width: 45px;
+        height: 45px;
+      }
     }
   }
 
@@ -89,12 +86,11 @@ export const NoEvents = styled.span`
 `;
 
 export const EventsWithTimeContainer = styled.div`
-  padding-top: 1rem;
+  padding-top: 3rem;
   position: relative;
-  height: 300px;
 
   @media ${(props) => props.theme.tablet} {
-    height: 280px;
+    /* height: 280px; */
   }
 `;
 
@@ -133,17 +129,11 @@ export const Buttons = styled.div`
   }
 
   & .without-time-next-btn {
-    bottom: -2.3rem;
+    bottom: -3rem;
     right: 0;
   }
 `;
 
 export const EventsWithoutTimeContainer = styled.div`
   position: relative;
-  margin-bottom: 1rem;
-  height: 140px;
-
-  @media ${(props) => props.theme.tablet} {
-    height: 150px;
-  }
 `;

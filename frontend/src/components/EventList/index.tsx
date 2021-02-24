@@ -110,7 +110,7 @@ const EventList: React.FC<IProps> = ({ date }) => {
         )}
       </div>
       <div className="add-event" onClick={onToggleEventModal}>
-        +
+        <span>+</span>
       </div>
       {isEventFormVisible ? (
         <EventForm
