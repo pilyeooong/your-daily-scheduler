@@ -86,13 +86,13 @@ export const loadEvent = async (
     const eventRepository = getRepository(Event);
     const eventsWithoutTime = await eventRepository.findAndCount({
       where: { schedule, date, startTime: null },
-      take: 3,
-      skip: page ? (+page - 1) * 3 : 0,
+      take: 2,
+      skip: page ? (+page - 1) * 2 : 0,
     });
 
     return res.status(200).json({
       eventsWithoutTime: eventsWithoutTime[0],
-      eventsWithoutTimeTotalPages: Math.ceil(eventsWithoutTime[1] / 3),
+      eventsWithoutTimeTotalPages: Math.ceil(eventsWithoutTime[1] / 2),
     });
   } catch (err) {
     console.error(err);
@@ -123,8 +123,8 @@ export const loadEventsWithTime = async (
       .andWhere('event.startTime is not null')
       .orderBy('event.startTime', 'ASC')
       .addOrderBy('event.endTime', 'ASC')
-      .take(3)
-      .skip(page ? (+page - 1) * 3 : 0)
+      .take(2)
+      .skip(page ? (+page - 1) * 2 : 0)
       .getManyAndCount();
 
     const parsedEventsWithTime = eventsWithTime[0].map((event) => {
@@ -139,7 +139,7 @@ export const loadEventsWithTime = async (
 
     return res.status(200).json({
       parsedEventsWithTime,
-      eventsWithTimeTotalPages: Math.ceil(eventsWithTime[1] / 3),
+      eventsWithTimeTotalPages: Math.ceil(eventsWithTime[1] / 2),
     });
   } catch (err) {
     console.error(err);
