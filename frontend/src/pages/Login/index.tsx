@@ -33,7 +33,7 @@ const Login: React.FC = () => {
     }
   }, [loginError]);
 
-  const { register, getValues, errors, handleSubmit } = useForm<ILoginForm>({
+  const { register, getValues, errors, handleSubmit, formState } = useForm<ILoginForm>({
     mode: 'onChange',
   });
 
@@ -85,7 +85,9 @@ const Login: React.FC = () => {
               )}
             </InputBox>
             <Submit>
-              <button type="submit">로그인</button>
+              <button type="submit" className={formState.isValid ? 'clickable' : 'disabled'}>
+                로그인
+              </button>
             </Submit>
             <KakaoLoginBtn />
             <div className="link">

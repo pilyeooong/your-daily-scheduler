@@ -25,7 +25,7 @@ const Profile: React.FC = () => {
   const updateProfileDone = useSelector((state: RootState) => state.user.updateProfileDone);
   const updateProfileError = useSelector((state: RootState) => state.user.updateProfileError);
 
-  const { register, getValues, handleSubmit } = useForm<IProfileForm>({
+  const { register, getValues, handleSubmit, formState } = useForm<IProfileForm>({
     mode: 'onChange',
   });
 
@@ -86,7 +86,7 @@ const Profile: React.FC = () => {
           </InputBox>
           <InputBox>
             <SelectCity ref={register} name="city" defaultValue={me.city}>
-              <option>-------</option>
+              <option value="reset">지역 선택</option>
               {cities.map((v) => (
                 <option key={v} value={v}>
                   {v}
@@ -95,7 +95,13 @@ const Profile: React.FC = () => {
             </SelectCity>
           </InputBox>
           <Submit>
-            {updateProfileLoading ? <Loading /> : <button type="submit">수정</button>}
+            {updateProfileLoading ? (
+              <Loading />
+            ) : (
+              <button type="submit" className="clickable">
+                수정
+              </button>
+            )}
           </Submit>
         </Form>
       )}

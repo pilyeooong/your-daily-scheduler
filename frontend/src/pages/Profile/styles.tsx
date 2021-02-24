@@ -7,6 +7,10 @@ export const SelectCity = styled.select`
   margin-bottom: 0.55rem;
   padding-left: 0.5rem;
 
+  & option {
+    padding: 1rem;
+  }
+
   @media ${(props) => props.theme.tablet} {
     margin-bottom: 0.75rem;
   }

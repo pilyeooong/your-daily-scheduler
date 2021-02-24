@@ -58,13 +58,15 @@ export const Submit = styled.div`
     width: 100%;
     color: #fff;
     font-size: 1rem;
-    background: lightgray;
     border: none;
     border-radius: 3px;
     cursor: pointer;
   }
+  & button.disabled {
+    background: lightgray;
+  }
 
-  & button:hover {
+  & button.clickable {
     background: black;
   }
 
