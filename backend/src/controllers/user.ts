@@ -119,7 +119,7 @@ export const editProfile = async (
       {
         id: userId,
         ...(password && { password: hashedPassword }),
-        ...(city && { city }),
+        ...(city && { city: city === 'reset' ? null : city }),
       },
     ]);
 

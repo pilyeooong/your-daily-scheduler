@@ -4,6 +4,7 @@ import CoreEntity from './Core';
 import Schedule from './Schedule';
 
 export enum City {
+  reset = '초기화',
   서울 = '서울',
   제주 = '제주',
   부산 = '부산',
