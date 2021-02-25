@@ -31,13 +31,13 @@ const Profile: React.FC = () => {
 
   useEffect(() => {
     if (updateProfileDone) {
-      toast.success('프로필을 수정하였습니다.', {
+      toast.success('프로필을 수정하였습니다 !', {
         position: toast.POSITION.TOP_CENTER,
       });
       dispatch(resetDoneStateOnUserAction());
     }
     if (updateProfileError) {
-      toast.error('프로필 수정에 실패하였습니다.', {
+      toast.error('프로필 수정에 실패하였습니다 !', {
         position: toast.POSITION.TOP_CENTER,
       });
     }
