@@ -25,7 +25,7 @@ const Profile: React.FC = () => {
   const updateProfileDone = useSelector((state: RootState) => state.user.updateProfileDone);
   const updateProfileError = useSelector((state: RootState) => state.user.updateProfileError);
 
-  const { register, getValues, handleSubmit, formState } = useForm<IProfileForm>({
+  const { register, getValues, handleSubmit } = useForm<IProfileForm>({
     mode: 'onChange',
   });
 
