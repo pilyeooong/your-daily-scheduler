@@ -11,9 +11,18 @@ jobs:
       run:
         working-directory: frontend
 
+    strategy:
+      matrix:
+        node-version: [14.5.x]
+
     steps:
       - name: Checkout Sources
         uses: actions/checkout@master
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
 
       - name: Install depenencies
         run: npm install
