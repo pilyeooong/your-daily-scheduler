@@ -84,7 +84,7 @@ export const BottomLeft = styled.div`
   }
 
   @media (min-width: 1400px) and (max-width: 1499px) {
-    padding-right: 2%;
+    padding-right: 3%;
   }
 
   @media (min-width: 1500px) and (max-width: 1599px) {
