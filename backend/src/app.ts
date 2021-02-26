@@ -34,7 +34,9 @@ if (prod) {
 } else {
   app.use(
     cors({
-      origin: prod ? 'http://yourdailyscheduler.link' : 'http://localhost:3000',
+      origin: prod
+        ? 'https://yourdailyscheduler.link'
+        : 'http://localhost:3000',
       credentials: true,
     })
   );
