@@ -5,15 +5,14 @@ on:
     #   - 'frontend/**'
     branches:
       - master
-
+env:
+  REACT_APP_KAKAO_ID: ${{ secrets.REACT_APP_KAKAO_ID }}
 jobs:
   deploy:
     runs-on: ubuntu-18.04
     defaults:
       run:
         working-directory: frontend
-      env:
-        REACT_APP_KAKAO_ID: ${{ secrets.REACT_APP_KAKAO_ID }}
 
     strategy:
       matrix:
