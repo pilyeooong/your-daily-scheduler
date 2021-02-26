@@ -34,9 +34,7 @@ if (prod) {
 } else {
   app.use(
     cors({
-      origin: prod
-        ? 'http://yds-frontend-hosting.s3-website.ap-northeast-2.amazonaws.com/'
-        : 'http://localhost:3000',
+      origin: prod ? 'http://yourdailyscheduler.link' : 'http://localhost:3000',
       credentials: true,
     })
   );
