@@ -1,5 +1,5 @@
 const prod = process.env.NODE_ENV === 'production';
-export const API_HOST = prod ? 'http://api.yourdailyscheduler.link' : 'http://localhost:4000';
+export const API_HOST = prod ? 'https://api.yourdailyscheduler.link' : 'http://localhost:4000';
 
 export const holidays = [
   { name: '신정', date: '2021-01-01' },
