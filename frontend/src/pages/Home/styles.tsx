@@ -75,19 +75,19 @@ export const BottomLeft = styled.div`
     width: 75%;
   }
 
-  @media(min-width: 1200px) and (max-width: 1299px) {
+  @media (min-width: 1200px) and (max-width: 1299px) {
     padding-right: 8%;
   }
 
-  @media(min-width: 1300px) and (max-width: 1399px) {
-    padding-right: 6%;
+  @media (min-width: 1300px) and (max-width: 1399px) {
+    padding-right: 4.5%;
   }
 
-  @media(min-width: 1400px) and (max-width: 1499px) {
+  @media (min-width: 1400px) and (max-width: 1499px) {
     padding-right: 2%;
   }
 
-  @media(min-width: 1500px) and (max-width: 1599px) {
+  @media (min-width: 1500px) and (max-width: 1599px) {
     padding-right: 1%;
   }
 `;

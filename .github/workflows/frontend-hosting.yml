@@ -1,8 +1,8 @@
 name: deploy
 on:
   push:
-    # paths:
-    #   - 'frontend/**'
+    paths:
+      - 'frontend/**'
     branches:
       - master
 env:
