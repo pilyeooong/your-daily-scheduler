@@ -1,8 +1,8 @@
 name: deploy
 on:
   push:
-    paths:
-      - 'frontend/**'
+    # paths:
+    #   - 'frontend/**'
     branches:
       - master
 
@@ -12,6 +12,8 @@ jobs:
     defaults:
       run:
         working-directory: frontend
+      env:
+        REACT_APP_KAKAO_ID: ${{ secrets.REACT_APP_KAKAO_ID }}
 
     strategy:
       matrix:
@@ -30,8 +32,6 @@ jobs:
         run: npm install
 
       - name: Build
-        env:
-          REACT_APP_KAKAO_ID: ${{ secrets.REACT_APP_KAKAO_ID }}
         run: npm run build
 
       - name: Deploy
