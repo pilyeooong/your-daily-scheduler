@@ -5,13 +5,7 @@ import { useForm } from 'react-hook-form';
 import { Link, useHistory } from 'react-router-dom';
 import { signUpRequestAction } from '../../actions';
 import { RootState } from '../../reducers';
-import {
-  Container,
-  Form,
-  Input,
-  InputBox,
-  Submit,
-} from '../../styles/AuthForm/styles';
+import { Container, Form, Input, InputBox, Submit } from '../../styles/AuthForm/styles';
 import KakaoLoginBtn from '../../components/SocialLogin/Kakao';
 
 interface ISignUpForm {
@@ -25,7 +19,7 @@ const SignUp: React.FC = () => {
   const me = useSelector((state: RootState) => state.user.me);
   const signUpDone = useSelector((state: RootState) => state.user.signUpDone);
   const signUpError = useSelector((state: RootState) => state.user.signUpError);
-  const { register, getValues, errors, handleSubmit } = useForm<ISignUpForm>({
+  const { register, getValues, errors, handleSubmit, formState } = useForm<ISignUpForm>({
     mode: 'onChange',
   });
 
@@ -65,9 +59,7 @@ const SignUp: React.FC = () => {
               required
             />
             {errors.email?.message && <span>{errors.email.message}</span>}
-            {errors.email?.type === 'pattern' && (
-              <span>유효한 이메일을 입력 해주세요</span>
-            )}
+            {errors.email?.type === 'pattern' && <span>유효한 이메일을 입력 해주세요</span>}
           </InputBox>
           <InputBox>
             <Input
@@ -81,12 +73,12 @@ const SignUp: React.FC = () => {
               required
             />
             {errors.password?.message && <span>{errors.password.message}</span>}
-            {errors.password?.type === 'minLength' && (
-              <span>패스워드는 3자 이상 입력해주세요</span>
-            )}
+            {errors.password?.type === 'minLength' && <span>패스워드는 3자 이상 입력해주세요</span>}
           </InputBox>
           <Submit>
-            <button type="submit">회원가입</button>
+            <button type="submit" className={formState.isValid ? 'clickable' : 'disabled'}>
+              회원가입
+            </button>
           </Submit>
           {signUpError && <span>{signUpError}</span>}
           <KakaoLoginBtn />
