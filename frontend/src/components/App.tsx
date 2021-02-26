@@ -20,11 +20,33 @@ function App() {
 
   return (
     <>
-      <Helmet>
-        <title>YOUR DAILY SCHEDULER</title>
-        <meta property="og:title" content={'YOUR DAILY SCHEDULER'} />
-        <meta name="description" content={'하루 일정을 기록해 보세요 !'} />
-      </Helmet>
+      <Helmet
+        title="NodeBird"
+        htmlAttributes={{ lang: 'ko' }}
+        meta={[
+          {
+            name: 'viewport',
+            content:
+              'width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=yes,viewport-fit=cover',
+          },
+          {
+            name: 'description',
+            content: 'Your Daily Scheduler',
+          },
+          {
+            name: 'og:title',
+            content: 'YDS',
+          },
+          {
+            name: 'og:description',
+            content: '하루 일정을 기록해 보세요 !',
+          },
+          {
+            property: 'og:type',
+            content: 'website',
+          },
+        ]}
+      />
       {me ? <LoggedInRouter /> : <LoggedOutRouter />}
       <ToastContainer />
     </>
