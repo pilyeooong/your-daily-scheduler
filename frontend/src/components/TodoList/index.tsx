@@ -85,7 +85,13 @@ const TodoList: React.FC<IProps> = ({ todos: originalTodos, scheduleId, revalida
               mutableTodos.map((todo, index) => (
                 <Draggable key={todo.index} draggableId={`${todo.index}`} index={index}>
                   {(provided: DraggableProvided) => (
-                    <Todo key={todo.id} id={todo.id} content={todo.content} provided={provided} />
+                    <Todo
+                      key={todo.id}
+                      id={todo.id}
+                      content={todo.content}
+                      provided={provided}
+                      revalidate={revalidate}
+                    />
                   )}
                 </Draggable>
               ))
