@@ -11,7 +11,6 @@ export const TodoItem = styled.div`
   padding: 0.7rem;
   cursor: pointer;
   display: flex;
-  position: relative;
 
   & .todo-action {
     display: none;

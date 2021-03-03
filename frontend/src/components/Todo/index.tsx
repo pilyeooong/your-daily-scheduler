@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { DraggableProvided } from 'react-beautiful-dnd';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -16,29 +16,37 @@ interface IProps {
 
 const Todo: React.FC<IProps> = ({ id, content, provided, revalidate }) => {
   const [editable, setEditable] = useState<boolean>(false);
-  const [todoContent, setTodoContent] = useState<string>(content);
-  const onEditTodo = useCallback(async (e: React.FormEvent) => {
-    e.preventDefault();
-    await axios
-      .patch(
-        `/todo/${id}`,
-        { content: todoContent },
-        { headers: { Authorization: `${localStorage.getItem('jwtToken')}` } }
-      )
-      .then(() => {
-        toast.success('수정을 완료하였습니다 !', {
-          position: toast.POSITION.TOP_CENTER,
+  const [editedContent, setEditedContent] = useState<string>(content);
+
+  useEffect(() => {
+    console.log(editedContent);
+  }, [editedContent]);
+
+  const onEditTodo = useCallback(
+    async (e: React.FormEvent) => {
+      e.preventDefault();
+      await axios
+        .patch(
+          `/todo/${id}`,
+          { content: editedContent },
+          { headers: { Authorization: `${localStorage.getItem('jwtToken')}` } }
+        )
+        .then(() => {
+          toast.success('수정을 완료하였습니다 !', {
+            position: toast.POSITION.TOP_CENTER,
+          });
+          revalidate();
+          setEditable(false);
+        })
+        .catch((err) => {
+          console.error(err);
+          toast.error('수정에 실패하였습니다 !', {
+            position: toast.POSITION.TOP_CENTER,
+          });
         });
-        setEditable(false);
-        revalidate();
-      })
-      .catch((err) => {
-        console.error(err);
-        toast.error('수정에 실패하였습니다 !', {
-          position: toast.POSITION.TOP_CENTER,
-        });
-      });
-  }, []);
+    },
+    [editedContent]
+  );
 
   const onDeleteTodo = useCallback(async () => {
     const willDelete = window.confirm('정말 삭제 하시겠습니까 ?');
@@ -63,27 +71,28 @@ const Todo: React.FC<IProps> = ({ id, content, provided, revalidate }) => {
     }
   }, []);
 
-  const onClickEditButton = useCallback(() => {
+  const onCancelEdit = useCallback(() => {
     setEditable((prev) => !prev);
-  }, []);
-
-  const onChangeTodoContent = useCallback((e: React.FormEvent<HTMLInputElement>) => {
-    setTodoContent(e.currentTarget.value);
-  }, []);
+    setEditedContent(content);
+  }, [content]);
 
   return (
     <TodoItem ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
       {editable ? (
         <EditForm onSubmit={onEditTodo}>
-          <input type="text" defaultValue={todoContent} onChange={onChangeTodoContent} />
+          <input
+            type="text"
+            defaultValue={content}
+            onChange={(e) => setEditedContent(e.currentTarget.value)}
+          />
           <div className="edit-form-buttons">
             <button type="submit">수 정</button>
-            <button onClick={onClickEditButton}>취 소</button>
+            <button onClick={onCancelEdit}>취 소</button>
           </div>
         </EditForm>
       ) : (
         <>
-          {todoContent}
+          {content}
           <div className="todo-action">
             <FontAwesomeIcon
               icon={faEdit}
