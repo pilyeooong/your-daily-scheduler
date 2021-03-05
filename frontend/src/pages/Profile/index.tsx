@@ -9,6 +9,7 @@ import { resetDoneStateOnUserAction, updateProfileRequestAction } from '../../ac
 import { Container, Form, Input, InputBox, Submit } from '../../styles/AuthForm/styles';
 import { SelectCity } from './styles';
 import Loading from '../../components/Loading';
+import { useHistory } from 'react-router-dom';
 
 interface IProfileForm {
   email: string;
@@ -19,6 +20,7 @@ interface IProfileForm {
 
 const Profile: React.FC = () => {
   const dispatch = useDispatch();
+  const history = useHistory();
   const me = useSelector((state: RootState) => state.user.me);
 
   const updateProfileLoading = useSelector((state: RootState) => state.user.updateProfileLoading);
@@ -34,6 +36,7 @@ const Profile: React.FC = () => {
       toast.success('프로필을 수정하였습니다 !', {
         position: toast.POSITION.TOP_CENTER,
       });
+      history.push('/');
       dispatch(resetDoneStateOnUserAction());
     }
     if (updateProfileError) {
