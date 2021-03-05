@@ -52,7 +52,7 @@ const Todo: React.FC<IProps> = ({ id, content, provided, revalidate }) => {
           headers: { Authorization: `${localStorage.getItem('jwtToken')}` },
         })
         .then(() => {
-          toast.success('삭제를 완료하였습니다 !', {
+          toast.error('삭제를 완료하였습니다 !', {
             position: toast.POSITION.TOP_CENTER,
           });
           setEditable(false);

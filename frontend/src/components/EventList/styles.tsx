@@ -5,6 +5,7 @@ export const EventListContainer = styled.div`
   border-radius: 3%;
   margin-top: 0.5rem;
   padding: 1rem 1rem;
+  position: relative;
 
   & .header {
     text-align: center;
@@ -35,7 +36,6 @@ export const EventListContainer = styled.div`
   }
 
   & .add-event {
-    margin-top: 4rem;
     & span {
       width: 35px;
       height: 35px;
@@ -46,10 +46,22 @@ export const EventListContainer = styled.div`
       align-items: center;
       background: lightgray;
       cursor: pointer;
-      @media (min-width: 1600px) {
-        width: 45px;
-        height: 45px;
+
+      @media (min-width: 1400px) {
+        width: 35px;
+        height: 35px;
       }
+    }
+
+    @media (min-width: 1200px) {
+      position: absolute;
+      right: 1rem;
+      bottom: 0.75rem;
+    }
+
+    @media (min-width: 1400px) {
+      right: 1rem;
+      bottom: 1.2rem;
     }
   }
 
@@ -85,13 +97,16 @@ export const NoEvents = styled.span`
   letter-spacing: 1px;
 `;
 
-export const EventsWithTimeContainer = styled.div`
-  padding-top: 3rem;
-`;
+export const EventsWithTimeContainer = styled.div``;
 
 export const Buttons = styled.div`
   display: flex;
   width: 100%;
+  padding-bottom: 2rem;
+
+  @media (min-width: 1200px) {
+    height: 80px;
+  }
 
   .btn-box {
     width: 50%;
@@ -108,10 +123,6 @@ export const Buttons = styled.div`
     background: none;
     border: none;
     font-size: 2rem;
-
-    @media ${(props) => props.theme.tablet} {
-      font-size: 2.5rem;
-    }
   }
 
   & button.hide {
