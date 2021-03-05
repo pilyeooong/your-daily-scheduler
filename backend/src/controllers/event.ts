@@ -1,3 +1,4 @@
+import { parse } from 'dotenv/types';
 import { NextFunction, Request, Response } from 'express';
 import { getRepository } from 'typeorm';
 import Event from '../entity/Event';
@@ -128,8 +129,8 @@ export const loadEventsWithTime = async (
       .getManyAndCount();
 
     const parsedEventsWithTime = eventsWithTime[0].map((event) => {
-      const parsedStartTime = event.startTime.toString();
-      const parsedEndTime = event.endTime.toString();
+      const parsedStartTime = event.startTime?.toString();
+      const parsedEndTime = event.endTime?.toString();
       return {
         ...event,
         startTime: parsedStartTime,
@@ -141,6 +142,87 @@ export const loadEventsWithTime = async (
       parsedEventsWithTime,
       eventsWithTimeTotalPages: Math.ceil(eventsWithTime[1] / 2),
     });
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
+};
+
+export const editEvent = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { id } = req.decoded as IDecoded;
+    const { eventId } = req.params;
+    const { content, date, startTime, endTime } = req.body;
+
+    let parsedStartTime;
+    let parsedEndTime;
+
+    if (startTime && endTime) {
+      parsedStartTime = new Date(startTime);
+      parsedEndTime = new Date(endTime);
+    }
+
+    const user = await getRepository(User).findOne({ where: { id } });
+    const schedule = await getRepository(Schedule).findOne({ where: { user } });
+
+    if (!schedule) {
+      return res.status(400).send('존재하지 않는 스케줄입니다.');
+    }
+
+    const eventRepository = getRepository(Event);
+
+    await eventRepository.save([
+      {
+        id: +eventId,
+        schedule,
+        content,
+        date,
+        startTime: parsedStartTime ? parsedStartTime : '',
+        endTime: parsedEndTime ? parsedEndTime : '',
+      },
+    ]);
+
+    const editedEvent = await eventRepository.findOne({ id: +eventId });
+
+    return res.status(200).send(editedEvent);
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
+};
+
+export const deleteEvent = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { id } = req.decoded as IDecoded;
+    const { eventId } = req.params;
+
+    const user = await getRepository(User).findOne({ where: { id } });
+    const schedule = await getRepository(Schedule).findOne({ where: { user } });
+
+    if (!schedule) {
+      return res.status(400).send('존재하지 않는 스케줄입니다.');
+    }
+
+    const eventRepository = getRepository(Event);
+    const eventToDelete = await eventRepository.findOne({
+      where: { schedule, id: +eventId },
+    });
+
+    if (!eventToDelete) {
+      return res.status(400).send('존재하지 않는 event 입니다.');
+    }
+
+    await eventRepository.delete(eventToDelete.id);
+
+    return res.status(200).send(eventToDelete);
   } catch (err) {
     console.error(err);
     next(err);

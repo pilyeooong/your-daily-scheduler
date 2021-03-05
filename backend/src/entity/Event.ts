@@ -11,10 +11,10 @@ export default class Event extends CoreEntity {
   content!: string;
 
   @Column({ type: 'timestamp', nullable: true })
-  startTime!: Date;
+  startTime?: Date;
 
   @Column({ type: 'timestamp', nullable: true })
-  endTime!: Date;
+  endTime?: Date;
 
   @ManyToOne(() => Schedule, (schedule) => schedule.events, {
     nullable: false,
