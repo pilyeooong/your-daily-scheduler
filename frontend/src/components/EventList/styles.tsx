@@ -35,7 +35,7 @@ export const EventListContainer = styled.div`
   }
 
   & .add-event {
-    padding-top: 3rem;
+    margin-top: 4rem;
     & span {
       width: 35px;
       height: 35px;
@@ -87,18 +87,22 @@ export const NoEvents = styled.span`
 
 export const EventsWithTimeContainer = styled.div`
   padding-top: 3rem;
-  position: relative;
-
-  @media ${(props) => props.theme.tablet} {
-    /* height: 280px; */
-  }
 `;
 
 export const Buttons = styled.div`
   display: flex;
+  width: 100%;
+
+  .btn-box {
+    width: 50%;
+  }
+
+  .btn-box.right {
+    display: flex;
+    justify-content: flex-end;
+  }
 
   & button {
-    position: absolute;
     bottom: -1.3rem;
     cursor: pointer;
     background: none;
@@ -106,17 +110,12 @@ export const Buttons = styled.div`
     font-size: 2rem;
 
     @media ${(props) => props.theme.tablet} {
-      bottom: -2.8rem;
       font-size: 2.5rem;
     }
   }
 
-  & .prev-btn {
-    left: 0;
-  }
-
-  & .next-btn {
-    right: 0;
+  & button.hide {
+    display: none;
   }
 
   & .without-time-prev-btn {

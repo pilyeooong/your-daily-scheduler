@@ -34,16 +34,16 @@ const EventsWithoutTime: React.FC<IProps> = ({
         <Event key={event.id} event={event} />
       ))}
       <Buttons>
-        {currentPage !== 1 && (
-          <button className="without-time-prev-btn" onClick={onClickPreviousPage}>
+        <div className="btn-box">
+          <button className={currentPage === 1 ? 'hide' : ''} onClick={onClickPreviousPage}>
             <MdChevronLeft />
           </button>
-        )}
-        {currentPage < totalResult && (
-          <button className="without-time-next-btn" onClick={onClickNextPage}>
+        </div>
+        <div className="btn-box right">
+          <button className={currentPage >= totalResult ? 'hide' : ''} onClick={onClickNextPage}>
             <MdChevronRight />
           </button>
-        )}
+        </div>
       </Buttons>
     </EventsWithoutTimeContainer>
   );

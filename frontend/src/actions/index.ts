@@ -25,6 +25,12 @@ import {
   ADD_EVENT_SUCCESS,
   ADD_EVENT_FAILURE,
   RESET_DONE_STATE,
+  EDIT_EVENT_REQUEST,
+  EDIT_EVENT_SUCCESS,
+  EDIT_EVENT_FAILURE,
+  DELETE_EVENT_REQUEST,
+  DELETE_EVENT_SUCCESS,
+  DELETE_EVENT_FAILURE,
 } from './types';
 
 export interface LoadMyInfoRequestAction {
@@ -226,6 +232,18 @@ export interface IAddEvent {
   endTime: string | null | undefined;
 }
 
+export interface IEditEvent {
+  id: number;
+  content: string;
+  date: string;
+  startTime: string | null | undefined;
+  endTime: string | null | undefined;
+}
+
+export interface IDeleteEvent {
+  id: number;
+}
+
 export interface AddEventRequestAction {
   type: typeof ADD_EVENT_REQUEST;
   data: IAddEvent;
@@ -245,6 +263,36 @@ export interface ResetDoneStateOnEventAction {
   type: typeof RESET_DONE_STATE;
 }
 
+export interface EditEventRequestAction {
+  type: typeof EDIT_EVENT_REQUEST;
+  data: IEditEvent;
+}
+
+export interface EditEventSuccessAction {
+  type: typeof EDIT_EVENT_SUCCESS;
+  data: IEvent;
+}
+
+export interface EditEventFailureAction {
+  type: typeof EDIT_EVENT_FAILURE;
+  error: string | null | Error;
+}
+
+export interface DeleteEventRequestAction {
+  type: typeof DELETE_EVENT_REQUEST;
+  data: IDeleteEvent;
+}
+
+export interface DeleteEventSuccessAction {
+  type: typeof DELETE_EVENT_SUCCESS;
+  data: IDeleteEvent;
+}
+
+export interface DeleteEventFailureAction {
+  type: typeof DELETE_EVENT_FAILURE;
+  error: string | null | Error;
+}
+
 export type EventAction =
   | LoadEventsRequestAction
   | LoadEventsSuccessAction
@@ -252,6 +300,12 @@ export type EventAction =
   | AddEventRequestAction
   | AddEventSuccessAction
   | AddEventFailureAction
+  | EditEventRequestAction
+  | EditEventSuccessAction
+  | EditEventFailureAction
+  | DeleteEventRequestAction
+  | DeleteEventSuccessAction
+  | DeleteEventFailureAction
   | ResetDoneStateOnEventAction;
 
 export const loadEventsAction = (): LoadEventsRequestAction => {
@@ -263,6 +317,20 @@ export const loadEventsAction = (): LoadEventsRequestAction => {
 export const addEventAction = (data: IAddEvent): AddEventRequestAction => {
   return {
     type: ADD_EVENT_REQUEST,
+    data,
+  };
+};
+
+export const editEventAction = (data: IEditEvent): EditEventRequestAction => {
+  return {
+    type: EDIT_EVENT_REQUEST,
+    data,
+  };
+};
+
+export const deleteEventAction = (data: IDeleteEvent): DeleteEventRequestAction => {
+  return {
+    type: DELETE_EVENT_REQUEST,
     data,
   };
 };

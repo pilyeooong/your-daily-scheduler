@@ -1,18 +1,29 @@
-import React, { useState, useCallback, useRef } from 'react';
+import React, { useState, useCallback, useRef, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import moment, { Moment } from 'moment';
 import Modal from '../Modal';
-import { Container, Form, Buttons, StartTime, EndTime, TimeError, TimeMessage } from './styles';
-import { addEventAction } from '../../actions';
-import HourSelects from './HourSelects';
+import {
+  Container,
+  Form,
+  Buttons,
+  StartTime,
+  EndTime,
+  TimeError,
+  TimeMessage,
+} from '../EventForm/styles';
 import Button from '../Button';
+import { editEventAction } from '../../actions';
 
 interface IProps {
+  id: number;
   date: Moment;
+  prevStartTime: Moment;
+  prevEndTime: Moment;
   isEventFormVisible: boolean;
   setIsEventFormVisible: React.Dispatch<React.SetStateAction<boolean>>;
   onToggleEventModal: () => void;
+  prevContent: string;
 }
 
 export interface IEventForm {
@@ -28,21 +39,38 @@ const END_TIME = 'END_TIME';
 const HOUR = 'HOUR';
 const MINUTE = 'MINUTE';
 
-const EventForm: React.FC<IProps> = ({
+const EditEventForm: React.FC<IProps> = ({
+  id,
   date,
+  prevStartTime,
+  prevEndTime,
   isEventFormVisible,
   setIsEventFormVisible,
   onToggleEventModal,
+  prevContent,
 }) => {
   const dispatch = useDispatch();
-  const [startTime, setStartTime] = useState<Moment | null>(null);
-  const [endTime, setEndTime] = useState<Moment | null>(null);
+  const [startTime, setStartTime] = useState<Moment | null>(prevStartTime);
+  const [endTime, setEndTime] = useState<Moment | null>(prevEndTime);
   const [timeError, setTimeError] = useState<string | null>(null);
 
   const startTimeHourRef = useRef<HTMLSelectElement>(null);
   const startTimeMinuteRef = useRef<HTMLSelectElement>(null);
   const endTimeHourRef = useRef<HTMLSelectElement>(null);
   const endTimeMinuteRef = useRef<HTMLSelectElement>(null);
+
+  useEffect(() => {
+    if (startTimeMinuteRef.current) {
+      if (startTime?.isValid()) {
+        startTimeMinuteRef.current.disabled = false;
+      }
+    }
+    if (endTimeMinuteRef.current) {
+      if (endTime?.isValid()) {
+        endTimeMinuteRef.current.disabled = false;
+      }
+    }
+  }, []);
 
   const { register, getValues, errors, handleSubmit, reset } = useForm<IEventForm>({
     mode: 'onChange',
@@ -61,9 +89,11 @@ const EventForm: React.FC<IProps> = ({
       return;
     }
     const { content } = getValues();
-    console.log(startTime);
+    console.log(startTime?.toDate());
+    console.log(endTime?.toDate());
     dispatch(
-      addEventAction({
+      editEventAction({
+        id,
         content,
         date: date.format('YYYY-MM-DD'),
         startTime: startTime?.toDate().toString(),
@@ -78,7 +108,7 @@ const EventForm: React.FC<IProps> = ({
     (type: string, timeType: string) => (e: React.FormEvent<HTMLSelectElement>) => {
       let timeToSet = moment(date).hour(0).minute(0).second(0);
       if (type === START_TIME) {
-        if (startTime) {
+        if (startTime?.isValid()) {
           timeToSet = startTime;
         }
         if (timeType === HOUR) {
@@ -110,7 +140,7 @@ const EventForm: React.FC<IProps> = ({
           setStartTime(timeToSet.minute(+e.currentTarget.value));
         }
       } else {
-        if (endTime) {
+        if (endTime?.isValid()) {
           timeToSet = endTime;
         }
         if (timeType === HOUR) {
@@ -152,11 +182,44 @@ const EventForm: React.FC<IProps> = ({
         <Form onSubmit={handleSubmit(onSubmit)}>
           <StartTime>
             <h3>시작 시간</h3>
-            <select ref={startTimeHourRef} onChange={onChangeTime(START_TIME, HOUR)}>
-              <HourSelects />
+            <select
+              ref={startTimeHourRef}
+              defaultValue={startTime?.hour().toString()}
+              onChange={onChangeTime(START_TIME, HOUR)}
+            >
+              <option value={TIME_RESET}>----</option>
+              <option value="0">0</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+              <option value="9">9</option>
+              <option value="10">10</option>
+              <option value="11">11</option>
+              <option value="12">12</option>
+              <option value="13">13</option>
+              <option value="14">14</option>
+              <option value="15">15</option>
+              <option value="16">16</option>
+              <option value="17">17</option>
+              <option value="18">18</option>
+              <option value="19">19</option>
+              <option value="20">20</option>
+              <option value="21">21</option>
+              <option value="22">22</option>
+              <option value="23">23</option>
             </select>
             <span>시</span>
-            <select ref={startTimeMinuteRef} disabled onChange={onChangeTime(START_TIME, MINUTE)}>
+            <select
+              ref={startTimeMinuteRef}
+              defaultValue={startTime?.minute().toString()}
+              disabled
+              onChange={onChangeTime(START_TIME, MINUTE)}
+            >
               <option value="0">0</option>
               <option value="30">30</option>
             </select>
@@ -164,11 +227,44 @@ const EventForm: React.FC<IProps> = ({
           </StartTime>
           <EndTime>
             <h3>끝나는 시간</h3>
-            <select ref={endTimeHourRef} onChange={onChangeTime(END_TIME, HOUR)}>
-              <HourSelects />
+            <select
+              ref={endTimeHourRef}
+              defaultValue={endTime?.hour().toString()}
+              onChange={onChangeTime(END_TIME, HOUR)}
+            >
+              <option value={TIME_RESET}>----</option>
+              <option value="0">0</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+              <option value="9">9</option>
+              <option value="10">10</option>
+              <option value="11">11</option>
+              <option value="12">12</option>
+              <option value="13">13</option>
+              <option value="14">14</option>
+              <option value="15">15</option>
+              <option value="16">16</option>
+              <option value="17">17</option>
+              <option value="18">18</option>
+              <option value="19">19</option>
+              <option value="20">20</option>
+              <option value="21">21</option>
+              <option value="22">22</option>
+              <option value="23">23</option>
             </select>
             <span>시</span>
-            <select ref={endTimeMinuteRef} disabled onChange={onChangeTime(END_TIME, MINUTE)}>
+            <select
+              ref={endTimeMinuteRef}
+              defaultValue={endTime?.minute().toString()}
+              disabled
+              onChange={onChangeTime(END_TIME, MINUTE)}
+            >
               <option value="0">0</option>
               <option value="30">30</option>
             </select>
@@ -183,6 +279,7 @@ const EventForm: React.FC<IProps> = ({
             ref={register({ required: '내용을 입력 해주세요.' })}
             name="content"
             type="text"
+            defaultValue={prevContent}
             placeholder="내용을 입력해주세요"
             required
           />
@@ -197,4 +294,4 @@ const EventForm: React.FC<IProps> = ({
   );
 };
 
-export default EventForm;
+export default EditEventForm;

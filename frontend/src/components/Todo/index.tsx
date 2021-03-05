@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
 import { DraggableProvided } from 'react-beautiful-dnd';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -17,10 +17,6 @@ interface IProps {
 const Todo: React.FC<IProps> = ({ id, content, provided, revalidate }) => {
   const [editable, setEditable] = useState<boolean>(false);
   const [editedContent, setEditedContent] = useState<string>(content);
-
-  useEffect(() => {
-    console.log(editedContent);
-  }, [editedContent]);
 
   const onEditTodo = useCallback(
     async (e: React.FormEvent) => {

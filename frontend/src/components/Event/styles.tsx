@@ -16,7 +16,10 @@ export const EventTime = styled.div`
   text-align: center;
 `;
 
+export const EventContentContainer = styled.div``;
+
 export const EventContent = styled.div`
+  display: flex;
   background-color: #fafafa;
   border-radius: 3px;
   box-shadow: 0px 1px 5px 1.5px rgba(9, 30, 66, 0.25);
@@ -24,4 +27,19 @@ export const EventContent = styled.div`
   text-decoration: none;
   padding: 0.7rem;
   cursor: pointer;
+
+  & .event-action {
+    display: none;
+    margin-left: auto;
+
+    & svg:nth-of-type(2) {
+      margin-left: 5px;
+    }
+  }
+
+  &:hover {
+    & .event-action {
+      display: block;
+    }
+  }
 `;

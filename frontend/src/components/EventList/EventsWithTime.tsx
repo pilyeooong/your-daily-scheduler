@@ -34,16 +34,16 @@ const EventsWithTime: React.FC<IProps> = ({
         <Event key={event.id} event={event} />
       ))}
       <Buttons>
-        {currentPage !== 1 && (
-          <button className="prev-btn" onClick={onClickPreviousPage}>
+        <div className="btn-box">
+          <button className={currentPage === 1 ? 'hide' : ''} onClick={onClickPreviousPage}>
             <MdChevronLeft />
           </button>
-        )}
-        {currentPage < totalResult && (
-          <button className="next-btn" onClick={onClickNextPage}>
+        </div>
+        <div className="btn-box right">
+          <button className={currentPage >= totalResult ? 'hide' : ''} onClick={onClickNextPage}>
             <MdChevronRight />
           </button>
-        )}
+        </div>
       </Buttons>
     </EventsWithTimeContainer>
   );
