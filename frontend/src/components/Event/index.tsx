@@ -3,7 +3,7 @@ import { IEvent } from '../../typings/db';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTrashAlt } from '@fortawesome/free-regular-svg-icons';
 import moment from 'moment';
-import { EventContent, EventContentContainer, EventItem, EventTime } from './styles';
+import { EventContent, EventItem, EventTime } from './styles';
 import EditEventForm from '../EditEventForm';
 import { useDispatch } from 'react-redux';
 import { deleteEventAction } from '../../actions';
