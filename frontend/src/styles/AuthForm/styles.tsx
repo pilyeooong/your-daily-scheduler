@@ -20,6 +20,8 @@ export const Form = styled.form`
     margin-top: 0.5rem;
     padding-top: 0.5rem;
     font-size: 1rem;
+    font-weight: bold;
+    letter-spacing: 1px;
 
     & a {
       margin-left: 10px;
@@ -33,6 +35,25 @@ export const Form = styled.form`
 `;
 
 export const InputBox = styled.div``;
+
+export const LoginKeeper = styled.div`
+  height: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-bottom: 1rem;
+
+  & input {
+    transform: scale(1.5);
+  }
+
+  & label {
+    padding-top: 2.5px;
+    margin-left: 5px;
+    font-weight: bold;
+    letter-spacing: 1px;
+  }
+`;
 
 export const Input = styled.input`
   width: 100%;

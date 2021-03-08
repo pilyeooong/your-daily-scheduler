@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Helmet } from 'react-helmet';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
@@ -21,6 +21,7 @@ interface IProfileForm {
 const Profile: React.FC = () => {
   const dispatch = useDispatch();
   const history = useHistory();
+  const [isKakao, setIsKakao] = useState<boolean>(false);
   const me = useSelector((state: RootState) => state.user.me);
 
   const updateProfileLoading = useSelector((state: RootState) => state.user.updateProfileLoading);
@@ -30,6 +31,16 @@ const Profile: React.FC = () => {
   const { register, getValues, handleSubmit } = useForm<IProfileForm>({
     mode: 'onChange',
   });
+
+  useEffect(() => {
+    if (me) {
+      setIsKakao(me.provider === 'kakao');
+    }
+  }, [me]);
+
+  useEffect(() => {
+    console.log(isKakao);
+  }, [isKakao]);
 
   useEffect(() => {
     if (updateProfileDone) {
@@ -77,14 +88,23 @@ const Profile: React.FC = () => {
             />
           </InputBox>
           <InputBox>
-            <Input ref={register()} name="password" type="password" placeholder="새 비밀번호" />
+            <Input
+              ref={register()}
+              disabled={isKakao}
+              name="password"
+              type="password"
+              placeholder={
+                isKakao ? '소셜 로그인 계정은 비밀번호 변경이 불가합니다' : '새 비밀번호'
+              }
+            />
           </InputBox>
           <InputBox>
             <Input
               ref={register()}
+              disabled={isKakao}
               name="passwordCheck"
               type="password"
-              placeholder="새 비밀번호 확인"
+              placeholder={isKakao ? '' : '새 비밀번호 확인'}
             />
           </InputBox>
           <InputBox>

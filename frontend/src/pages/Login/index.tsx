@@ -14,12 +14,14 @@ import {
   Input,
   Submit,
   ErrorMessage,
+  LoginKeeper,
 } from '../../styles/AuthForm/styles';
 import KakaoLoginBtn from '../../components/SocialLogin/Kakao';
 
 interface ILoginForm {
   email: string;
   password: string;
+  loginKeeper: boolean;
 }
 
 const Login: React.FC = () => {
@@ -38,8 +40,8 @@ const Login: React.FC = () => {
   });
 
   const onSubmit = useCallback(() => {
-    const { email, password } = getValues();
-    dispatch(loginRequestAction(email, password));
+    const { email, password, loginKeeper } = getValues();
+    dispatch(loginRequestAction(email, password, loginKeeper));
   }, [getValues, dispatch]);
 
   return (
@@ -84,6 +86,10 @@ const Login: React.FC = () => {
                 <ErrorMessage>패스워드는 3자 이상 입력해주세요</ErrorMessage>
               )}
             </InputBox>
+            <LoginKeeper>
+              <input ref={register({ required: false })} name="loginKeeper" type="checkbox" />
+              <label>로그인 상태 유지</label>
+            </LoginKeeper>
             <Submit>
               <button type="submit" className={formState.isValid ? 'clickable' : 'disabled'}>
                 로그인

@@ -50,6 +50,7 @@ export interface LoadMyInfoFailureAction {
 export interface IAuthForm {
   email: string;
   password: string;
+  loginKeeper?: boolean;
 }
 
 export interface LoginRequestAction {
@@ -161,12 +162,17 @@ export const loadMyInfoRequest = (): LoadMyInfoRequestAction => {
   };
 };
 
-export const loginRequestAction = (email: string, password: string): LoginRequestAction => {
+export const loginRequestAction = (
+  email: string,
+  password: string,
+  loginKeeper: boolean
+): LoginRequestAction => {
   return {
     type: LOG_IN_REQUEST,
     data: {
       email,
       password,
+      loginKeeper,
     },
   };
 };

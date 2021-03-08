@@ -161,6 +161,7 @@ const reducer = (state = initialState, action: UserAction) => {
         break;
       case RESET_DONE_STATE:
         draft.updateProfileDone = false;
+        draft.loadMyInfoError = null;
         break;
     }
   });

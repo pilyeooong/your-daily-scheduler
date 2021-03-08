@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
 import { RootState } from '../reducers';
-import { loadMyInfoRequest } from '../actions';
+import { loadMyInfoRequest, resetDoneStateOnUserAction } from '../actions';
 
 import LoggedInRouter from '../routers/Logged-in-router';
 import LoggedOutRouter from '../routers/Logged-out-router';
@@ -13,10 +13,21 @@ import { Helmet } from 'react-helmet';
 function App() {
   const dispatch = useDispatch();
   const me = useSelector((state: RootState) => state.user.me);
+  const loadMyInfoError = useSelector((state: RootState) => state.user.loadMyInfoError);
 
   useEffect(() => {
     dispatch(loadMyInfoRequest());
   }, [dispatch]);
+
+  useEffect(() => {
+    if (loadMyInfoError) {
+      if (+loadMyInfoError === 419) {
+        alert('토큰이 만료되어 로그인 화면으로 돌아갑니다.');
+        localStorage.removeItem('jwtToken');
+      }
+      dispatch(resetDoneStateOnUserAction());
+    }
+  }, [loadMyInfoError]);
 
   return (
     <>

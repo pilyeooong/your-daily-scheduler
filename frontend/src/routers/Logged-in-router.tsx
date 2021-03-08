@@ -12,8 +12,8 @@ const commonRoutes = [
   },
   {
     path: '/profile',
-    component: <Profile />
-  }
+    component: <Profile />,
+  },
 ];
 
 const LoggedInRouter = () => {

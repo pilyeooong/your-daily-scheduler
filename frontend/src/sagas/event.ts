@@ -39,7 +39,7 @@ function* loadEvents() {
     console.error(err);
     yield put({
       type: LOAD_EVENTS_FAILURE,
-      error: err.response.data,
+      error: err.response.status,
     });
   }
 }

@@ -2,6 +2,7 @@ export interface IUser {
   email: string;
   city: string;
   password: null;
+  provider: string;
   createdAt: string;
   updatedAt: string;
 }

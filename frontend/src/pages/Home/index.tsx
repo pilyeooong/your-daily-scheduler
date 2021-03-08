@@ -13,13 +13,16 @@ import fetcher from '../../utils/fetcher';
 import { BottomContainer, BottomLeft, LoadingContainer, TopContainer } from './styles';
 import Loading from '../../components/Loading';
 import { toast } from 'react-toastify';
+import { useHistory } from 'react-router-dom';
 
 const Home = () => {
   const dispatch = useDispatch();
+  const history = useHistory();
   const me = useSelector((state: RootState) => state.user.me);
   const eventsData = useSelector((state: RootState) => state.event.events);
   const editEventDone = useSelector((state: RootState) => state.event.editEventDone);
   const deleteEventDone = useSelector((state: RootState) => state.event.deleteEventDone);
+  const loadEventsError = useSelector((state: RootState) => state.event.loadEventsError);
   const { data: scheduleData } = useSWR<ISchedule>('/schedule', fetcher);
   const { data: todoData, revalidate } = useSWR<ITodo[]>(`/todos`, fetcher);
 
@@ -28,6 +31,14 @@ const Home = () => {
       dispatch(loadEventsAction());
     }
   }, [me]);
+
+  useEffect(() => {
+    if (loadEventsError) {
+      if (+loadEventsError === 419) {
+        history.go(0);
+      }
+    }
+  }, [loadEventsError]);
 
   useEffect(() => {
     if (editEventDone) {

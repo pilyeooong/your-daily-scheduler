@@ -42,9 +42,10 @@ function* loadMyInfo() {
     });
   } catch (err) {
     console.error(err);
+    console.log(err.response);
     yield put({
       type: LOAD_MY_INFO_FAILURE,
-      error: err.response.data,
+      error: err.response.status,
     });
   }
 }
@@ -146,7 +147,9 @@ function* watchSignUp() {
 }
 
 function updateProfileAPI(data: IUpdateProfile) {
-  return axios.patch('/user', data, { headers: { Authorization: `${localStorage.getItem('jwtToken')}`}});
+  return axios.patch('/user', data, {
+    headers: { Authorization: `${localStorage.getItem('jwtToken')}` },
+  });
 }
 
 function* updateProfile(action: UpdateProfileRequestAction) {
