@@ -35,6 +35,9 @@ export default class User extends CoreEntity {
   @OneToOne(() => Schedule)
   schedule!: Schedule;
 
+  @Column({ type: 'varchar', length: 20, default: 'local' })
+  provider!: string;
+
   @Column({ type: 'enum', enum: City, nullable: true })
   city!: City;
 

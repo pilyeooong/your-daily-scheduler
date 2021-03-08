@@ -5,9 +5,9 @@ import { IDecoded } from '../interfaces';
 
 dotenv.config();
 
-export const signJWT = (userId: number): string => {
+export const signJWT = (userId: number, loginKeeper?: boolean): string => {
   return jwt.sign({ id: userId }, process.env.JWT_SIGNATURE!, {
-    expiresIn: '3h',
+    ...(!loginKeeper && { expiresIn: '6h' }),
     issuer: 'todo',
   });
 };

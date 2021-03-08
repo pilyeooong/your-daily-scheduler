@@ -65,8 +65,9 @@ export const login = async (
   next: NextFunction
 ) => {
   try {
-    const { email, password } = req.body;
+    const { email, password, loginKeeper } = req.body;
 
+    console.log('첵첵', req.body);
     const user = await getRepository(User).findOne(
       { email },
       { select: ['id', 'email', 'password', 'city'] }
@@ -81,7 +82,7 @@ export const login = async (
       return res.status(400).send('비밀번호가 일치하지 않습니다.');
     }
 
-    const token = signJWT(user.id);
+    const token = signJWT(user.id, loginKeeper);
     return res.status(200).json({ token, user: { ...user, password: null } });
   } catch (err) {
     console.error(err);
@@ -162,6 +163,7 @@ export const kakaoLogin = async (
         const newUser = await userRepository.create({
           email: profile.kakao_account.email,
           password: hashedPassword,
+          provider: 'kakao',
         });
         await userRepository.save(newUser);
         const scheduleRepository = getRepository(Schedule);
