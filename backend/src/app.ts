@@ -25,7 +25,7 @@ if (prod) {
   app.use(
     cors({
       origin: prod
-        ? 'https://yourdailyschedyler.link'
+        ? 'https://yourdailyscheduler.link'
         : 'http://localhost:3000',
       credentials: true,
     })
