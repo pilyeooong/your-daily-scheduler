@@ -24,7 +24,9 @@ const prod = process.env.NODE_ENV === 'production';
 if (prod) {
   app.use(
     cors({
-      origin: true,
+      origin: prod
+        ? 'https://yourdailyschedyler.link'
+        : 'http://localhost:3000',
       credentials: true,
     })
   );
