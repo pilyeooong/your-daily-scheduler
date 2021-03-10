@@ -72,7 +72,6 @@ export const login = async (
   try {
     const { email, password, loginKeeper } = req.body;
 
-    console.log('첵첵', req.body);
     const user = await getRepository(User).findOne(
       { email },
       { select: ['id', 'email', 'password', 'city'] }
@@ -159,16 +158,16 @@ export const kakaoLogin = async (
         where: { email: profile.kakao_account.email },
       });
 
-      const hashedPassword = await bcrypt.hash(
-        Math.random().toString(36).substring(2, 15),
-        12
-      );
-
       if (!exUser) {
+        const hashedPassword = await bcrypt.hash(
+          Math.random().toString(36).substring(2, 15),
+          12
+        );
+
         const newUser = await userRepository.create({
           email: profile.kakao_account.email,
           password: hashedPassword,
-          provider: 'kakao',
+          provider: 'social',
         });
         await userRepository.save(newUser);
         const scheduleRepository = getRepository(Schedule);
@@ -178,6 +177,10 @@ export const kakaoLogin = async (
 
         const token = signJWT(newUser.id);
         return res.status(200).json({ token, user: newUser });
+      }
+
+      if (exUser.provider === 'local') {
+        return res.status(400).send('해당 이메일로 생성 된 계정이 존재합니다.');
       }
 
       const token = signJWT(exUser.id);
@@ -214,7 +217,7 @@ export const googleLogin = async (
       const newUser = await userRepository.create({
         email,
         password: hashedPassword,
-        provider: 'google',
+        provider: 'social',
       });
       await userRepository.save(newUser);
 
@@ -226,6 +229,11 @@ export const googleLogin = async (
       const token = signJWT(newUser.id);
       return res.status(200).json({ token, user: newUser });
     }
+
+    if (exUser.provider === 'local') {
+      return res.status(400).send('해당 이메일로 생성 된 계정이 존재합니다.');
+    }
+
     const token = signJWT(exUser.id);
     return res.status(200).json({ token, user: exUser });
   } catch (err) {
