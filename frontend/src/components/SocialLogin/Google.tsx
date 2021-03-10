@@ -17,6 +17,25 @@ const Google = () => {
     <GoogleLogin
       clientId={process.env.REACT_APP_GOOGLE_ID!}
       buttonText={'Login'}
+      render={(props) => (
+        <button
+          type="button"
+          onClick={props.onClick}
+          disabled={props.disabled}
+          style={{
+            width: '100%',
+            height: '44px',
+            border: 'none',
+            background: 'white',
+            borderRadius: '3px',
+            fontSize: '1rem',
+            marginTop: '0.5rem',
+            fontWeight: 600,
+          }}
+        >
+          구글 로그인
+        </button>
+      )}
       onSuccess={onSuccessGoogleLogin}
       onFailure={console.log}
       cookiePolicy={'single_host_origin'}
