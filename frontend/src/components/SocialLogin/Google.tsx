@@ -2,6 +2,8 @@ import React, { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import { GoogleLogin, GoogleLoginResponse } from 'react-google-login';
 import { googleLoginRequestAction } from '../../actions';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 
 const Google = () => {
   const dispatch = useDispatch();
@@ -33,6 +35,7 @@ const Google = () => {
             fontWeight: 600,
           }}
         >
+          <FontAwesomeIcon icon={faGoogle} style={{ marginRight: '0.4rem' }} />
           구글 로그인
         </button>
       )}

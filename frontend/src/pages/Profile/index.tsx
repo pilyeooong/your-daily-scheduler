@@ -21,7 +21,7 @@ interface IProfileForm {
 const Profile: React.FC = () => {
   const dispatch = useDispatch();
   const history = useHistory();
-  const [isKakao, setIsKakao] = useState<boolean>(false);
+  const [isSocialAccount, setIsSocialAccount] = useState<boolean>(false);
   const me = useSelector((state: RootState) => state.user.me);
 
   const updateProfileLoading = useSelector((state: RootState) => state.user.updateProfileLoading);
@@ -34,13 +34,9 @@ const Profile: React.FC = () => {
 
   useEffect(() => {
     if (me) {
-      setIsKakao(me.provider === 'kakao');
+      setIsSocialAccount(me.provider === 'social');
     }
   }, [me]);
-
-  useEffect(() => {
-    console.log(isKakao);
-  }, [isKakao]);
 
   useEffect(() => {
     if (updateProfileDone) {
@@ -90,21 +86,21 @@ const Profile: React.FC = () => {
           <InputBox>
             <Input
               ref={register()}
-              disabled={isKakao}
+              disabled={isSocialAccount}
               name="password"
               type="password"
               placeholder={
-                isKakao ? '소셜 로그인 계정은 비밀번호 변경이 불가합니다' : '새 비밀번호'
+                isSocialAccount ? '소셜 로그인 계정은 비밀번호 변경이 불가합니다' : '새 비밀번호'
               }
             />
           </InputBox>
           <InputBox>
             <Input
               ref={register()}
-              disabled={isKakao}
+              disabled={isSocialAccount}
               name="passwordCheck"
               type="password"
-              placeholder={isKakao ? '' : '새 비밀번호 확인'}
+              placeholder={isSocialAccount ? '' : '새 비밀번호 확인'}
             />
           </InputBox>
           <InputBox>
