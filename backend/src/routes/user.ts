@@ -3,6 +3,7 @@ import { verifyJWT } from '../controllers/jwt';
 import {
   editProfile,
   getMe,
+  googleLogin,
   kakaoLogin,
   login,
   signUp,
@@ -15,5 +16,6 @@ router.post('/', signUp);
 router.post('/login', login);
 router.patch('/', verifyJWT, editProfile);
 router.post('/kakao', kakaoLogin);
+router.post('/google', googleLogin);
 
 export default router;

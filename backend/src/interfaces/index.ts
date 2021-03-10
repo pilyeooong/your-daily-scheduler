@@ -33,6 +33,14 @@ export interface IKakaoLoginResult {
   profile: IKakaoProfile;
 }
 
+export interface IGoogleLoginResult {
+  googleId: string;
+  imageUrl: string;
+  email: string;
+  name: string;
+  givenName: string;
+}
+
 export interface IKakaoInfo {
   id: number;
   connected_at: string;

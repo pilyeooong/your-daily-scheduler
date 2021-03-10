@@ -4,7 +4,12 @@ import * as bcrypt from 'bcrypt';
 import User, { City } from '../entity/User';
 import Schedule from '../entity/Schedule';
 import { signJWT } from './jwt';
-import { IDecoded, IKakaoInfo, IKakaoLoginResult } from '../interfaces';
+import {
+  IDecoded,
+  IGoogleLoginResult,
+  IKakaoInfo,
+  IKakaoLoginResult,
+} from '../interfaces';
 import axios, { AxiosResponse } from 'axios';
 
 export const getMe = async (
@@ -180,6 +185,49 @@ export const kakaoLogin = async (
       return res.status(200).json({ token, user: exUser });
     }
     return res.status(400).send('올바른 토큰이 아닙니다.');
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
+};
+
+export const googleLogin = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { email }: IGoogleLoginResult = req.body;
+
+    const userRepository = getRepository(User);
+
+    const exUser = await userRepository.findOne({
+      where: { email },
+    });
+
+    if (!exUser) {
+      const hashedPassword = await bcrypt.hash(
+        Math.random().toString(36).substring(2, 15),
+        12
+      );
+
+      const newUser = await userRepository.create({
+        email,
+        password: hashedPassword,
+        provider: 'google',
+      });
+      await userRepository.save(newUser);
+
+      const scheduleRepository = getRepository(Schedule);
+      await scheduleRepository.save(
+        scheduleRepository.create({ user: newUser })
+      );
+
+      const token = signJWT(newUser.id);
+      return res.status(200).json({ token, user: newUser });
+    }
+    const token = signJWT(exUser.id);
+    return res.status(200).json({ token, user: exUser });
   } catch (err) {
     console.error(err);
     next(err);

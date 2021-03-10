@@ -10,6 +10,9 @@ import {
   KAKAO_LOGIN_FAILURE,
   KAKAO_LOGIN_REQUEST,
   KAKAO_LOGIN_SUCCESS,
+  GOOGLE_LOGIN_FAILURE,
+  GOOGLE_LOGIN_REQUEST,
+  GOOGLE_LOGIN_SUCCESS,
   LOG_OUT_FAILURE,
   LOG_OUT_REQUEST,
   LOG_OUT_SUCCESS,
@@ -125,6 +128,21 @@ const reducer = (state = initialState, action: UserAction) => {
         draft.me = action.data;
         break;
       case KAKAO_LOGIN_FAILURE:
+        draft.loginLoading = false;
+        draft.loginDone = false;
+        draft.loginError = action.error;
+        break;
+      case GOOGLE_LOGIN_REQUEST:
+        draft.loginLoading = true;
+        draft.loginDone = false;
+        draft.loginError = null;
+        break;
+      case GOOGLE_LOGIN_SUCCESS:
+        draft.loginLoading = false;
+        draft.loginDone = true;
+        draft.me = action.data;
+        break;
+      case GOOGLE_LOGIN_FAILURE:
         draft.loginLoading = false;
         draft.loginDone = false;
         draft.loginError = action.error;

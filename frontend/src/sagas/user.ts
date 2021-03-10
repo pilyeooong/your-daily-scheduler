@@ -10,6 +10,9 @@ import {
   KAKAO_LOGIN_REQUEST,
   KAKAO_LOGIN_SUCCESS,
   KAKAO_LOGIN_FAILURE,
+  GOOGLE_LOGIN_REQUEST,
+  GOOGLE_LOGIN_SUCCESS,
+  GOOGLE_LOGIN_FAILURE,
   SIGN_UP_REQUEST,
   SIGN_UP_SUCCESS,
   SIGN_UP_FAILURE,
@@ -21,6 +24,7 @@ import {
   UPDATE_PROFILE_REQUEST,
 } from '../actions/types';
 import {
+  GoogleLoginRequestAction,
   IAuthForm,
   IUpdateProfile,
   KakaoLoginRequestAction,
@@ -42,7 +46,6 @@ function* loadMyInfo() {
     });
   } catch (err) {
     console.error(err);
-    console.log(err.response);
     yield put({
       type: LOAD_MY_INFO_FAILURE,
       error: err.response.status,
@@ -102,6 +105,39 @@ function* kakaoLogin(action: KakaoLoginRequestAction) {
 
 function* watchKakaoLogin() {
   yield takeLatest(KAKAO_LOGIN_REQUEST, kakaoLogin);
+}
+
+interface IProfileObj {
+  googleId: string;
+  imageUrl: string;
+  email: string;
+  name: string;
+  givenName: string;
+  familyName: string;
+}
+function googleLoginAPI(data: IProfileObj) {
+  return axios.post('/user/google', data);
+}
+
+function* googleLogin(action: GoogleLoginRequestAction) {
+  try {
+    const result = yield call(googleLoginAPI, action.data.profileObj);
+    localStorage.setItem('jwtToken', result.data.token);
+    yield put({
+      type: GOOGLE_LOGIN_SUCCESS,
+      data: result.data.user,
+    });
+  } catch (err) {
+    console.error(err);
+    yield put({
+      type: GOOGLE_LOGIN_FAILURE,
+      error: err.response.data,
+    });
+  }
+}
+
+function* watchGoogleLogin() {
+  yield takeLatest(GOOGLE_LOGIN_REQUEST, googleLogin);
 }
 
 function* logout() {
@@ -180,5 +216,6 @@ export default function* userSaga() {
     fork(watchLogout),
     fork(watchUpdateProfile),
     fork(watchKakaoLogin),
+    fork(watchGoogleLogin),
   ]);
 }

@@ -17,6 +17,7 @@ import {
   LoginKeeper,
 } from '../../styles/AuthForm/styles';
 import KakaoLoginBtn from '../../components/SocialLogin/Kakao';
+import GoogleLoginBtn from '../../components/SocialLogin/Google';
 
 interface ILoginForm {
   email: string;
@@ -96,6 +97,7 @@ const Login: React.FC = () => {
               </button>
             </Submit>
             <KakaoLoginBtn />
+            <GoogleLoginBtn />
             <div className="link">
               계정이 없으신가요 ?<Link to="/signup">회원가입</Link>
             </div>

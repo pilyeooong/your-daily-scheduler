@@ -1,3 +1,4 @@
+import { GoogleLoginResponse } from 'react-google-login';
 import { IEvent, IUser } from '../typings/db';
 import {
   LOAD_MY_INFO_FAILURE,
@@ -9,6 +10,9 @@ import {
   KAKAO_LOGIN_FAILURE,
   KAKAO_LOGIN_REQUEST,
   KAKAO_LOGIN_SUCCESS,
+  GOOGLE_LOGIN_FAILURE,
+  GOOGLE_LOGIN_REQUEST,
+  GOOGLE_LOGIN_SUCCESS,
   LOG_OUT_FAILURE,
   LOG_OUT_REQUEST,
   LOG_OUT_SUCCESS,
@@ -110,6 +114,21 @@ export interface KakaoLoginFailureAction {
   error: string | null | Error;
 }
 
+export interface GoogleLoginRequestAction {
+  type: typeof GOOGLE_LOGIN_REQUEST;
+  data: GoogleLoginResponse;
+}
+
+export interface GoogleLoginSuccessAction {
+  type: typeof GOOGLE_LOGIN_SUCCESS;
+  data: IUser;
+}
+
+export interface GoogleLoginFailureAction {
+  type: typeof GOOGLE_LOGIN_FAILURE;
+  error: string | null | Error;
+}
+
 export interface IUpdateProfile {
   email: string;
   password?: string;
@@ -154,6 +173,9 @@ export type UserAction =
   | KakaoLoginRequestAction
   | KakaoLoginSuccessAction
   | KakaoLoginFailureAction
+  | GoogleLoginRequestAction
+  | GoogleLoginSuccessAction
+  | GoogleLoginFailureAction
   | ResetDoneStateAction;
 
 export const loadMyInfoRequest = (): LoadMyInfoRequestAction => {
@@ -180,6 +202,13 @@ export const loginRequestAction = (
 export const kakaoLoginRequestAction = (data: Object): KakaoLoginRequestAction => {
   return {
     type: KAKAO_LOGIN_REQUEST,
+    data,
+  };
+};
+
+export const googleLoginRequestAction = (data: GoogleLoginResponse): GoogleLoginRequestAction => {
+  return {
+    type: GOOGLE_LOGIN_REQUEST,
     data,
   };
 };
