@@ -62,7 +62,7 @@ app.get('/', (req, res) => {
 app.use('/api', apiRouter);
 
 cron.schedule(
-  '0 */8 * * *',
+  '0 */4 * * *',
   async () => {
     console.log('코로나 확진자 수 정보를 업데이트 합니다.');
     await getCoronaData();
