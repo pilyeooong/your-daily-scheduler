@@ -32,10 +32,12 @@ const Header = () => {
       await axios.get('/covid/refresh', {
         headers: { Authorization: `${localStorage.getItem('jwtToken')}` },
       });
-      toast.success('코로나 정보 업데이트를 하였습니다', {
+      toast.success(`코로나 정보를 업데이트 합니다`, {
         position: toast.POSITION.TOP_CENTER,
       });
-      history.go(0);
+      setTimeout(() => {
+        history.go(0);
+      }, 3000);
     } catch (err) {
       console.error(err);
       toast.error('코로나 정보 업데이트에 실패 하였습니다', {
