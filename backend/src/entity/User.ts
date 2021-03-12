@@ -38,6 +38,9 @@ export default class User extends CoreEntity {
   @Column({ type: 'varchar', length: 20, default: 'local' })
   provider!: string;
 
+  @Column({ type: 'boolean', default: false })
+  is_admin!: boolean;
+
   @Column({ type: 'enum', enum: City, nullable: true })
   city!: City;
 
