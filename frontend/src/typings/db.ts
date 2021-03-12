@@ -3,6 +3,7 @@ export interface IUser {
   city: string;
   password: null;
   provider: string;
+  is_admin: boolean;
   createdAt: string;
   updatedAt: string;
 }

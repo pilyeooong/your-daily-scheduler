@@ -13,7 +13,15 @@ export const Container = styled.header`
     height: 100%;
   }
 
+  & .refresh-covid-data {
+    margin-left: auto;
+  }
+
   & .profile {
+    margin-left: auto;
+  }
+
+  & .margin {
     margin-left: auto;
   }
 
@@ -28,7 +36,7 @@ export const Container = styled.header`
     white-space: nowrap;
   }
 
-  @media ${props => props.theme.tablet} {
+  @media ${(props) => props.theme.tablet} {
     margin-bottom: 1rem;
   }
 `;
