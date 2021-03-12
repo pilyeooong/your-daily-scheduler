@@ -7,6 +7,7 @@ import { signUpRequestAction } from '../../actions';
 import { RootState } from '../../reducers';
 import { Container, Form, Input, InputBox, Submit } from '../../styles/AuthForm/styles';
 import KakaoLoginBtn from '../../components/SocialLogin/Kakao';
+import Loading from '../../components/Loading';
 
 interface ISignUpForm {
   email: string;
@@ -17,6 +18,7 @@ const SignUp: React.FC = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const me = useSelector((state: RootState) => state.user.me);
+  const loadMyInfoLoading = useSelector((state: RootState) => state.user.loadMyInfoLoading);
   const signUpDone = useSelector((state: RootState) => state.user.signUpDone);
   const signUpError = useSelector((state: RootState) => state.user.signUpError);
   const { register, getValues, errors, handleSubmit, formState } = useForm<ISignUpForm>({
@@ -39,6 +41,10 @@ const SignUp: React.FC = () => {
     const { email, password } = getValues();
     dispatch(signUpRequestAction(email, password));
   };
+
+  if (loadMyInfoLoading) {
+    return null;
+  }
 
   return (
     <Container>
