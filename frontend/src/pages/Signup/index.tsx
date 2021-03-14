@@ -7,7 +7,6 @@ import { signUpRequestAction } from '../../actions';
 import { RootState } from '../../reducers';
 import { Container, Form, Input, InputBox, Submit } from '../../styles/AuthForm/styles';
 import KakaoLoginBtn from '../../components/SocialLogin/Kakao';
-import Loading from '../../components/Loading';
 
 interface ISignUpForm {
   email: string;
