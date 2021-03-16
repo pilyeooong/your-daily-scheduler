@@ -1,4 +1,3 @@
-import { parse } from 'dotenv/types';
 import { NextFunction, Request, Response } from 'express';
 import { getRepository } from 'typeorm';
 import Event from '../entity/Event';
@@ -44,6 +43,8 @@ export const addEvent = async (
 
     if (startTime) {
       parsedStartTime = new Date(startTime);
+    }
+    if (endTime) {
       parsedEndTime = new Date(endTime);
     }
     if (parsedStartTime?.toString() === parsedEndTime?.toString()) {

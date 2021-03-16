@@ -107,7 +107,7 @@ describe('addEvent', () => {
     content: 'test content',
     date: new Date(),
     startTime: new Date().toString(),
-    endTime: new Date().toString(),
+    endTime: new Date(new Date().setHours(20)).toString(),
   };
 
   const req = mockRequest(MOCK_REQUEST_BODY);
@@ -129,6 +129,74 @@ describe('addEvent', () => {
     expect(typeorm.getRepository).not.toHaveBeenCalledWith(Event);
     expect(res.status).toHaveBeenNthCalledWith(1, 400);
     expect(res.send).toHaveBeenNthCalledWith(1, '존재하지 않는 스케줄입니다.');
+  });
+
+  it('유효한 요청이나, startTime만 존재 할 경우 endTime이 빈 문자열인 event를 반환', async () => {
+    typeorm.getRepository = jest.fn().mockReturnValue({
+      findOne: jest
+        .fn()
+        .mockResolvedValueOnce(MOCK_USER)
+        .mockResolvedValue(MOCK_SCEHDULE),
+      create: jest.fn().mockReturnValue(MOCK_NEW_EVENT),
+      save: jest.fn().mockImplementation(() => Promise.resolve()),
+    });
+
+    const MOCK_REQUEST_BODY_WITHOUT_ENDTIME = {
+      content: 'test content',
+      date: new Date(),
+      startTime: new Date().toString(),
+      endTime: null,
+    };
+
+    const req = mockRequest(MOCK_REQUEST_BODY_WITHOUT_ENDTIME);
+
+    await addEvent(req, res, next);
+
+    expect(typeorm.getRepository).toHaveBeenCalledWith(User);
+    expect(typeorm.getRepository(User).findOne).toHaveBeenCalled();
+    expect(typeorm.getRepository).toHaveBeenCalledWith(Schedule);
+    expect(typeorm.getRepository(Schedule).findOne).toHaveBeenCalled();
+    expect(typeorm.getRepository).toHaveBeenCalledWith(Event);
+    expect(typeorm.getRepository(Event).create).toHaveBeenCalledWith({
+      ...MOCK_REQUEST_BODY_WITHOUT_ENDTIME,
+      schedule: MOCK_SCEHDULE,
+      startTime: new Date(MOCK_REQUEST_BODY_WITHOUT_ENDTIME.startTime),
+      endTime: undefined,
+    });
+  });
+
+  it('유효한 요청이나, startTime과 endTime이 동일할 경우 endTime을 빈 문자열로 변경 후 event를 생성 및 반환', async () => {
+    typeorm.getRepository = jest.fn().mockReturnValue({
+      findOne: jest
+        .fn()
+        .mockResolvedValueOnce(MOCK_USER)
+        .mockResolvedValue(MOCK_SCEHDULE),
+      create: jest.fn().mockReturnValue(MOCK_NEW_EVENT),
+      save: jest.fn().mockImplementation(() => Promise.resolve()),
+    });
+
+    const MOCK_REQUEST_BODY_WITH_SAME_ENDTIME = {
+      content: 'test content',
+      date: new Date(),
+      startTime: new Date().toString(),
+      endTime: new Date().toString(),
+    };
+
+    const req = mockRequest(MOCK_REQUEST_BODY_WITH_SAME_ENDTIME);
+
+    await addEvent(req, res, next);
+
+    expect(typeorm.getRepository).toHaveBeenCalledWith(User);
+    expect(typeorm.getRepository(User).findOne).toHaveBeenCalled();
+    expect(typeorm.getRepository).toHaveBeenCalledWith(Schedule);
+    expect(typeorm.getRepository(Schedule).findOne).toHaveBeenCalled();
+    expect(typeorm.getRepository).toHaveBeenCalledWith(Event);
+    expect(typeorm.getRepository(Event).create).toHaveBeenCalledWith({
+      ...MOCK_REQUEST_BODY_WITH_SAME_ENDTIME,
+      schedule: MOCK_SCEHDULE,
+      startTime: new Date(MOCK_REQUEST_BODY_WITH_SAME_ENDTIME.startTime),
+      endTime: '',
+    });
   });
 
   it('유효한 요청일 시, 해당 유저 스케줄에 event를 추가한다.', async () => {

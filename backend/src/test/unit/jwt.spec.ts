@@ -35,7 +35,7 @@ describe('signJWT', () => {
       { id: USER_ID },
       process.env.JWT_SIGNATURE,
       {
-        expiresIn: '3h',
+        expiresIn: '6h',
         issuer: 'todo',
       }
     );
