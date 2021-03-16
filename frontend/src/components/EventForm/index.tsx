@@ -52,16 +52,11 @@ const EventForm: React.FC<IProps> = ({
     if (timeError) {
       return;
     }
-    if (startTime && !endTime) {
-      setTimeError('끝나는 시간을 설정해주세요 !');
-      return;
-    }
     if (endTime && !startTime) {
       setTimeError('시작 시간을 설정해주세요 !');
       return;
     }
     const { content } = getValues();
-    console.log(startTime);
     dispatch(
       addEventAction({
         content,

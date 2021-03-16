@@ -36,10 +36,14 @@ const Event: React.FC<IProps> = ({ event }) => {
             {new Date(event.startTime).getMinutes() === 0
               ? null
               : `${new Date(event.startTime).getMinutes()}분`}{' '}
-            - {new Date(event.endTime).getHours()}시
-            {new Date(event.endTime).getMinutes() === 0
-              ? null
-              : `${new Date(event.endTime).getMinutes()}분`}
+            {event.endTime ? (
+              <>
+                - {new Date(event.endTime).getHours()}시
+                {new Date(event.endTime).getMinutes() === 0
+                  ? null
+                  : `${new Date(event.endTime).getMinutes()}분`}
+              </>
+            ) : null}
           </EventTime>
         ) : null}
       </>
