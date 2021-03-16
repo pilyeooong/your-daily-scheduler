@@ -42,9 +42,12 @@ export const addEvent = async (
     let parsedStartTime;
     let parsedEndTime;
 
-    if (startTime && endTime) {
+    if (startTime) {
       parsedStartTime = new Date(startTime);
       parsedEndTime = new Date(endTime);
+    }
+    if (parsedStartTime?.toString() === parsedEndTime?.toString()) {
+      parsedEndTime = '';
     }
     const user = await getRepository(User).findOne({ where: { id } });
     const schedule = await getRepository(Schedule).findOne({ where: { user } });
