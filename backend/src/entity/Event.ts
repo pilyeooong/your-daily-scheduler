@@ -1,9 +1,10 @@
 import CoreEntity from './Core';
-import { Entity, Column, ManyToOne } from 'typeorm';
+import { Entity, Column, ManyToOne, Index } from 'typeorm';
 import Schedule from './Schedule';
 
 @Entity()
 export default class Event extends CoreEntity {
+  @Index()
   @Column({ type: 'varchar', length: 64 })
   date!: string;
 
