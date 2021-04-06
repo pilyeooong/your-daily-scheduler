@@ -25,8 +25,7 @@ export default class Database {
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_DATABASE,
-      synchronize: true,
-      logging: process.env.NODE_ENV === 'production' ? false : true,
+      logging: false,
       entities,
     };
     return createConnection(ConnectionOptions);
