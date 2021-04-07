@@ -22,6 +22,7 @@ import {
   IDeleteEvent,
   IEditEvent,
 } from '../actions';
+import { IEvent } from 'typings/db';
 
 function loadEventsAPI() {
   const token = localStorage.getItem('jwtToken');
@@ -30,7 +31,7 @@ function loadEventsAPI() {
 
 function* loadEvents() {
   try {
-    const result = yield call(loadEventsAPI);
+    const result: { data: IEvent[] } = yield call(loadEventsAPI);
     yield put({
       type: LOAD_EVENTS_SUCCESS,
       data: result.data,
@@ -55,7 +56,7 @@ function addEventAPI(data: IAddEvent) {
 
 function* addEvent(action: AddEventRequestAction) {
   try {
-    const result = yield call(addEventAPI, action.data);
+    const result: { data: IEvent } = yield call(addEventAPI, action.data);
     yield put({
       type: ADD_EVENT_SUCCESS,
       data: result.data,
@@ -80,7 +81,7 @@ function editEventAPI(data: IEditEvent) {
 
 function* editEvent(action: EditEventRequestAction) {
   try {
-    const result = yield call(editEventAPI, action.data);
+    const result: { data: IEvent | undefined } = yield call(editEventAPI, action.data);
     yield put({
       type: EDIT_EVENT_SUCCESS,
       data: result.data,
@@ -105,7 +106,7 @@ function deleteEventAPI(data: IDeleteEvent) {
 
 function* deleteEvent(action: DeleteEventRequestAction) {
   try {
-    const result = yield call(deleteEventAPI, action.data);
+    const result: { data: IEvent } = yield call(deleteEventAPI, action.data);
     yield put({
       type: DELETE_EVENT_SUCCESS,
       data: result.data,

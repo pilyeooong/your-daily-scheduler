@@ -32,6 +32,7 @@ import {
   SignUpRequestAction,
   UpdateProfileRequestAction,
 } from '../actions';
+import { IUser } from 'typings/db';
 
 function loadMyInfoAPI() {
   return axios.get('/user');
@@ -39,7 +40,7 @@ function loadMyInfoAPI() {
 
 function* loadMyInfo() {
   try {
-    const result = yield call(loadMyInfoAPI);
+    const result: { data: IUser } = yield call(loadMyInfoAPI);
     yield put({
       type: LOAD_MY_INFO_SUCCESS,
       data: result.data,
@@ -57,13 +58,22 @@ function* watchLoadMyInfo() {
   yield takeLatest(LOAD_MY_INFO_REQUEST, loadMyInfo);
 }
 
+interface ILogin {
+  data: ILoginResultData;
+}
+
+interface ILoginResultData {
+  user: IUser;
+  token: string;
+}
+
 function loginAPI(data: IAuthForm) {
   return axios.post('/user/login', data);
 }
 
 function* login(action: LoginRequestAction) {
   try {
-    const result = yield call(loginAPI, action.data);
+    const result: ILogin = yield call(loginAPI, action.data);
     localStorage.setItem('jwtToken', result.data.token);
     yield put({
       type: LOG_IN_SUCCESS,
@@ -88,7 +98,7 @@ function kakaoLoginAPI(data: Object) {
 
 function* kakaoLogin(action: KakaoLoginRequestAction) {
   try {
-    const result = yield call(kakaoLoginAPI, action.data);
+    const result: ILogin = yield call(kakaoLoginAPI, action.data);
     localStorage.setItem('jwtToken', result.data.token);
     yield put({
       type: KAKAO_LOGIN_SUCCESS,
@@ -121,7 +131,7 @@ function googleLoginAPI(data: IProfileObj) {
 
 function* googleLogin(action: GoogleLoginRequestAction) {
   try {
-    const result = yield call(googleLoginAPI, action.data.profileObj);
+    const result: ILogin = yield call(googleLoginAPI, action.data.profileObj);
     localStorage.setItem('jwtToken', result.data.token);
     yield put({
       type: GOOGLE_LOGIN_SUCCESS,
@@ -188,9 +198,13 @@ function updateProfileAPI(data: IUpdateProfile) {
   });
 }
 
+interface IUpdateProfileResult {
+  data: IUser | undefined;
+}
+
 function* updateProfile(action: UpdateProfileRequestAction) {
   try {
-    const result = yield call(updateProfileAPI, action.data);
+    const result: IUpdateProfileResult = yield call(updateProfileAPI, action.data);
     yield put({
       type: UPDATE_PROFILE_SUCCESS,
       data: result.data,
