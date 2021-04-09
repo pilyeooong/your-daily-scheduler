@@ -86,7 +86,7 @@ const SignUp: React.FC = () => {
             </button>
           </Submit>
           {signUpError && <span>{signUpError}</span>}
-          <KakaoLoginBtn />
+          <KakaoLoginBtn loginKeeper={false} />
           <div className="link">
             계정이 이미 있으신가요 ? <Link to="/">로그인</Link>
           </div>

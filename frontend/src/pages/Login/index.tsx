@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -27,9 +27,9 @@ interface ILoginForm {
 
 const Login: React.FC = () => {
   const dispatch = useDispatch();
+  const [loginKeeper, setLoginKeeper] = useState<boolean>(false);
   const loadMyInfoLoading = useSelector((state: RootState) => state.user.loadMyInfoLoading);
   const loginError = useSelector((state: RootState) => state.user.loginError);
-
   useEffect(() => {
     if (loginError) {
       toast.error(`${loginError}`, { position: toast.POSITION.TOP_CENTER });
@@ -40,10 +40,14 @@ const Login: React.FC = () => {
     mode: 'onChange',
   });
 
+  const onChangeLoginKeeper = useCallback(() => {
+    setLoginKeeper((prev) => !prev);
+  }, []);
+
   const onSubmit = useCallback(() => {
-    const { email, password, loginKeeper } = getValues();
+    const { email, password } = getValues();
     dispatch(loginRequestAction(email, password, loginKeeper));
-  }, [getValues, dispatch]);
+  }, [getValues, dispatch, loginKeeper]);
 
   return (
     <Container>
@@ -88,7 +92,12 @@ const Login: React.FC = () => {
               )}
             </InputBox>
             <LoginKeeper>
-              <input ref={register({ required: false })} name="loginKeeper" type="checkbox" />
+              <input
+                checked={loginKeeper}
+                onChange={onChangeLoginKeeper}
+                name="loginKeeper"
+                type="checkbox"
+              />
               <label>로그인 상태 유지</label>
             </LoginKeeper>
             <Submit>
@@ -96,8 +105,8 @@ const Login: React.FC = () => {
                 로그인
               </button>
             </Submit>
-            <KakaoLoginBtn />
-            <GoogleLoginBtn />
+            <KakaoLoginBtn loginKeeper={loginKeeper} />
+            <GoogleLoginBtn loginKeeper={loginKeeper} />
             <div className="link">
               계정이 없으신가요 ?<Link to="/signup">회원가입</Link>
             </div>

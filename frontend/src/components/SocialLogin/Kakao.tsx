@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, VFC } from 'react';
 import { useDispatch } from 'react-redux';
 import { kakaoLoginRequestAction } from '../../actions';
 import KakaoLogin from 'react-kakao-login';
@@ -6,11 +6,18 @@ import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faComment } from '@fortawesome/free-solid-svg-icons';
 
-const Kakao = () => {
+interface IProps {
+  loginKeeper: boolean;
+}
+const Kakao: VFC<IProps> = ({ loginKeeper }) => {
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    console.log(loginKeeper);
+  }, [loginKeeper]);
+
   const onSuccessKakaoLogin = async (result: Object) => {
-    dispatch(kakaoLoginRequestAction(result));
+    dispatch(kakaoLoginRequestAction({ ...result, loginKeeper }));
   };
 
   return (

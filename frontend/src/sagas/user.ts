@@ -125,13 +125,16 @@ interface IProfileObj {
   givenName: string;
   familyName: string;
 }
-function googleLoginAPI(data: IProfileObj) {
+function googleLoginAPI(data: { result: IProfileObj; loginKeeper: boolean }) {
   return axios.post('/user/google', data);
 }
 
 function* googleLogin(action: GoogleLoginRequestAction) {
   try {
-    const result: ILogin = yield call(googleLoginAPI, action.data.profileObj);
+    const result: ILogin = yield call(googleLoginAPI, {
+      result: action.data.profileObj,
+      loginKeeper: action.loginKeeper,
+    });
     localStorage.setItem('jwtToken', result.data.token);
     yield put({
       type: GOOGLE_LOGIN_SUCCESS,

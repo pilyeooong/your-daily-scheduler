@@ -117,6 +117,7 @@ export interface KakaoLoginFailureAction {
 export interface GoogleLoginRequestAction {
   type: typeof GOOGLE_LOGIN_REQUEST;
   data: GoogleLoginResponse;
+  loginKeeper: boolean;
 }
 
 export interface GoogleLoginSuccessAction {
@@ -206,10 +207,14 @@ export const kakaoLoginRequestAction = (data: Object): KakaoLoginRequestAction =
   };
 };
 
-export const googleLoginRequestAction = (data: GoogleLoginResponse): GoogleLoginRequestAction => {
+export const googleLoginRequestAction = (
+  data: GoogleLoginResponse,
+  loginKeeper: boolean
+): GoogleLoginRequestAction => {
   return {
     type: GOOGLE_LOGIN_REQUEST,
     data,
+    loginKeeper,
   };
 };
 

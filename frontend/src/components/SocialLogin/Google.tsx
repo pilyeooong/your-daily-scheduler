@@ -1,18 +1,22 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, VFC } from 'react';
 import { useDispatch } from 'react-redux';
 import { GoogleLogin, GoogleLoginResponse } from 'react-google-login';
 import { googleLoginRequestAction } from '../../actions';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 
-const Google = () => {
+interface IProps {
+  loginKeeper: boolean;
+}
+
+const Google: VFC<IProps> = ({ loginKeeper }) => {
   const dispatch = useDispatch();
 
   const onSuccessGoogleLogin = useCallback(
     (response: GoogleLoginResponse) => {
-      dispatch(googleLoginRequestAction(response));
+      dispatch(googleLoginRequestAction(response, loginKeeper));
     },
-    [dispatch]
+    [dispatch, loginKeeper]
   );
 
   return (

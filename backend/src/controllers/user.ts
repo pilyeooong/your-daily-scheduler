@@ -143,7 +143,7 @@ export const kakaoLogin = async (
   next: NextFunction
 ) => {
   try {
-    const { response, profile }: IKakaoLoginResult = req.body;
+    const { response, profile, loginKeeper }: IKakaoLoginResult = req.body;
 
     const kakao: AxiosResponse<IKakaoInfo> = await axios.post(
       'https://kapi.kakao.com/v2/user/me',
@@ -183,7 +183,7 @@ export const kakaoLogin = async (
         return res.status(400).send('해당 이메일로 생성 된 계정이 존재합니다.');
       }
 
-      const token = signJWT(exUser.id);
+      const token = signJWT(exUser.id, loginKeeper);
 
       return res.status(200).json({ token, user: exUser });
     }
@@ -200,7 +200,10 @@ export const googleLogin = async (
   next: NextFunction
 ) => {
   try {
-    const { email }: IGoogleLoginResult = req.body;
+    const {
+      result: { email },
+      loginKeeper,
+    }: IGoogleLoginResult = req.body;
 
     const userRepository = getRepository(User);
 
@@ -226,7 +229,7 @@ export const googleLogin = async (
         scheduleRepository.create({ user: newUser })
       );
 
-      const token = signJWT(newUser.id);
+      const token = signJWT(newUser.id, loginKeeper);
       return res.status(200).json({ token, user: newUser });
     }
 

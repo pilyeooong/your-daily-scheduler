@@ -31,14 +31,18 @@ export interface IKakaoResponse {
 export interface IKakaoLoginResult {
   response: IKakaoResponse;
   profile: IKakaoProfile;
+  loginKeeper: boolean;
 }
 
 export interface IGoogleLoginResult {
-  googleId: string;
-  imageUrl: string;
-  email: string;
-  name: string;
-  givenName: string;
+  result: {
+    googleId: string;
+    imageUrl: string;
+    email: string;
+    name: string;
+    givenName: string;
+  };
+  loginKeeper: boolean;
 }
 
 export interface IKakaoInfo {
