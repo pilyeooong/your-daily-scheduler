@@ -25,7 +25,7 @@ const prod = process.env.NODE_ENV === 'production';
 
 const limiter = rateLimit({
   windowMs: 5 * 60 * 1000,
-  max: 300,
+  max: 500,
 });
 
 if (prod) {
