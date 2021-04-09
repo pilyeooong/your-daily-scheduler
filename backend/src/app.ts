@@ -9,6 +9,7 @@ import * as morgan from 'morgan';
 import * as cors from 'cors';
 import * as helmet from 'helmet';
 import * as hpp from 'hpp';
+import * as rateLimit from 'express-rate-limit';
 
 import cron = require('node-cron');
 import { getCoronaData } from './crawling/covid';
@@ -21,6 +22,12 @@ const database = new Database();
 database.getConnection();
 
 const prod = process.env.NODE_ENV === 'production';
+
+const limiter = rateLimit({
+  windowMs: 5 * 60 * 1000,
+  max: 100,
+});
+
 if (prod) {
   app.use(
     cors({
@@ -33,6 +40,8 @@ if (prod) {
   app.use(morgan('combined'));
   app.use(helmet());
   app.use(hpp());
+  app.set('trusty proxy', 1);
+  app.use(limiter);
 } else {
   app.use(
     cors({
