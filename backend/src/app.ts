@@ -31,9 +31,7 @@ const limiter = rateLimit({
 if (prod) {
   app.use(
     cors({
-      origin: prod
-        ? 'https://yourdailyscheduler.link'
-        : 'http://localhost:3000',
+      origin: 'https://yourdailyscheduler.link',
       credentials: true,
     })
   );
@@ -45,9 +43,7 @@ if (prod) {
 } else {
   app.use(
     cors({
-      origin: prod
-        ? 'https://yourdailyscheduler.link'
-        : 'http://localhost:3000',
+      origin: 'http://localhost:3000',
       credentials: true,
     })
   );
