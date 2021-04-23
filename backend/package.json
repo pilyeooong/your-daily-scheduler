@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "nodemon",
     "start": "npx tsc && cross-env NODE_ENV=production node ./dist/server",
-    "pm2": "npx tsc && cross-env NODE_ENV=production pm2 start ./dist/server.js --watch",
+    "pm2:dev": "pm2 start ./src/server.ts --watch -i max --interpreter ./node_modules/.bin/ts-node",
+    "pm2:start": "npx tsc && cross-env NODE_ENV=production pm2 start ./dist/server.js --watch",
     "pm2:cluster": "npx tsc && cross-env NODE_ENV=production pm2 start ./dist/server.js --watch -i max",
     "test": "jest ./src/test/unit --watch --runInBand --detectOpenHandles",
     "test-server": "NODE_ENV=test nodemon",

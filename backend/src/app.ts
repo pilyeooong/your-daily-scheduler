@@ -61,7 +61,7 @@ app.use(
 );
 
 app.get('/', (req, res) => {
-  res.send('working');
+  res.send(`working`);
 });
 
 app.use('/api', apiRouter);
