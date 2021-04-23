@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "nodemon",
     "start": "npx tsc && cross-env NODE_ENV=production node ./dist/server",
-    "pm2": "npx tsc && cross-env NODE_ENV=production pm2 start ./dist/server.js",
+    "pm2": "npx tsc && cross-env NODE_ENV=production pm2 start ./dist/server.js --watch -i max",
     "test": "jest ./src/test/unit --watch --runInBand --detectOpenHandles",
     "test-server": "NODE_ENV=test nodemon",
     "test:e2e": "NODE_ENV=test jest --config ./src/test/e2e/jest-e2e.json --watch --runInBand --detectOpenHandles",
