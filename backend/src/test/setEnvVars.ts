@@ -1,1 +1,1 @@
-process.env.JWT_SIGNATURE = 'jwtTest'
+process.env.JWT_SIGNATURE = 'jwtTest';
