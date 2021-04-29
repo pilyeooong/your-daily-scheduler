@@ -3,7 +3,7 @@ import { getRepository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import User, { City } from '../entity/User';
 import Schedule from '../entity/Schedule';
-import { signJWT } from './jwt';
+import jwt from './jwt';
 import { IDecoded, IGoogleLoginResult, IKakaoInfo, IKakaoLoginResult } from '../interfaces';
 import axios, { AxiosResponse } from 'axios';
 
@@ -69,7 +69,7 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
       return res.status(400).send('비밀번호가 일치하지 않습니다.');
     }
 
-    const token = signJWT(user.id, loginKeeper);
+    const token = jwt.signJWT(user.id, loginKeeper);
     return res.status(200).json({ token, user: { ...user, password: null } });
   } catch (err) {
     console.error(err);
@@ -81,6 +81,11 @@ export const editProfile = async (req: Request, res: Response, next: NextFunctio
   try {
     const { id: userId } = req.decoded as IDecoded;
     const { password, city } = req.body;
+
+    if (!password && !city) {
+      return res.status(400).send('수정하시고자 하는 프로필 정보를 입력해주세요');
+    }
+
     let hashedPassword;
     const user = await getRepository(User).findOne(
       { id: userId },
@@ -145,15 +150,16 @@ export const kakaoLogin = async (req: Request, res: Response, next: NextFunction
         const scheduleRepository = getRepository(Schedule);
         await scheduleRepository.save(scheduleRepository.create({ user: newUser }));
 
-        const token = signJWT(newUser.id);
+        const token = jwt.signJWT(newUser.id, loginKeeper);
         return res.status(200).json({ token, user: newUser });
       }
 
+      // FIXME: 구글계정과 카카오 계정이 겹칠 수도 있다.
       if (exUser.provider === 'local') {
         return res.status(400).send('해당 이메일로 생성 된 계정이 존재합니다.');
       }
 
-      const token = signJWT(exUser.id, loginKeeper);
+      const token = jwt.signJWT(exUser.id, loginKeeper);
 
       return res.status(200).json({ token, user: exUser });
     }
@@ -190,7 +196,7 @@ export const googleLogin = async (req: Request, res: Response, next: NextFunctio
       const scheduleRepository = getRepository(Schedule);
       await scheduleRepository.save(scheduleRepository.create({ user: newUser }));
 
-      const token = signJWT(newUser.id, loginKeeper);
+      const token = jwt.signJWT(newUser.id, loginKeeper);
       return res.status(200).json({ token, user: newUser });
     }
 
@@ -198,7 +204,7 @@ export const googleLogin = async (req: Request, res: Response, next: NextFunctio
       return res.status(400).send('해당 이메일로 생성 된 계정이 존재합니다.');
     }
 
-    const token = signJWT(exUser.id);
+    const token = jwt.signJWT(exUser.id, loginKeeper);
     return res.status(200).json({ token, user: exUser });
   } catch (err) {
     console.error(err);
