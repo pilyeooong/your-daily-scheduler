@@ -3,6 +3,7 @@ node_modules/
 note.*
 *.pem
 ormconfig.json
+coverage/
 /.pnp
 .pnp.js
 
