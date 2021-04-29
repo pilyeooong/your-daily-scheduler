@@ -5,11 +5,7 @@ import Schedule from '../entity/Schedule';
 import User from '../entity/User';
 import { IDecoded, IEvent } from '../interfaces';
 
-export const loadEvents = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const loadEvents = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { id } = req.decoded as IDecoded;
 
@@ -29,11 +25,7 @@ export const loadEvents = async (
   }
 };
 
-export const addEvent = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const addEvent = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { id } = req.decoded as IDecoded;
     const { content, date, startTime, endTime }: IEvent = req.body;
@@ -73,11 +65,7 @@ export const addEvent = async (
   }
 };
 
-export const loadEvent = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const loadEvent = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { id } = req.decoded as IDecoded;
     const { date, page } = req.query;
@@ -105,11 +93,7 @@ export const loadEvent = async (
   }
 };
 
-export const loadEventsWithTime = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const loadEventsWithTime = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { id } = req.decoded as IDecoded;
     const { date, page } = req.query;
@@ -152,11 +136,7 @@ export const loadEventsWithTime = async (
   }
 };
 
-export const editEvent = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const editEvent = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { id } = req.decoded as IDecoded;
     const { eventId } = req.params;
@@ -199,11 +179,7 @@ export const editEvent = async (
   }
 };
 
-export const deleteEvent = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const deleteEvent = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { id } = req.decoded as IDecoded;
     const { eventId } = req.params;

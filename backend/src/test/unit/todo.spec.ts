@@ -1,12 +1,6 @@
 import { Request, Response } from 'express';
 import typeorm = require('typeorm');
-import {
-  addTodo,
-  deleteTodo,
-  editTodo,
-  loadTodos,
-  switchTodoOrders,
-} from '../../controllers/todo';
+import { addTodo, deleteTodo, editTodo, loadTodos, switchTodoOrders } from '../../controllers/todo';
 import Schedule from '../../entity/Schedule';
 import Todo from '../../entity/Todo';
 import User from '../../entity/User';
@@ -69,10 +63,7 @@ afterEach(() => {
 describe('loadTodos', () => {
   it('유저 및 스케줄이 존재하면 todos를 응답한다.', async () => {
     typeorm.getRepository = jest.fn().mockReturnValue({
-      findOne: jest
-        .fn()
-        .mockResolvedValueOnce(MOCK_USER)
-        .mockResolvedValueOnce(MOCK_SCHEDULE),
+      findOne: jest.fn().mockResolvedValueOnce(MOCK_USER).mockResolvedValueOnce(MOCK_SCHEDULE),
       find: jest.fn().mockResolvedValueOnce(MOCK_TODOS),
     });
 
@@ -87,10 +78,7 @@ describe('loadTodos', () => {
 
   it('스케줄이 존재하지 않으면 400 에러코드와 에러메시지를 응답한다.', async () => {
     typeorm.getRepository = jest.fn().mockReturnValue({
-      findOne: jest
-        .fn()
-        .mockResolvedValueOnce(MOCK_USER)
-        .mockResolvedValueOnce(null),
+      findOne: jest.fn().mockResolvedValueOnce(MOCK_USER).mockResolvedValueOnce(null),
       find: jest.fn().mockResolvedValueOnce(MOCK_TODOS),
     });
 
@@ -133,9 +121,7 @@ describe('switchTodoOrders', () => {
     await switchTodoOrders(req, res, next);
     expect(typeorm.getRepository(Schedule).findOne).toHaveBeenCalledTimes(1);
     expect(typeorm.getRepository(Todo).find).toHaveBeenCalledTimes(1);
-    expect(typeorm.getRepository(Todo).save).toHaveBeenCalledWith(
-      expectedResult
-    );
+    expect(typeorm.getRepository(Todo).save).toHaveBeenCalledWith(expectedResult);
     expect(res.status).toHaveBeenCalledWith(200);
     expect(res.send).toHaveBeenCalledWith('수정 완료');
   });
@@ -160,10 +146,7 @@ describe('addTodo', () => {
     );
 
     typeorm.getRepository = jest.fn().mockReturnValue({
-      findOne: jest
-        .fn()
-        .mockResolvedValueOnce(MOCK_USER)
-        .mockResolvedValue(null),
+      findOne: jest.fn().mockResolvedValueOnce(MOCK_USER).mockResolvedValue(null),
     });
 
     await addTodo(req, res, next);
@@ -185,10 +168,7 @@ describe('addTodo', () => {
     );
 
     typeorm.getRepository = jest.fn().mockReturnValue({
-      findOne: jest
-        .fn()
-        .mockResolvedValueOnce(MOCK_USER)
-        .mockResolvedValue(mockSchedule),
+      findOne: jest.fn().mockResolvedValueOnce(MOCK_USER).mockResolvedValue(mockSchedule),
     });
 
     await addTodo(req, res, next);
@@ -222,9 +202,7 @@ describe('addTodo', () => {
     });
     await addTodo(req, res, next);
     expect(typeorm.getRepository(Todo).save).toHaveBeenCalledWith(MOCK_TODO); // index 추가 전 컬럼 추가
-    expect(typeorm.getRepository(Todo).save).toHaveBeenCalledWith(
-      expectedResult
-    ); // index 추가 된 부분까지
+    expect(typeorm.getRepository(Todo).save).toHaveBeenCalledWith(expectedResult); // index 추가 된 부분까지
     expect(res.status).toHaveBeenCalledWith(201);
     expect(res.send).toHaveBeenCalledWith(expectedResult);
   });
@@ -309,9 +287,7 @@ describe('deleteTodo', () => {
     await deleteTodo(req, res, next);
 
     expect(typeorm.getRepository(Todo).delete).toHaveBeenCalledTimes(1);
-    expect(typeorm.getRepository(Todo).delete).toHaveBeenCalledWith(
-      MOCK_TODO.id
-    );
+    expect(typeorm.getRepository(Todo).delete).toHaveBeenCalledWith(MOCK_TODO.id);
     expect(res.status).toHaveBeenCalledWith(200);
     expect(res.send).toHaveBeenCalledWith('삭제 완료');
   });

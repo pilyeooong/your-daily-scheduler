@@ -1,11 +1,6 @@
 import { Request, Response } from 'express';
 import typeorm = require('typeorm');
-import {
-  addEvent,
-  loadEvent,
-  loadEvents,
-  loadEventsWithTime,
-} from '../../controllers/event';
+import { addEvent, loadEvent, loadEvents, loadEventsWithTime } from '../../controllers/event';
 import Event from '../../entity/Event';
 import Schedule from '../../entity/Schedule';
 import User from '../../entity/User';
@@ -47,10 +42,7 @@ describe('loadEvents', () => {
   };
   it('스케줄이 존재하지 않으면 400에러와 메시지를 응답한다', async () => {
     typeorm.getRepository = jest.fn().mockReturnValue({
-      findOne: jest
-        .fn()
-        .mockResolvedValueOnce(MOCK_USER)
-        .mockResolvedValue(null),
+      findOne: jest.fn().mockResolvedValueOnce(MOCK_USER).mockResolvedValue(null),
     });
 
     await loadEvents(req, res, next);
@@ -70,10 +62,7 @@ describe('loadEvents', () => {
     };
     const MOCK_EVENTS: IEvent[] = [];
     typeorm.getRepository = jest.fn().mockReturnValue({
-      findOne: jest
-        .fn()
-        .mockResolvedValueOnce(MOCK_USER)
-        .mockResolvedValue(MOCK_SCEHDULE),
+      findOne: jest.fn().mockResolvedValueOnce(MOCK_USER).mockResolvedValue(MOCK_SCEHDULE),
       find: jest.fn().mockResolvedValue(MOCK_EVENTS),
     });
 
@@ -114,10 +103,7 @@ describe('addEvent', () => {
 
   it('스케줄이 존재하지 않으면 400 에러코드와 메시지를 응답한다', async () => {
     typeorm.getRepository = jest.fn().mockReturnValue({
-      findOne: jest
-        .fn()
-        .mockResolvedValueOnce(MOCK_USER)
-        .mockResolvedValue(null),
+      findOne: jest.fn().mockResolvedValueOnce(MOCK_USER).mockResolvedValue(null),
     });
 
     await addEvent(req, res, next);
@@ -133,10 +119,7 @@ describe('addEvent', () => {
 
   it('유효한 요청이나, startTime만 존재 할 경우 endTime이 빈 문자열인 event를 반환', async () => {
     typeorm.getRepository = jest.fn().mockReturnValue({
-      findOne: jest
-        .fn()
-        .mockResolvedValueOnce(MOCK_USER)
-        .mockResolvedValue(MOCK_SCEHDULE),
+      findOne: jest.fn().mockResolvedValueOnce(MOCK_USER).mockResolvedValue(MOCK_SCEHDULE),
       create: jest.fn().mockReturnValue(MOCK_NEW_EVENT),
       save: jest.fn().mockImplementation(() => Promise.resolve()),
     });
@@ -167,10 +150,7 @@ describe('addEvent', () => {
 
   it('유효한 요청이나, startTime과 endTime이 동일할 경우 endTime을 빈 문자열로 변경 후 event를 생성 및 반환', async () => {
     typeorm.getRepository = jest.fn().mockReturnValue({
-      findOne: jest
-        .fn()
-        .mockResolvedValueOnce(MOCK_USER)
-        .mockResolvedValue(MOCK_SCEHDULE),
+      findOne: jest.fn().mockResolvedValueOnce(MOCK_USER).mockResolvedValue(MOCK_SCEHDULE),
       create: jest.fn().mockReturnValue(MOCK_NEW_EVENT),
       save: jest.fn().mockImplementation(() => Promise.resolve()),
     });
@@ -201,10 +181,7 @@ describe('addEvent', () => {
 
   it('유효한 요청일 시, 해당 유저 스케줄에 event를 추가한다.', async () => {
     typeorm.getRepository = jest.fn().mockReturnValue({
-      findOne: jest
-        .fn()
-        .mockResolvedValueOnce(MOCK_USER)
-        .mockResolvedValue(MOCK_SCEHDULE),
+      findOne: jest.fn().mockResolvedValueOnce(MOCK_USER).mockResolvedValue(MOCK_SCEHDULE),
       create: jest.fn().mockReturnValue(MOCK_NEW_EVENT),
       save: jest.fn().mockImplementation(() => Promise.resolve()),
     });
@@ -222,9 +199,7 @@ describe('addEvent', () => {
       startTime: new Date(MOCK_REQUEST_BODY.startTime),
       endTime: new Date(MOCK_REQUEST_BODY.endTime),
     });
-    expect(typeorm.getRepository(Event).save).toHaveBeenCalledWith(
-      MOCK_NEW_EVENT
-    );
+    expect(typeorm.getRepository(Event).save).toHaveBeenCalledWith(MOCK_NEW_EVENT);
     expect(res.status).toHaveBeenCalledWith(201);
     expect(res.send).toHaveBeenCalledWith(MOCK_NEW_EVENT);
   });
@@ -252,10 +227,7 @@ describe('loadEvent', () => {
 
   it('스케줄이 존재하지 않으면 400 에러 코드와 메시지를 응답한다', async () => {
     typeorm.getRepository = jest.fn().mockReturnValue({
-      findOne: jest
-        .fn()
-        .mockResolvedValueOnce(MOCK_USER)
-        .mockResolvedValue(null),
+      findOne: jest.fn().mockResolvedValueOnce(MOCK_USER).mockResolvedValue(null),
     });
 
     await loadEvent(req, res, next);
@@ -271,10 +243,7 @@ describe('loadEvent', () => {
 
   it('유효한 요청일 시 주어진 스케줄 및 날짜에 해당하는 event들을 응답한다', async () => {
     typeorm.getRepository = jest.fn().mockReturnValue({
-      findOne: jest
-        .fn()
-        .mockResolvedValueOnce(MOCK_USER)
-        .mockResolvedValue(MOCK_SCEHDULE),
+      findOne: jest.fn().mockResolvedValueOnce(MOCK_USER).mockResolvedValue(MOCK_SCEHDULE),
       findAndCount: jest.fn().mockResolvedValue([{ ...MOCK_EVENT }, 1]),
     });
 
@@ -318,10 +287,7 @@ describe('loadEventsWithTime', () => {
 
   it('스케줄이 존재하지 않으면 400 에러 코드와 메시지를 응답한다', async () => {
     typeorm.getRepository = jest.fn().mockReturnValue({
-      findOne: jest
-        .fn()
-        .mockResolvedValueOnce(MOCK_USER)
-        .mockResolvedValue(null),
+      findOne: jest.fn().mockResolvedValueOnce(MOCK_USER).mockResolvedValue(null),
     });
 
     await loadEvent(req, res, next);
@@ -337,10 +303,7 @@ describe('loadEventsWithTime', () => {
 
   it('유효한 요청일 시 주어진 스케줄 및 날짜에 해당하는 event들을 응답한다', async () => {
     typeorm.getRepository = jest.fn().mockReturnValue({
-      findOne: jest
-        .fn()
-        .mockResolvedValueOnce(MOCK_USER)
-        .mockResolvedValue(MOCK_SCEHDULE),
+      findOne: jest.fn().mockResolvedValueOnce(MOCK_USER).mockResolvedValue(MOCK_SCEHDULE),
       createQueryBuilder: jest.fn(() => ({
         where: jest.fn().mockReturnThis(),
         andWhere: jest.fn().mockReturnThis(),

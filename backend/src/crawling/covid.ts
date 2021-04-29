@@ -17,9 +17,7 @@ export const getCoronaData = async () => {
 
     const $ = cheerio.load(result.data);
 
-    const $areas = $('div.rpsam_graph')
-      .children('div#main_maplayout')
-      .children('button');
+    const $areas = $('div.rpsam_graph').children('div#main_maplayout').children('button');
     const $wholeCountry = $('div.open').find('h4.cityname').text();
     const $total = $('div.open')
       .children('.mapview')

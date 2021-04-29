@@ -14,16 +14,16 @@
     "@typescript-eslint/no-non-null-assertion": 0,
     "@typescript-eslint/explicit-module-boundary-types": "off",
     "prettier/prettier": [
-        "error",
-        {
-          "singleQuote": true,
-          "semi": true,
-          "useTabs": false,
-          "tabWidth": 2,
-          "printWidth": 80,
-          "bracketSpacing": true
-        }
-      ]
+      "error",
+      {
+        "singleQuote": true,
+        "semi": true,
+        "useTabs": false,
+        "tabWidth": 2,
+        "printWidth": 100,
+        "bracketSpacing": true
+      }
+    ]
   },
   "parser": "@typescript-eslint/parser",
   "parserOptions": {

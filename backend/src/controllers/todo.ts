@@ -5,11 +5,7 @@ import Todo, { appendTodoIndex } from '../entity/Todo';
 import User from '../entity/User';
 import { IDecoded } from '../interfaces';
 
-export const loadTodos = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const loadTodos = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { id: userId } = req.decoded as IDecoded;
 
@@ -31,11 +27,7 @@ export const loadTodos = async (
   }
 };
 
-export const switchTodoOrders = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const switchTodoOrders = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { switchedResult } = req.body;
     const { id: userId } = req.decoded as IDecoded;
@@ -49,8 +41,7 @@ export const switchTodoOrders = async (
       order: { index: 'ASC' },
     });
     todos.forEach((todo) => {
-      todo.index =
-        switchedResult.findIndex((v: number) => v === todo.index) + 1;
+      todo.index = switchedResult.findIndex((v: number) => v === todo.index) + 1;
     });
     await todoRepository.save(todos);
     return res.status(200).send('수정 완료');
@@ -60,11 +51,7 @@ export const switchTodoOrders = async (
   }
 };
 
-export const addTodo = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const addTodo = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { content, scheduleId } = req.body;
     const { id } = req.decoded as IDecoded;
@@ -95,11 +82,7 @@ export const addTodo = async (
   }
 };
 
-export const todoDetail = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const todoDetail = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { id: userId } = req.decoded as IDecoded;
     const { todoId } = req.params;
@@ -125,11 +108,7 @@ export const todoDetail = async (
   }
 };
 
-export const editTodo = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const editTodo = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { id: userId } = req.decoded as IDecoded;
     const { todoId } = req.params;
@@ -161,11 +140,7 @@ export const editTodo = async (
   }
 };
 
-export const deleteTodo = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const deleteTodo = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { id: userId } = req.decoded as IDecoded;
     const { todoId } = req.params;

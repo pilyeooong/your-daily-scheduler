@@ -5,11 +5,7 @@ import { getRepository } from 'typeorm';
 import User from '../entity/User';
 import { IDecoded } from '../interfaces';
 
-export const getWeather = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const getWeather = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { id: userId } = req.decoded as IDecoded;
     const user = await getRepository(User).findOne({ where: { id: userId } });

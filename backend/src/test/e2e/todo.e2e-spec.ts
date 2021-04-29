@@ -105,9 +105,7 @@ describe('POST /', () => {
 
 describe('GET /:todoId', () => {
   it('본인 schedule에 속한 todo가 아닌 것을 요청할 시 400 에러코드를 반환', async (done) => {
-    const res = await request(app)
-      .get('/api/todo/1')
-      .set('Authorization', secondToken);
+    const res = await request(app).get('/api/todo/1').set('Authorization', secondToken);
     expect(res.status).toEqual(400);
     expect(res.text).toEqual('존재하지 않는 todo 입니다.');
     done();
@@ -122,9 +120,7 @@ describe('GET /:todoId', () => {
 
 describe('PATCH /:todoId', () => {
   it('본인 schedule에 속한 todo가 아닌 것에 대해 수정을 시도 할 시 400 에러코드를 반환', async (done) => {
-    const res = await request(app)
-      .patch('/api/todo/1')
-      .set('Authorization', secondToken);
+    const res = await request(app).patch('/api/todo/1').set('Authorization', secondToken);
     expect(res.status).toEqual(400);
     expect(res.text).toEqual('존재하지 않는 todo 입니다.');
     done();
@@ -142,9 +138,7 @@ describe('PATCH /:todoId', () => {
 
 describe('DELETE /:todoId', () => {
   it('본인 schedule에 속한 todo가 아닌 것에 대해 삭제를 시도 할 시 400 에러코드를 반환', async (done) => {
-    const res = await request(app)
-      .delete('/api/todo/1')
-      .set('Authorization', secondToken);
+    const res = await request(app).delete('/api/todo/1').set('Authorization', secondToken);
     expect(res.status).toEqual(400);
     expect(res.text).toEqual('존재하지 않는 todo 입니다.');
     done();

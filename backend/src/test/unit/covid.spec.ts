@@ -72,10 +72,7 @@ describe('loadCovidStatusData', () => {
 
   it('유효한 요청이나 지역 설정을 마치지 않을 시 200 응답코드와 전국 확진자 수 정보만을 반환한다.', async () => {
     typeorm.getRepository = jest.fn().mockReturnValue({
-      findOne: jest
-        .fn()
-        .mockResolvedValueOnce({ id: 1 })
-        .mockResolvedValue(MOCK_COUNTRY_STATUS),
+      findOne: jest.fn().mockResolvedValueOnce({ id: 1 }).mockResolvedValue(MOCK_COUNTRY_STATUS),
     });
 
     await loadCovidStatusData(req, res, next);

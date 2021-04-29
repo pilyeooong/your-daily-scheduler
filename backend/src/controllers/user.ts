@@ -4,19 +4,10 @@ import * as bcrypt from 'bcrypt';
 import User, { City } from '../entity/User';
 import Schedule from '../entity/Schedule';
 import { signJWT } from './jwt';
-import {
-  IDecoded,
-  IGoogleLoginResult,
-  IKakaoInfo,
-  IKakaoLoginResult,
-} from '../interfaces';
+import { IDecoded, IGoogleLoginResult, IKakaoInfo, IKakaoLoginResult } from '../interfaces';
 import axios, { AxiosResponse } from 'axios';
 
-export const getMe = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const getMe = async (req: Request, res: Response, next: NextFunction) => {
   if (req.decoded) {
     try {
       const { id } = req.decoded as IDecoded;
@@ -34,11 +25,7 @@ export const getMe = async (
   }
 };
 
-export const signUp = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const signUp = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { email, password } = req.body;
     if (!email || !password) {
@@ -64,11 +51,7 @@ export const signUp = async (
   }
 };
 
-export const login = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const login = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { email, password, loginKeeper } = req.body;
 
@@ -94,11 +77,7 @@ export const login = async (
   }
 };
 
-export const editProfile = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const editProfile = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { id: userId } = req.decoded as IDecoded;
     const { password, city } = req.body;
@@ -137,11 +116,7 @@ export const editProfile = async (
   }
 };
 
-export const kakaoLogin = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const kakaoLogin = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { response, profile, loginKeeper }: IKakaoLoginResult = req.body;
 
@@ -159,10 +134,7 @@ export const kakaoLogin = async (
       });
 
       if (!exUser) {
-        const hashedPassword = await bcrypt.hash(
-          Math.random().toString(36).substring(2, 15),
-          12
-        );
+        const hashedPassword = await bcrypt.hash(Math.random().toString(36).substring(2, 15), 12);
 
         const newUser = await userRepository.create({
           email: profile.kakao_account.email,
@@ -171,9 +143,7 @@ export const kakaoLogin = async (
         });
         await userRepository.save(newUser);
         const scheduleRepository = getRepository(Schedule);
-        await scheduleRepository.save(
-          scheduleRepository.create({ user: newUser })
-        );
+        await scheduleRepository.save(scheduleRepository.create({ user: newUser }));
 
         const token = signJWT(newUser.id);
         return res.status(200).json({ token, user: newUser });
@@ -194,11 +164,7 @@ export const kakaoLogin = async (
   }
 };
 
-export const googleLogin = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const googleLogin = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const {
       result: { email },
@@ -212,10 +178,7 @@ export const googleLogin = async (
     });
 
     if (!exUser) {
-      const hashedPassword = await bcrypt.hash(
-        Math.random().toString(36).substring(2, 15),
-        12
-      );
+      const hashedPassword = await bcrypt.hash(Math.random().toString(36).substring(2, 15), 12);
 
       const newUser = await userRepository.create({
         email,
@@ -225,9 +188,7 @@ export const googleLogin = async (
       await userRepository.save(newUser);
 
       const scheduleRepository = getRepository(Schedule);
-      await scheduleRepository.save(
-        scheduleRepository.create({ user: newUser })
-      );
+      await scheduleRepository.save(scheduleRepository.create({ user: newUser }));
 
       const token = signJWT(newUser.id, loginKeeper);
       return res.status(200).json({ token, user: newUser });

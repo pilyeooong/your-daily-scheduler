@@ -5,11 +5,7 @@ import Covid from '../entity/Covid';
 import User from '../entity/User';
 import { IDecoded } from '../interfaces';
 
-export const loadCovidStatusData = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const loadCovidStatusData = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { id: userId } = req.decoded as IDecoded;
     const user = await getRepository(User).findOne({ where: { id: userId } });
@@ -35,11 +31,7 @@ export const loadCovidStatusData = async (
   }
 };
 
-export const refreshCovidData = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const refreshCovidData = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { id } = req.decoded as IDecoded;
     const user = await getRepository(User).findOne({ where: { id } });

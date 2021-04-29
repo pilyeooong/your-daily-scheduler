@@ -12,11 +12,7 @@ export const signJWT = (userId: number, loginKeeper?: boolean): string => {
   });
 };
 
-export const verifyJWT = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const verifyJWT = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const token = req.headers?.authorization;
     if (!token) {

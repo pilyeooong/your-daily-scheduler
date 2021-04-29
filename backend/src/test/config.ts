@@ -1,4 +1,4 @@
-import { ConnectionOptions } from "typeorm";
+import { ConnectionOptions } from 'typeorm';
 import entities from '../entity';
 
 import * as dotenv from 'dotenv';

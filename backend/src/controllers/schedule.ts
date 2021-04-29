@@ -4,11 +4,7 @@ import Schedule from '../entity/Schedule';
 import User from '../entity/User';
 import { IDecoded } from '../interfaces';
 
-export const loadSchedules = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const loadSchedules = async (req: Request, res: Response, next: NextFunction) => {
   try {
     if (req.decoded) {
       const { id } = req.decoded as IDecoded;

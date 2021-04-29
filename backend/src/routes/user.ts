@@ -1,13 +1,6 @@
 import * as express from 'express';
 import { verifyJWT } from '../controllers/jwt';
-import {
-  editProfile,
-  getMe,
-  googleLogin,
-  kakaoLogin,
-  login,
-  signUp,
-} from '../controllers/user';
+import { editProfile, getMe, googleLogin, kakaoLogin, login, signUp } from '../controllers/user';
 
 const router = express.Router();
 

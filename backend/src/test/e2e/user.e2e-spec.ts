@@ -1,13 +1,9 @@
 import * as request from 'supertest';
 import app from '../../app';
 import * as dotenv from 'dotenv';
-import {
-  Connection,
-  createConnection,
-  getConnection,
-} from 'typeorm';
+import { Connection, createConnection, getConnection } from 'typeorm';
 import ConnectionOptions from '../config';
- 
+
 beforeAll(async () => {
   await createConnection(ConnectionOptions);
 });
@@ -68,7 +64,7 @@ describe('POST /login', () => {
   it('잘못된 비밀번호로 로그인 시 400 에러를 반환', async (done) => {
     const res = await request(app).post('/api/user/login').send({
       email: TEST_EMAIL,
-      password: 'wrongPassword'
+      password: 'wrongPassword',
     });
     expect(res.status).toEqual(400);
     expect(res.text).toEqual('비밀번호가 일치하지 않습니다.');
