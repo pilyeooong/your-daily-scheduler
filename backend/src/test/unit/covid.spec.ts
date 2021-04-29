@@ -1,10 +1,10 @@
 import axios from 'axios';
 import cheerio = require('cheerio');
-import { Request, Response } from 'express';
 import typeorm = require('typeorm');
 import { loadCovidStatusData } from '../../controllers/covid';
 import { getCoronaData } from '../../crawling/covid';
 import Covid from '../../entity/Covid';
+import { mockRequest, mockResponse } from '../mock';
 
 describe('getCoronaData', () => {
   it('코로나 데이터를 조회 후 covidStatus 객체에 담아 리턴한다.', async () => {
@@ -45,24 +45,6 @@ describe('getCoronaData', () => {
 });
 
 describe('loadCovidStatusData', () => {
-  const mockRequest = (): Request => {
-    const req = {
-      decoded: {
-        id: 1,
-      },
-    } as unknown;
-    return req as Request;
-  };
-
-  const mockResponse = (): Response => {
-    const res = {
-      status: jest.fn().mockReturnThis(),
-      json: jest.fn(),
-    } as unknown;
-
-    return res as Response;
-  };
-
   const req = mockRequest();
   const res = mockResponse();
   const next = jest.fn();

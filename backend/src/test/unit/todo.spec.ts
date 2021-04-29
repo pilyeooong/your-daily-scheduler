@@ -1,36 +1,11 @@
-import { Request, Response } from 'express';
 import typeorm = require('typeorm');
 import { addTodo, deleteTodo, editTodo, loadTodos, switchTodoOrders } from '../../controllers/todo';
 import Schedule from '../../entity/Schedule';
 import Todo from '../../entity/Todo';
 import User from '../../entity/User';
+import { mockRequest, mockResponse } from '../mock';
 
-const mockRequest = (body: Object, params: Object): Request => {
-  const req = {
-    decoded: {
-      id: 1,
-    },
-    body: {
-      ...body,
-    },
-    params: {
-      ...params,
-    },
-  } as unknown;
-
-  return req as Request;
-};
-
-const mockResponse = (): Response => {
-  const res = {
-    status: jest.fn(() => res),
-    send: jest.fn(),
-  } as unknown;
-
-  return res as Response;
-};
-
-const req = mockRequest({}, {});
+const req = mockRequest();
 const res = mockResponse();
 const next = jest.fn();
 
@@ -96,7 +71,7 @@ describe('switchTodoOrders', () => {
   it('기존 todo의 index를 순서를 전달 받은 switchedResult의 나열된 순서로 변경한다', async () => {
     const mockSwitchedResult = [3, 2, 1, 4, 5]; // index 3이였던 todo -> index 1이 된다.
 
-    const req = mockRequest({ switchedResult: mockSwitchedResult }, {});
+    const req = mockRequest({ switchedResult: mockSwitchedResult });
     const mockTodos = [
       { id: 1, index: 1 },
       { id: 2, index: 2 },
@@ -129,7 +104,7 @@ describe('switchTodoOrders', () => {
 
 describe('addTodo', () => {
   it('content가 존재하지 않으면 400 에러코드와 메시지를 응답한다.', async () => {
-    const req = mockRequest({}, {});
+    const req = mockRequest();
     await addTodo(req, res, next);
 
     expect(res.status).toHaveBeenCalledWith(400);
@@ -159,13 +134,10 @@ describe('addTodo', () => {
 
   it('본인 스케줄 외에 다른 스케줄로의 요청 시 403 에러코드와 메시지를 응답한다.', async () => {
     const mockSchedule = { id: 1 };
-    const req = mockRequest(
-      {
-        content: 'test',
-        scheduleId: 2,
-      },
-      {}
-    );
+    const req = mockRequest({
+      content: 'test',
+      scheduleId: 2,
+    });
 
     typeorm.getRepository = jest.fn().mockReturnValue({
       findOne: jest.fn().mockResolvedValueOnce(MOCK_USER).mockResolvedValue(mockSchedule),
@@ -179,13 +151,10 @@ describe('addTodo', () => {
   });
 
   it('유효한 요청일 시 todo를 생성한다.', async () => {
-    const req = mockRequest(
-      {
-        content: 'test',
-        scheduleId: 1,
-      },
-      {}
-    );
+    const req = mockRequest({
+      content: 'test',
+      scheduleId: 1,
+    });
     const expectedResult = {
       ...MOCK_TODO,
       index: 1,
@@ -210,14 +179,14 @@ describe('addTodo', () => {
 
 describe('editTodo', () => {
   it('content가 존재하지 않으면 400 에러코드와 메시지를 응답한다.', async () => {
-    const req = mockRequest({}, {});
+    const req = mockRequest();
     await editTodo(req, res, next);
     expect(res.status).toHaveBeenCalledWith(400);
     expect(res.send).toHaveBeenCalledWith('빈 내용으로 수정할 수 없습니다.');
   });
 
   it('존재하지 않는 todo 일시 400 에러코드와 메시지를 응답한다.', async () => {
-    const req = mockRequest({ content: 'test' }, {});
+    const req = mockRequest({ content: 'test' });
     typeorm.getRepository = jest.fn().mockReturnValue({
       findOne: jest
         .fn()
@@ -237,7 +206,7 @@ describe('editTodo', () => {
       content: 'test',
     };
 
-    const req = mockRequest({ content: 'test2' }, { todoId: 1 });
+    const req = mockRequest({ content: 'test2' }, { todoId: '1' });
     typeorm.getRepository = jest.fn().mockReturnValue({
       findOne: jest
         .fn()
@@ -259,7 +228,7 @@ describe('editTodo', () => {
 
 describe('deleteTodo', () => {
   it('존재하지 않는 todo 일시 400 에러코드와 메시지를 응답한다.', async () => {
-    const req = mockRequest({}, { todoId: 1 });
+    const req = mockRequest({}, { todoId: '1' });
     typeorm.getRepository = jest.fn().mockReturnValue({
       findOne: jest
         .fn()
@@ -274,7 +243,7 @@ describe('deleteTodo', () => {
   });
 
   it('유효한 요청 시 해당 id에 해당하는 todo를 삭제한다.', async () => {
-    const req = mockRequest({}, { todoId: 1 });
+    const req = mockRequest({}, { todoId: '1' });
     typeorm.getRepository = jest.fn().mockReturnValue({
       findOne: jest
         .fn()

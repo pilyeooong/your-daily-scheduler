@@ -1,32 +1,10 @@
-import { Request, Response } from 'express';
 import typeorm = require('typeorm');
 import { addEvent, loadEvent, loadEvents, loadEventsWithTime } from '../../controllers/event';
 import Event from '../../entity/Event';
 import Schedule from '../../entity/Schedule';
 import User from '../../entity/User';
 import { IEvent } from '../../interfaces';
-
-const mockRequest = (body?: Object, query?: Object): Request => {
-  const req = {
-    decoded: {
-      id: 1,
-    },
-    body,
-    query,
-  } as unknown;
-
-  return req as Request;
-};
-
-const mockResponse = (): Response => {
-  const res = {
-    status: jest.fn().mockReturnThis(),
-    send: jest.fn(),
-    json: jest.fn(),
-  } as unknown;
-
-  return res as Response;
-};
+import { mockRequest, mockResponse } from '../mock';
 
 const req = mockRequest();
 const res = mockResponse();
@@ -219,9 +197,10 @@ describe('loadEvent', () => {
   };
   const req = mockRequest(
     {},
+    {},
     {
-      date: new Date(),
-      page: 1,
+      date: new Date().toString(),
+      page: '1',
     }
   );
 

@@ -1,7 +1,8 @@
-import { Request, Response, NextFunction } from 'express';
+import { NextFunction } from 'express';
 import * as dotenv from 'dotenv';
 import * as jwt from 'jsonwebtoken';
 import { signJWT, verifyJWT } from '../../controllers/jwt';
+import { mockRequest, mockResponse } from '../mock';
 
 dotenv.config();
 
@@ -9,20 +10,6 @@ const USER_ID = 1;
 const TOKEN = 'TOKEN';
 
 jest.mock('jsonwebtoken');
-
-const mockRequest = (): Request => {
-  const req = {
-    headers: {
-      authorization: TOKEN,
-    },
-  } as unknown;
-  return req as Request;
-};
-
-const mockResponse = (): Response => {
-  const res = { status: jest.fn(() => res), send: jest.fn() } as unknown;
-  return res as Response;
-};
 
 describe('signJWT', () => {
   it('userId를 전달받으면 토큰을 발급 한다', async () => {
@@ -39,7 +26,7 @@ describe('signJWT', () => {
 });
 
 describe('verifyJWT', () => {
-  const req = mockRequest();
+  const req = mockRequest({}, {}, {}, { authorization: TOKEN });
   const res = mockResponse();
   const next: NextFunction = jest.fn();
 

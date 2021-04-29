@@ -1,27 +1,8 @@
-import { Request, Response } from 'express';
 import typeorm = require('typeorm');
 import { loadSchedules } from '../../controllers/schedule';
 import Schedule from '../../entity/Schedule';
 import User from '../../entity/User';
-
-const mockRequest = (): Request => {
-  const req = {
-    decoded: {
-      id: 1,
-    },
-  } as unknown;
-
-  return req as Request;
-};
-
-const mockResponse = (): Response => {
-  const res = {
-    status: jest.fn(() => res),
-    send: jest.fn(),
-  } as unknown;
-
-  return res as Response;
-};
+import { mockRequest, mockResponse } from '../mock';
 
 const req = mockRequest();
 const res = mockResponse();
