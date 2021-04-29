@@ -31,14 +31,10 @@ describe('signJWT', () => {
     expect(typeof token).toBe('string');
     expect(token).toEqual(TOKEN);
     expect(jwt.sign).toBeCalledTimes(1);
-    expect(jwt.sign).toBeCalledWith(
-      { id: USER_ID },
-      process.env.JWT_SIGNATURE,
-      {
-        expiresIn: '6h',
-        issuer: 'todo',
-      }
-    );
+    expect(jwt.sign).toBeCalledWith({ id: USER_ID }, process.env.JWT_SIGNATURE, {
+      expiresIn: '6h',
+      issuer: 'todo',
+    });
   });
 });
 

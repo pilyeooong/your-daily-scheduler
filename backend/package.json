@@ -10,6 +10,7 @@
     "pm2:start": "npx tsc && cross-env NODE_ENV=production pm2 start ./dist/server.js --watch",
     "pm2:cluster": "npx tsc && cross-env NODE_ENV=production pm2 start ./dist/server.js --watch -i max",
     "test": "jest ./src/test/unit --watch --runInBand --detectOpenHandles",
+    "test:coverage": "jest ./src/test/unit --watch --coverage --runInBand --detectOpenHandles",
     "test-server": "NODE_ENV=test nodemon",
     "test:e2e": "NODE_ENV=test jest --config ./src/test/e2e/jest-e2e.json --watch --runInBand --detectOpenHandles",
     "bulk": "ts-node ./src/test/bulk/event --transpileOnly && exit 0",
@@ -84,6 +85,10 @@
       "^.+\\.(t|j)s$": "ts-jest"
     },
     "testEnvironment": "node",
+    "collectCoverageFrom": [
+      "<rootDir>/controllers/**/*.ts",
+      "<rootDir>/crawling/**/*.ts"
+    ],
     "setupFiles": [
       "<rootDir>/test/setEnvVars.ts"
     ]
