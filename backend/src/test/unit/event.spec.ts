@@ -259,8 +259,8 @@ describe('loadEventsWithTime', () => {
   const req = mockRequest(
     {},
     {
-      date: new Date(),
-      page: 1,
+      date: new Date().toString(),
+      page: '1',
     }
   );
 

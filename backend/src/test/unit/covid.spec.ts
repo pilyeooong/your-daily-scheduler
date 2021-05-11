@@ -7,6 +7,15 @@ import Covid from '../../entity/Covid';
 import { mockRequest, mockResponse } from '../mock';
 
 describe('getCoronaData', () => {
+  it('코로나 데이터 조회 실패 시 console.log 호출한 뒤 리턴하여 함수 종료', async () => {
+    jest.spyOn(axios, 'get').mockResolvedValue(null);
+    jest.spyOn(console, 'log').mockImplementation();
+
+    await getCoronaData();
+
+    expect(axios.get).toHaveBeenCalledTimes(1);
+    expect(console.log).toHaveBeenCalledWith('조회 실패');
+  });
   it('코로나 데이터를 조회 후 covidStatus 객체에 담아 리턴한다.', async () => {
     const mockAxios = {
       data: 'result',
