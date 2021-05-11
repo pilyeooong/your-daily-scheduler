@@ -42,7 +42,7 @@ export default class User extends CoreEntity {
   is_admin!: boolean;
 
   @Column({ type: 'enum', enum: City, nullable: true })
-  city!: City;
+  city?: City;
 
   async checkPassword(passwordInput: string): Promise<boolean> {
     try {

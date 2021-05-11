@@ -29,7 +29,7 @@ export const loadTodos = async (req: Request, res: Response, next: NextFunction)
 
 export const switchTodoOrders = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { switchedResult } = req.body;
+    const { switchedResult }: { switchedResult: number[] } = req.body;
     const { id: userId } = req.decoded as IDecoded;
 
     const schedule = await getRepository(Schedule).findOne({
@@ -53,7 +53,7 @@ export const switchTodoOrders = async (req: Request, res: Response, next: NextFu
 
 export const addTodo = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { content, scheduleId } = req.body;
+    const { content, scheduleId }: { content: string; scheduleId: number } = req.body;
     const { id } = req.decoded as IDecoded;
 
     if (!content) {
@@ -87,6 +87,10 @@ export const todoDetail = async (req: Request, res: Response, next: NextFunction
     const { id: userId } = req.decoded as IDecoded;
     const { todoId } = req.params;
 
+    if (!todoId) {
+      return res.status(400).send('잘못 된 요청입니다.');
+    }
+
     const user = await getRepository(User).findOne({ id: userId });
     const schedule = await getRepository(Schedule).findOne({ user });
     if (!schedule) {
@@ -112,7 +116,7 @@ export const editTodo = async (req: Request, res: Response, next: NextFunction) 
   try {
     const { id: userId } = req.decoded as IDecoded;
     const { todoId } = req.params;
-    const { content } = req.body;
+    const { content }: { content: string } = req.body;
 
     if (!content) {
       return res.status(400).send('빈 내용으로 수정할 수 없습니다.');

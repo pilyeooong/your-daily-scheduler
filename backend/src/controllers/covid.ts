@@ -15,7 +15,7 @@ export const loadCovidStatusData = async (req: Request, res: Response, next: Nex
 
     const covidRepo = await getRepository(Covid);
 
-    let cityStatus;
+    let cityStatus: Covid | undefined;
     if (user.city) {
       cityStatus = await covidRepo.findOne({ where: { city: user.city } });
     }

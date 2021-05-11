@@ -27,7 +27,7 @@ export const getMe = async (req: Request, res: Response, next: NextFunction) => 
 
 export const signUp = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { email, password } = req.body;
+    const { email, password }: { email: string; password: string } = req.body;
     if (!email || !password) {
       return res.status(400).send('이메일 혹은 비밀번호가 누락되었습니다.');
     }
@@ -53,7 +53,11 @@ export const signUp = async (req: Request, res: Response, next: NextFunction) =>
 
 export const login = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { email, password, loginKeeper } = req.body;
+    const {
+      email,
+      password,
+      loginKeeper,
+    }: { email: string; password: string; loginKeeper: boolean } = req.body;
 
     const user = await getRepository(User).findOne(
       { email },
@@ -80,7 +84,7 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
 export const editProfile = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { id: userId } = req.decoded as IDecoded;
-    const { password, city } = req.body;
+    const { password, city }: { password: string; city: City } = req.body;
 
     if (!password && !city) {
       return res.status(400).send('수정하시고자 하는 프로필 정보를 입력해주세요');
@@ -108,7 +112,7 @@ export const editProfile = async (req: Request, res: Response, next: NextFunctio
       {
         id: userId,
         ...(password && { password: hashedPassword }),
-        ...(city && { city: city === 'reset' ? null : city }),
+        ...(city && { city: String(city) === 'reset' ? undefined : city }),
       },
     ]);
 

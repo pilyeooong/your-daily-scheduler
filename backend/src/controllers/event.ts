@@ -140,7 +140,12 @@ export const editEvent = async (req: Request, res: Response, next: NextFunction)
   try {
     const { id } = req.decoded as IDecoded;
     const { eventId } = req.params;
-    const { content, date, startTime, endTime } = req.body;
+    const {
+      content,
+      date,
+      startTime,
+      endTime,
+    }: { content: string; date: string; startTime: string; endTime: string } = req.body;
 
     let parsedStartTime;
     let parsedEndTime;
