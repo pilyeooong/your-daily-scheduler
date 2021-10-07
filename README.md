@@ -1,7 +1,7 @@
 # **Your-Daily-Scheduler**
 
 할 일 및 일정 관리, 스케줄 정리를 위한 토이 프로젝트 입니다. <br />
-일정 관리뿐만이 아니라 하루를 시작하며 늘 찾아보던 날씨 정보, 요즘 늘 관심있게 지켜보는 코로나 확진자 수 정보까지도 담아보았습니다.
+일정 관리뿐만이 아니라 하루를 시작하며 늘 찾아보던 날씨 정보, 요즘 늘 관심있게 지켜보게 되는 코로나 확진자 수 정보까지도 담아보았습니다.
 
 [https://yourdailyscheduler.link/](https://yourdailyscheduler.link/) (Terminated)
 
